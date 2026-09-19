@@ -1,0 +1,21 @@
+{
+  "name": "threespace-proj",
+  "version": "1.0.0",
+  "description": "TBD",
+  "homepage": "https://github.com/crazystuffxyz/hackathon-project#readme",
+  "bugs": {
+    "url": "https://github.com/crazystuffxyz/hackathon-project/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/crazystuffxyz/hackathon-project.git"
+  },
+  "license": "MIT",
+  "author": "Check the github u lazy bum",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "test": "npm start",
+    "start": "node ."
+  }
+}
