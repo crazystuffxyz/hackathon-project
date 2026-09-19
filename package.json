@@ -17,5 +17,8 @@
   "scripts": {
     "test": "npm start",
     "start": "node ."
+  },
+  "dependencies": {
+    "express": "^5.2.1"
   }
 }
