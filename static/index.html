@@ -157,6 +157,22 @@ body::before {
                 background-size: 100% 27px;
             }
         }
+        .turkey {
+            position: relative;
+            animation: turkey-steps 0.4s steps(2) infinite, turkey-travel 8s linear infinite;
+            width: 96px;
+            height: 96px;
+            background: url("images/turkeywalkright.png") 0 0 / 192px 96px no-repeat;
+            image-rendering: pixelated;
+        }
+        @keyframes turkey-travel {
+            from { left: -96px; }
+            to { left: calc(100% - 96px); }
+        }
+        @keyframes turkey-steps {
+            from { background-position: 0 0; }
+            to { background-position: -192px 0;}
+        }
     </style>
 </head>
 
@@ -275,7 +291,9 @@ body::before {
 
 </div>
     </section>
-
+<div class="turkey-track">
+    <div class="turkey" aria-hidden="true"></div>
+</div>
 <!-- CONTENT -->
     <section class="mt-8 grid gap-8 lg:grid-cols-[minmax(0,1fr)_290px]">
 
