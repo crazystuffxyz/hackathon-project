@@ -159,15 +159,19 @@ body::before {
         }
         .turkey {
             position: relative;
-            animation: turkey-steps 0.4s steps(2) infinite, turkey-travel 8s linear infinite;
+            animation: turkey-steps 0.4s steps(2) infinite, turkey-travel 16s linear infinite, turkey-direction 16s step-end infinite;;
             width: 96px;
             height: 96px;
             background: url("images/turkeywalkright.png") 0 0 / 192px 96px no-repeat;
             image-rendering: pixelated;
         }
         @keyframes turkey-travel {
-            from { left: -96px; }
-            to { left: calc(100% - 96px); }
+            0%, 100% { left:0;}
+            50% { left: calc(100% - 96px);} 
+        }
+        @keyframes turkey-direction {
+            0%, 100% { background-image: url("images/turkeywalkright.png");}
+            50% { background-image: url("images/turkeywalkleft.png");}
         }
         @keyframes turkey-steps {
             from { background-position: 0 0; }
