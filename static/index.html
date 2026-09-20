@@ -157,6 +157,26 @@ body::before {
                 background-size: 100% 27px;
             }
         }
+        .turkey {
+            position: relative;
+            animation: turkey-steps 0.4s steps(2) infinite, turkey-travel 16s linear infinite, turkey-direction 16s step-end infinite;;
+            width: 96px;
+            height: 96px;
+            background: url("images/turkeywalkright.png") 0 0 / 192px 96px no-repeat;
+            image-rendering: pixelated;
+        }
+        @keyframes turkey-travel {
+            0%, 100% { left:0;}
+            50% { left: calc(100% - 96px);} 
+        }
+        @keyframes turkey-direction {
+            0%, 100% { background-image: url("images/turkeywalkright.png");}
+            50% { background-image: url("images/turkeywalkleft.png");}
+        }
+        @keyframes turkey-steps {
+            from { background-position: 0 0; }
+            to { background-position: -192px 0;}
+        }
     </style>
 </head>
 
@@ -165,7 +185,7 @@ body::before {
 <header class="sticky top-0 z-40 border-b border-[#294438]/15 bg-[#f1ead9]/90 backdrop-blur-md">
     <div class="mx-auto flex max-w-[1380px] items-center justify-between px-5 py-4 lg:px-8">
         <a href="#" class="flex items-center gap-3">
-            <span class="leaf-mark text-2xl"></span>
+            <span><img src="images/leaf.png" alt="" width="32" style="image-rendering: pixelated;"></span>
 
 <div>
                 <div class="display text-[19px] font-bold tracking-tight">
@@ -275,7 +295,9 @@ body::before {
 
 </div>
     </section>
-
+<div class="turkey-track">
+    <div class="turkey" aria-hidden="true"></div>
+</div>
 <!-- CONTENT -->
     <section class="mt-8 grid gap-8 lg:grid-cols-[minmax(0,1fr)_290px]">
 
@@ -393,7 +415,7 @@ body::before {
                             </div>
 
 <div>
-                                <div class="display text-6xl leading-none"></div>
+                                <img src="images/apple.png" alt="Pixel art apple" width="128" style="image-rendering: pixelated;">
                                 <div class="mt-3 text-xs font-bold uppercase tracking-[0.16em]">
                                     autumn fruit
                                 </div>
@@ -566,7 +588,7 @@ body::before {
                         </div>
                     </div>
 
-<span class="text-3xl"></span>
+<span class="text-3xl"><img src="images/pie.png" alt="" width="48" style="image-rendering: pixelated;"></span>
                 </div>
 
 <p class="text-sm leading-6 text-[#f1ead9]/60">
