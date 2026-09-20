@@ -952,13 +952,13 @@ if (error) {
 next();
 });
 
-app.get("*", (req, res, next) => {
+app.get("/{*splat}", (req, res, next) => {
     if (req.path.startsWith("/api/")) {
         next();
         return;
     }
 
-res.sendFile(path.join(staticDir, "index.html"));
+    res.sendFile(path.join(staticDir, "index.html"));
 });
 
 app.listen(port, () => {
