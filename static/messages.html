@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#1b2920">
+    <title>Harvest — Dispatches & Field Exchanges</title>
+    <link rel="stylesheet" href="/css/main.css">
+</head>
+<body data-page="messages">
+    <header class="site-header">
+        <div class="header-left">
+            <a class="wordmark" href="/">
+                <div class="seal-emblem" aria-hidden="true">
+                    <svg viewBox="0 0 24 24"><path d="M12 2C8 6 4 11 4 16C4 19.3 6.7 22 10 22C11.5 22 12 21 12 21C12 21 12.5 22 14 22C17.3 22 20 19.3 20 16C20 11 16 6 12 2Z"/><path d="M12 7V17"/><path d="M9 11L12 14L15 11"/></svg>
+                </div>
+                <div class="wordmark-text">
+                    <strong>harvest</strong>
+                    <small>field dispatches</small>
+                </div>
+            </a>
+        </div>
+
+        <nav class="site-nav" aria-label="Main Navigation">
+            <a href="/">specimen board</a>
+            <a class="active" href="/messages.html">dispatches</a>
+            <a href="/gather.html">seasonal ledger</a>
+        </nav>
+
+        <div class="header-actions">
+            <button class="persona-switcher-btn" id="open-persona-switcher">
+                <div class="profile-avatar" id="nav-avatar">Y</div>
+                <div class="persona-meta">
+                    <strong id="nav-display-name">You</strong>
+                    <small id="nav-handle">@you</small>
+                </div>
+            </button>
+            <button class="mobile-menu-trigger" id="mobile-menu-btn" aria-label="Toggle Navigation">
+                <svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+            </button>
+        </div>
+    </header>
+
+    <div class="mobile-drawer" id="mobile-drawer">
+        <a href="/">Specimen Board</a>
+        <a href="/messages.html">Dispatches</a>
+        <a href="/gather.html">Seasonal Ledger</a>
+        <a href="/profile.html">Your Field Book</a>
+    </div>
+
+    <main class="page-shell page-narrow">
+        <div style="margin-bottom: 28px;">
+            <p class="eyebrow">Private Transmissions</p>
+            <h1 style="font-family: var(--font-serif); font-size: 48px; margin: 8px 0 6px;">Dispatches.</h1>
+            <p style="color: var(--muted); margin: 0;">Exchange cutting notes, trail coordinates, and private harvest tips.</p>
+        </div>
+
+        <div class="messages-layout" id="messages-shell">
+            <aside class="conversation-sidebar">
+                <div class="sidebar-header">
+                    <span class="eyebrow">Active Contacts</span>
+                    <button class="button button-quiet" id="new-dialogue-btn" style="height: 30px; padding: 0 10px; font-size: 10px;">+ New Dispatch</button>
+                </div>
+                <div id="conversations" class="conversation-list"></div>
+            </aside>
+
+            <section class="chat-panel">
+                <div id="chat-empty" style="display: grid; place-items: center; height: 100%; text-align: center; padding: 40px;">
+                    <div>
+                        <div style="font-size: 44px; color: var(--ochre); margin-bottom: 12px;">✉</div>
+                        <h2 style="font-family: var(--font-serif); font-size: 28px; margin: 0 0 8px;">Select a Harvester</h2>
+                        <p style="color: var(--muted); max-width: 280px; margin: 0;">Choose a field contact from the left ledger to review transmissions.</p>
+                    </div>
+                </div>
+
+                <div id="chat-room" class="hidden" style="display: flex; flex-direction: column; height: 100%;">
+                    <header class="chat-header">
+                        <div style="display: flex; align-items: center; gap: 12px;">
+                            <button id="mobile-back-btn" class="button button-quiet" style="height: 32px; padding: 0 8px; display: none;">← Contacts</button>
+                            <div class="chat-partner-info">
+                                <h2 id="chat-name">Harvester</h2>
+                                <span id="chat-handle">@harvester</span>
+                            </div>
+                        </div>
+                        <div id="chat-location" style="font-family: var(--font-mono); font-size: 11px; color: var(--muted);">Field Sector</div>
+                    </header>
+
+                    <div id="chat-messages" class="chat-stream"></div>
+
+                    <div class="quick-prompts">
+                        <span style="font-family: var(--font-mono); font-size: 10px; color: var(--muted); align-self: center;">Prompts:</span>
+                        <button class="prompt-btn" data-text="Found great heirloom apples today.">Apples Stand</button>
+                        <button class="prompt-btn" data-text="Do you still want to trade slips this weekend?">Trade Seedlings</button>
+                        <button class="prompt-btn" data-text="What temperature did you bake that pumpkin loaf at?">Recipe Temp</button>
+                    </div>
+
+                    <form class="chat-composer-bar" id="message-form">
+                        <input id="message-input" maxlength="900" placeholder="Type field dispatch..." autocomplete="off" required>
+                        <button class="button button-dark" type="submit">Dispatch</button>
+                    </form>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <div class="modal-backdrop hidden" id="picker-backdrop">
+        <section class="modal" role="dialog" aria-modal="true" aria-labelledby="picker-title">
+            <button class="modal-close" id="close-picker" aria-label="Close dialog">×</button>
+            <p class="eyebrow">Naturalist Directory</p>
+            <h2 id="picker-title">Commence a Dispatch</h2>
+            <p class="modal-subcopy">Select a field worker registered in this valley.</p>
+            <div id="people-picker" class="persona-grid"></div>
+        </section>
+    </div>
+
+    <div class="modal-backdrop hidden" id="persona-backdrop">
+        <section class="modal" role="dialog" aria-modal="true" aria-labelledby="persona-modal-title">
+            <button class="modal-close" id="close-persona" aria-label="Close dialog">×</button>
+            <p class="eyebrow">Identity Registry</p>
+            <h2 id="persona-modal-title">Switch Harvester</h2>
+            <div id="persona-list" class="persona-grid"></div>
+        </section>
+    </div>
+
+    <script src="/js/app.js"></script>
+    <script src="/js/messages.js"></script>
+</body>
+</html>
