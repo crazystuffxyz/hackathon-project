@@ -506,8 +506,10 @@ app.get("/api/posts", (req, res) => {
 let order = "p.created_at DESC";
 
 if (req.query.sort === "popular") {
-        order = "p.likes DESC, p.created_at DESC";
-    }
+    order = "p.likes DESC, p.created_at DESC";
+} else if (req.query.sort === "rating") {
+    order = "p.rating DESC, p.created_at DESC";
+}
 
 let filterSql = "";
     const params = { userId: user.id };
