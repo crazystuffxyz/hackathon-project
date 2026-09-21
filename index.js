@@ -952,7 +952,7 @@ if (error) {
 next();
 });
 
-app.get("*", (req, res, next) => {
+app.get("/*splat", (req, res, next) => {
     if (req.path.startsWith("/api/")) {
         next();
         return;
