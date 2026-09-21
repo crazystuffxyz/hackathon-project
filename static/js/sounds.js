@@ -1,18 +1,36 @@
-const backgroundMusic = new Audio("/sounds/harvestv2.wav");
+const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+const GAIN_MULTIPLIER = 3;
+
+function amplify(audio){
+    const source = audioContext.createMediaElementSource(audio);
+    const gainNode = audioContext.createGain();
+    gainNode.gain.value = GAIN_MULTIPLIER;
+    source.connect(gainNode).connect(audioContext.destination);
+    return audio;
+}
+
+function resumeAudio(){
+    if(audioContext.state === "suspended"){
+        audioContext.resume().catch(() => {});
+    }
+}
+
+const backgroundMusic = amplify(new Audio("/sounds/harvestv2.wav"));
 
 backgroundMusic.volume = 0.05;
 backgroundMusic.loop = true;
 backgroundMusic.preload = "auto";
 
 document.addEventListener("pointerdown", () => {
+    resumeAudio();
     if (backgroundMusic.paused) {
         backgroundMusic.currentTime = 0;
         backgroundMusic.play().catch(console.error);
     }
 }, { once: true });
 
-const buttonSound = new Audio("/sounds/button.wav");
-const postSound = new Audio("/sounds/post.wav");
+const buttonSound = amplify(new Audio("/sounds/button.wav"));
+const postSound = amplify(new Audio("/sounds/post.wav"));
 
 buttonSound.volume = 0.3;
 postSound.volume = 0.35;
@@ -35,7 +53,7 @@ document.addEventListener("click", (event) => {
     buttonSound.play().catch(console.error);
 });
 
-const scrollSound = new Audio("/sounds/scroll.wav");
+const scrollSound = amplify(new Audio("/sounds/scroll.wav"));
 scrollSound.volume = 0.2;
 scrollSound.preload = "auto";
 
