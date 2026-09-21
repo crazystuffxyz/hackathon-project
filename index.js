@@ -135,6 +135,13 @@ if (!postColumns.includes("take_again")) {
     `);
 }
 
+if (!postColumns.includes("rating")) {
+    db.exec(`
+        ALTER TABLE posts
+        ADD COLUMN rating INTEGER NOT NULL DEFAULT 3
+    `);
+}
+
 function now() {
     return Date.now();
 }
@@ -524,6 +531,7 @@ const posts = db.prepare(`
         p.difficulty,
         p.workload,
         p.take_again,
+        p.rating,
         p.text,
         p.image,
         p.weather,
@@ -631,6 +639,7 @@ const specimenNo = generateSpecimenNo();
 const difficulty = cleanText(req.body.difficulty, 20);
 const workload = cleanText(req.body.workload, 20);
 const takeAgain = req.body.take_again === "no" ? "no" : "yes";
+const rating = Math.min(5, Math.max(1, Number(req.body.rating) || 3));
 
 const result = db.prepare(`
     INSERT INTO posts (
@@ -645,9 +654,10 @@ const result = db.prepare(`
         created_at,
         difficulty,
         workload,
-        take_again
+        take_again,
+        rating
     )
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
 `).run(
     user.id,
     category,
@@ -660,33 +670,37 @@ const result = db.prepare(`
     now(),
     difficulty,
     workload,
-    takeAgain
+    takeAgain,
+    rating
 );
+
 const post = db.prepare(`
-            SELECT
-                p.id,
-                p.category,
-                p.text,
-                p.teacher,
-                p.course,
-                p.image,
-                p.difficulty,
-                p.workload,
-                p.take_again,
-                p.weather,
-                p.specimen_no,
-                p.likes,
-                p.created_at,
-                u.handle,
-                u.display_name,
-                u.location
-            FROM posts p
-            JOIN users u ON u.id = p.author_id
-            WHERE p.id = ? `).get(result.lastInsertRowid);
+    SELECT
+        p.id,
+        p.category,
+        p.text,
+        p.teacher,
+        p.course,
+        p.image,
+        p.difficulty,
+        p.workload,
+        p.take_again,
+        p.rating,
+        p.weather,
+        p.specimen_no,
+        p.likes,
+        p.created_at,
+        u.handle,
+        u.display_name,
+        u.location
+    FROM posts p
+    JOIN users u ON u.id = p.author_id
+    WHERE p.id = ?
+`).get(result.lastInsertRowid);
 
 post.liked = 0;
-        post.saved = 0;
-        post.comments = [];
+post.saved = 0;
+post.comments = [];
 
 res.status(201).json(post);
     }

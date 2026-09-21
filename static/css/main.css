@@ -1270,6 +1270,11 @@ textarea.field-input {
     font-size: 36px;
 }
 
+.review-rating {
+    font-weight: 600;
+    letter-spacing: 2px;
+}
+
 .profile-info h1 {
     margin: 4px 0 0;
     font-family: var(--font-serif);

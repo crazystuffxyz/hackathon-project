@@ -62,7 +62,8 @@ const home = {
                 p.display_name.toLowerCase().includes(q) ||
                 p.handle.toLowerCase().includes(q) ||
                 (p.teacher && p.teacher.toLowerCase().includes(q)) ||
-                (p.course && p.course.toLowerCase().includes(q))
+                (p.course && p.course.toLowerCase().includes(q)) ||
+                (p.rating && p.rating.toString() === q)
             );
         }
 
@@ -110,6 +111,11 @@ const home = {
                         </div>
                         <div>
                             Would Take Again: ${post.take_again === "yes" ? "Yes" : "No"}
+                        </div>
+                        <div class="review-rating">
+                            Rating:
+                            ${"★".repeat(Number(post.rating) || 3)}
+                            ${"☆".repeat(5 - (Number(post.rating) || 3))}
                         </div>
                     </div>
 

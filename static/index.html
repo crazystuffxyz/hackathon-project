@@ -218,6 +218,18 @@ Post the stuff you stumble on, like a good farm stand, a plant that finally took
                         <option value="yes" selected>Yes</option>
                         <option value="no">No</option>
                     </select>
+                    <label class="field-label" for="rating">
+                        Overall rating
+                    </label>
+
+                    <select id="rating" name="rating" required>
+                        <option value="5">5 - Excellent</option>
+                        <option value="4">4 - Good</option>
+                        <option value="3" selected>3 - Average</option>
+                        <option value="2">2 - Below Average</option>
+                        <option value="1">1 - Poor</option>
+                    </select>
+                    
                 <label class="upload-zone" for="post-image">
                     <input id="post-image" name="image" type="file" accept="image/*">
                     <svg class="upload-icon" viewBox="0 0 24 24" aria-hidden="true">
