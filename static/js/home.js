@@ -82,10 +82,10 @@ const home = {
             <article class="post-card" data-id="${post.id}">
                 <div class="post-card-top">
                     <span class="specimen-tag category-${post.category}">
-                        ${app.escape(post.specimen_no || "SPECIMEN")} · ${app.escape(post.category)}
+                        ${app.escape(post.specimen_no || "note")} · ${app.escape(post.category)}
                     </span>
                     <div class="post-meta-details">
-                        <span>${app.escape(post.weather || "brisk")}</span>
+                        <span>${app.escape(app.weatherLabel(post.weather))}</span>
                         <span>·</span>
                         <time data-time="${post.created_at}">${app.timeAgo(post.created_at)}</time>
                     </div>
@@ -100,35 +100,35 @@ const home = {
                                 <span>@${app.escape(post.handle)}</span>
                             </div>
                         </div>
-                        <span class="author-location">${app.escape(post.location || "The Old Woods")}</span>
+                        ${post.location ? `<span class="author-location">${app.escape(post.location)}</span>` : ""}
                     </div>
 
                     <p class="post-text">${app.escape(post.text)}</p>
 
                     ${post.image ? `
                         <div class="post-specimen-frame">
-                            <img src="${app.escape(post.image)}" alt="Field specimen photograph" loading="lazy">
+                            <img src="${app.escape(post.image)}" alt="Photo from this note" loading="lazy">
                         </div>
                     ` : ""}
 
                     <div class="post-actions">
-                        <button class="action-pill ${post.liked ? "active" : ""}" data-action="like" title="Gather note">
+                        <button class="action-pill ${post.liked ? "active" : ""}" data-action="like" title="Like this note">
                             <svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
-                            <span>${post.likes} Gathered</span>
+                            <span>${post.likes} likes</span>
                         </button>
 
                         <button class="action-pill" data-action="comments">
                             <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-                            <span>${comments.length ? `${comments.length} Marginalia` : "Add Marginalia"}</span>
+                            <span>${comments.length ? `${comments.length} comments` : "Comment"}</span>
                         </button>
 
                         <button class="action-pill ${post.saved ? "active" : ""}" data-action="save">
                             <svg viewBox="0 0 24 24"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
-                            <span>${post.saved ? "In Basket" : "Save"}</span>
+                            <span>${post.saved ? "Saved" : "Save"}</span>
                         </button>
 
                         ${isAuthor ? `
-                            <button class="delete-action" data-action="delete">Strike Observation</button>
+                            <button class="delete-action" data-action="delete">Delete</button>
                         ` : ""}
                     </div>
 
@@ -143,8 +143,8 @@ const home = {
                         </div>
 
                         <form class="comment-form">
-                            <input maxlength="500" placeholder="Annotate this observation..." required>
-                            <button type="submit">Affix</button>
+                            <input maxlength="500" placeholder="Add a comment..." required>
+                            <button type="submit">Reply</button>
                         </form>
                     </div>
                 </div>
@@ -239,7 +239,7 @@ const home = {
             if (!selected) return;
 
             if (selected.size > 5 * 1024 * 1024) {
-                app.toast("Image exceeds the 5MB archival threshold.");
+                app.toast("That image is over 5MB.");
                 file.value = "";
                 return;
             }
@@ -262,7 +262,7 @@ const home = {
             e.preventDefault();
             const submitBtn = document.getElementById("submit-post-btn");
             submitBtn.disabled = true;
-            submitBtn.textContent = "Recording...";
+            submitBtn.textContent = "Posting...";
 
             const formData = new FormData(form);
             formData.append("handle", app.handle);
@@ -279,12 +279,12 @@ const home = {
                 previewWrap.classList.add("hidden");
                 document.getElementById("post-characters").textContent = "0 / 1400";
                 close();
-                app.toast("Observation recorded in the ledger.");
+                app.toast("Posted.");
             } catch (err) {
                 app.toast(err.message);
             } finally {
                 submitBtn.disabled = false;
-                submitBtn.textContent = "Commit to Ledger";
+                submitBtn.textContent = "Post it";
             }
         });
     },
@@ -295,7 +295,7 @@ const home = {
         if (!container) return;
 
         if (saved.length === 0) {
-            container.innerHTML = `<div style="color: var(--muted); font-size: 13px;">Nothing saved to basket yet.</div>`;
+            container.innerHTML = `<div style="color: var(--muted); font-size: 13px;">Nothing saved yet.</div>`;
             return;
         }
 
@@ -341,8 +341,8 @@ document.addEventListener("click", async e => {
             post.liked = Boolean(res.liked);
             
             actionBtn.classList.toggle("active", post.liked);
-            actionBtn.querySelector("span").textContent = `${post.likes} Gathered`;
-            app.toast(post.liked ? "Gathered to your basket." : "Removed endorsement.");
+            actionBtn.querySelector("span").textContent = `${post.likes} likes`;
+            app.toast(post.liked ? "Liked." : "Like removed.");
         } catch (err) {
             app.toast(err.message);
         }
@@ -358,9 +358,9 @@ document.addEventListener("click", async e => {
             });
             post.saved = res.saved;
             actionBtn.classList.toggle("active", post.saved);
-            actionBtn.querySelector("span").textContent = post.saved ? "In Basket" : "Save";
+            actionBtn.querySelector("span").textContent = post.saved ? "Saved" : "Save";
             home.renderBasketPreview();
-            app.toast(post.saved ? "Saved in field basket." : "Removed from basket.");
+            app.toast(post.saved ? "Saved." : "Removed from saved.");
         } catch (err) {
             app.toast(err.message);
         }
@@ -368,7 +368,7 @@ document.addEventListener("click", async e => {
     }
 
     if (action === "delete") {
-        if (!confirm("Strike this observation permanently from the ledger?")) return;
+        if (!confirm("Delete this note for good?")) return;
         try {
             await app.request(`/api/posts/${id}`, {
                 method: "DELETE",
@@ -377,7 +377,7 @@ document.addEventListener("click", async e => {
             });
             home.posts = home.posts.filter(p => p.id !== id);
             home.render();
-            app.toast("Observation struck from record.");
+            app.toast("Note deleted.");
         } catch (err) {
             app.toast(err.message);
         }
@@ -416,9 +416,9 @@ document.addEventListener("submit", async e => {
         input.value = "";
 
         const commentBtn = card.querySelector('[data-action="comments"] span');
-        if (commentBtn) commentBtn.textContent = `${post.comments.length} Marginalia`;
+        if (commentBtn) commentBtn.textContent = `${post.comments.length} comments`;
 
-        app.toast("Marginalia affixed.");
+        app.toast("Comment posted.");
     } catch (err) {
         app.toast(err.message);
     }

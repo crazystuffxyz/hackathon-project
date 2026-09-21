@@ -21,8 +21,8 @@ const profile = {
 
             document.getElementById("profile-name").textContent = data.user.display_name;
             document.getElementById("profile-handle").textContent = `@${data.user.handle}`;
-            document.getElementById("profile-bio").textContent = data.user.bio || "No field bio recorded.";
-            document.getElementById("profile-location").textContent = data.user.location || "Valley Basin";
+            document.getElementById("profile-bio").textContent = data.user.bio || "No bio yet.";
+            document.getElementById("profile-location").textContent = data.user.location || "";
 
             document.getElementById("profile-avatar").textContent = app.initials(data.user.display_name);
             document.getElementById("profile-posts").textContent = data.stats.posts;
@@ -90,10 +90,10 @@ const profile = {
                     <div class="post-actions">
                         ${this.currentTab === "basket" ? `
                             <button class="action-pill active" data-action="unsave">
-                                <span>Remove from Basket</span>
+                                <span>Remove</span>
                             </button>
                         ` : `
-                            <button class="delete-action" data-action="delete">Strike Entry</button>
+                            <button class="delete-action" data-action="delete">Delete</button>
                         `}
                     </div>
                 </div>
@@ -114,7 +114,7 @@ const profile = {
                     if (target) target.saved = 0;
                     this.renderRecords();
                     await this.loadProfile();
-                    app.toast("Removed from your field basket.");
+                    app.toast("Removed.");
                 } catch (err) {
                     app.toast(err.message);
                 }
@@ -123,7 +123,7 @@ const profile = {
 
         list.querySelectorAll("[data-action='delete']").forEach(btn => {
             btn.addEventListener("click", async () => {
-                if (!confirm("Strike this observation permanently from your field book?")) return;
+                if (!confirm("Delete this note for good?")) return;
                 const card = btn.closest(".post-card");
                 const id = Number(card.dataset.id);
                 try {
@@ -135,7 +135,7 @@ const profile = {
                     this.posts = this.posts.filter(p => p.id !== id);
                     this.renderRecords();
                     await this.loadProfile();
-                    app.toast("Observation struck.");
+                    app.toast("Note deleted.");
                 } catch (err) {
                     app.toast(err.message);
                 }
@@ -201,7 +201,7 @@ const profile = {
                 await this.loadProfile();
                 app.loadNavProfile();
                 close();
-                app.toast("Field book inscription saved.");
+                app.toast("Profile saved.");
             } catch (err) {
                 app.toast(err.message);
             }

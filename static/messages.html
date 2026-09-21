@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="theme-color" content="#1b2920">
-    <title>Harvest — Dispatches & Field Exchanges</title>
+    <meta name="description" content="Direct messages on Harvest, for tips and trades you'd rather not post publicly.">
+    <title>Harvest — messages</title>
     <link rel="stylesheet" href="/css/main.css">
 </head>
 <body data-page="messages">
@@ -16,15 +17,14 @@
                 </div>
                 <div class="wordmark-text">
                     <strong>harvest</strong>
-                    <small>field dispatches</small>
                 </div>
             </a>
         </div>
 
         <nav class="site-nav" aria-label="Main Navigation">
-            <a href="/">specimen board</a>
-            <a class="active" href="/messages.html">dispatches</a>
-            <a href="/gather.html">seasonal ledger</a>
+            <a href="/">Board</a>
+            <a class="active" href="/messages.html">Messages</a>
+            <a href="/gather.html">Checklist</a>
         </nav>
 
         <div class="header-actions">
@@ -42,24 +42,23 @@
     </header>
 
     <div class="mobile-drawer" id="mobile-drawer">
-        <a href="/">Specimen Board</a>
-        <a href="/messages.html">Dispatches</a>
-        <a href="/gather.html">Seasonal Ledger</a>
-        <a href="/profile.html">Your Field Book</a>
+        <a href="/">Board</a>
+        <a href="/messages.html">Messages</a>
+        <a href="/gather.html">Checklist</a>
+        <a href="/profile.html">Your profile</a>
     </div>
 
     <main class="page-shell page-narrow">
         <div style="margin-bottom: 28px;">
-            <p class="eyebrow">Private Transmissions</p>
-            <h1 style="font-family: var(--font-serif); font-size: 48px; margin: 8px 0 6px;">Dispatches.</h1>
-            <p style="color: var(--muted); margin: 0;">Exchange cutting notes, trail coordinates, and private harvest tips.</p>
+            <h1 style="font-family: var(--font-serif); font-size: 48px; margin: 8px 0 6px;">Messages</h1>
+            <p style="color: var(--muted); margin: 0;">Trade tips, coordinates, and whatever you'd rather not post publicly.</p>
         </div>
 
         <div class="messages-layout" id="messages-shell">
             <aside class="conversation-sidebar">
                 <div class="sidebar-header">
-                    <span class="eyebrow">Active Contacts</span>
-                    <button class="button button-quiet" id="new-dialogue-btn" style="height: 30px; padding: 0 10px; font-size: 10px;">+ New Dispatch</button>
+                    <span class="eyebrow">Conversations</span>
+                    <button class="button button-quiet" id="new-dialogue-btn" style="height: 30px; padding: 0 10px; font-size: 10px;">+ New chat</button>
                 </div>
                 <div id="conversations" class="conversation-list"></div>
             </aside>
@@ -67,9 +66,8 @@
             <section class="chat-panel">
                 <div id="chat-empty" style="display: grid; place-items: center; height: 100%; text-align: center; padding: 40px;">
                     <div>
-                        <div style="font-size: 44px; color: var(--ochre); margin-bottom: 12px;">✉</div>
-                        <h2 style="font-family: var(--font-serif); font-size: 28px; margin: 0 0 8px;">Select a Harvester</h2>
-                        <p style="color: var(--muted); max-width: 280px; margin: 0;">Choose a field contact from the left ledger to review transmissions.</p>
+                        <h2 style="font-family: var(--font-serif); font-size: 28px; margin: 0 0 8px;">No conversation yet</h2>
+                        <p style="color: var(--muted); max-width: 280px; margin: 0;">Choose someone from the list to read your messages.</p>
                     </div>
                 </div>
 
@@ -78,25 +76,25 @@
                         <div style="display: flex; align-items: center; gap: 12px;">
                             <button id="mobile-back-btn" class="button button-quiet" style="height: 32px; padding: 0 8px; display: none;">← Contacts</button>
                             <div class="chat-partner-info">
-                                <h2 id="chat-name">Harvester</h2>
-                                <span id="chat-handle">@harvester</span>
+                                <h2 id="chat-name">Name</h2>
+                                <span id="chat-handle">@handle</span>
                             </div>
                         </div>
-                        <div id="chat-location" style="font-family: var(--font-mono); font-size: 11px; color: var(--muted);">Field Sector</div>
+                        <div id="chat-location" style="font-family: var(--font-mono); font-size: 11px; color: var(--muted);"></div>
                     </header>
 
                     <div id="chat-messages" class="chat-stream"></div>
 
                     <div class="quick-prompts">
-                        <span style="font-family: var(--font-mono); font-size: 10px; color: var(--muted); align-self: center;">Prompts:</span>
-                        <button class="prompt-btn" data-text="Found great heirloom apples today.">Apples Stand</button>
-                        <button class="prompt-btn" data-text="Do you still want to trade slips this weekend?">Trade Seedlings</button>
-                        <button class="prompt-btn" data-text="What temperature did you bake that pumpkin loaf at?">Recipe Temp</button>
+                        <span style="font-family: var(--font-mono); font-size: 10px; color: var(--muted); align-self: center;">Quick:</span>
+                        <button class="prompt-btn" data-text="Found great heirloom apples today.">Apples</button>
+                        <button class="prompt-btn" data-text="Do you still want to trade slips this weekend?">Seedlings</button>
+                        <button class="prompt-btn" data-text="What temperature did you bake that pumpkin loaf at?">Recipe temp</button>
                     </div>
 
                     <form class="chat-composer-bar" id="message-form">
-                        <input id="message-input" maxlength="900" placeholder="Type field dispatch..." autocomplete="off" required>
-                        <button class="button button-dark" type="submit">Dispatch</button>
+                        <input id="message-input" maxlength="900" placeholder="Type a message..." autocomplete="off" required>
+                        <button class="button button-dark" type="submit">Send</button>
                     </form>
                 </div>
             </section>
@@ -106,9 +104,8 @@
     <div class="modal-backdrop hidden" id="picker-backdrop">
         <section class="modal" role="dialog" aria-modal="true" aria-labelledby="picker-title">
             <button class="modal-close" id="close-picker" aria-label="Close dialog">×</button>
-            <p class="eyebrow">Naturalist Directory</p>
-            <h2 id="picker-title">Commence a Dispatch</h2>
-            <p class="modal-subcopy">Select a field worker registered in this valley.</p>
+            <h2 id="picker-title">Start a chat</h2>
+            <p class="modal-subcopy">Anyone registered here.</p>
             <div id="people-picker" class="persona-grid"></div>
         </section>
     </div>
@@ -116,8 +113,7 @@
     <div class="modal-backdrop hidden" id="persona-backdrop">
         <section class="modal" role="dialog" aria-modal="true" aria-labelledby="persona-modal-title">
             <button class="modal-close" id="close-persona" aria-label="Close dialog">×</button>
-            <p class="eyebrow">Identity Registry</p>
-            <h2 id="persona-modal-title">Switch Harvester</h2>
+            <h2 id="persona-modal-title">Switch account</h2>
             <div id="persona-list" class="persona-grid"></div>
         </section>
     </div>

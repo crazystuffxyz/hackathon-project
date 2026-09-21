@@ -8,7 +8,7 @@ const app = {
         const data = await response.json().catch(() => ({}));
 
         if (!response.ok) {
-            throw new Error(data.error || "A field transmission error occurred.");
+            throw new Error(data.error || "Something went wrong. Try again.");
         }
 
         return data;
@@ -22,6 +22,11 @@ const app = {
             .map(part => part[0])
             .join("")
             .toUpperCase();
+    },
+
+    weatherLabel(value) {
+        const labels = { mist: "misty", brisk: "brisk", frost: "frost", clear: "clear", sun: "sunny" };
+        return labels[value] || value || "";
     },
 
     timeAgo(timestamp) {
@@ -128,7 +133,7 @@ const app = {
                     item.addEventListener("click", () => {
                         app.setHandle(item.dataset.handle);
                         backdrop.classList.add("hidden");
-                        app.toast(`Switched persona to @${item.dataset.handle}`);
+                        app.toast(`Switched to @${item.dataset.handle}`);
                         setTimeout(() => window.location.reload(), 200);
                     });
                 });
@@ -158,42 +163,10 @@ const app = {
         });
     },
 
-    setupLeaves() {
-        const stage = document.getElementById("leaf-stage");
-        if (!stage || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-
-        const leafCount = window.innerWidth < 760 ? 8 : 14;
-        const colors = ["#9c4c34", "#b87c38", "#5a735c", "#7e5234", "#c79247"];
-
-        for (let i = 0; i < leafCount; i++) {
-            const leaf = document.createElement("div");
-            leaf.className = "falling-leaf";
-            const size = 16 + Math.random() * 18;
-            const color = colors[i % colors.length];
-
-            leaf.innerHTML = `
-                <svg viewBox="0 0 24 24" width="${size}" height="${size}">
-                    <path d="M12 2C8 6 4 11 4 16C4 19.3 6.7 22 10 22C11.5 22 12 21 12 21C12 21 12.5 22 14 22C17.3 22 20 19.3 20 16C20 11 16 6 12 2Z" fill="none" stroke="${color}" stroke-width="1.8"/>
-                    <path d="M12 6L12 18" stroke="${color}" stroke-width="1.5"/>
-                </svg>
-            `;
-
-            leaf.style.left = `${Math.random() * 96}%`;
-            leaf.style.animationDuration = `${8 + Math.random() * 6}s`;
-            leaf.style.animationDelay = `${Math.random() * 3}s`;
-            leaf.style.setProperty("--drift", `${-80 + Math.random() * 160}px`);
-            leaf.style.setProperty("--rot", `${-180 + Math.random() * 360}deg`);
-            leaf.style.setProperty("--leaf-opacity", `${0.25 + Math.random() * 0.4}`);
-
-            stage.appendChild(leaf);
-        }
-    },
-
     init() {
         app.loadNavProfile();
         app.setupPersonaSwitcher();
         app.setupMobileNav();
-        app.setupLeaves();
 
         document.addEventListener("keydown", e => {
             if (e.key === "Escape") {

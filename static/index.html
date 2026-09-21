@@ -2,748 +2,123 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-<<<<<<< HEAD
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="theme-color" content="#1b2920">
-    <meta name="description" content="Harvest — An archival field notebook for things worth gathering.">
-    <title>Harvest — Archival Field Ledger</title>
+    <meta name="description" content="Harvest is a small community board for posting things you found, grew, made, or figured out.">
+    <title>Harvest — things worth keeping</title>
     <link rel="stylesheet" href="/css/main.css">
-=======
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Harvest  Field Notes</title>
-    <meta
-        name="description"
-        content="A community field notebook for things worth gathering, growing, cooking, and sharing." >
-
-<!-- Tailwind Play CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="/js/tailwind.config.js"></script>
-
-<!-- App -->
-    <script src="/js/main.js" defer></script>
-
-<style>
-        :root {
-            --ink: #17231d;
-            --paper: #f1ead9;
-            --paper-deep: #e5dbc4;
-            --green: #294438;
-            --green-light: #607662;
-            --gold: #d4933a;
-            --berry: #8e3f45;
-            --muted: #756f61;
-        }
-
-* {
-            box-sizing: border-box;
-        }
-
-html {
-            scroll-behavior: smooth;
-        }
-
-body {
-            margin: 0;
-            background:
-                radial-gradient(circle at 12% 8%, rgba(212, 147, 58, 0.10), transparent 24rem),
-                radial-gradient(circle at 90% 80%, rgba(96, 118, 98, 0.12), transparent 28rem),
-                var(--paper);
-            color: var(--ink);
-            font-family: "Trebuchet MS", system-ui, sans-serif;
-            min-height: 100vh;
-        }
-
-body::before {
-            content: "";
-            position: fixed;
-            inset: 0;
-            pointer-events: none;
-            opacity: 0.055;
-            z-index: 100;
-            background-image:
-                radial-gradient(#17231d 0.55px, transparent 0.55px),
-                radial-gradient(#17231d 0.55px, transparent 0.55px);
-            background-size: 7px 7px;
-            background-position: 0 0, 3px 3px;
-            mix-blend-mode: multiply;
-        }
-
-::selection {
-            background: var(--gold);
-            color: var(--ink);
-        }
-
-.display {
-            font-family: Georgia, "Times New Roman", serif;
-        }
-
-.ruled {
-            background-image:
-                linear-gradient(
-                    to bottom,
-                    transparent 31px,
-                    rgba(41, 68, 56, 0.10) 32px,
-                    transparent 33px
-                );
-            background-size: 100% 32px;
-        }
-
-.paper-shadow {
-            box-shadow:
-                0 1px 0 rgba(23, 35, 29, 0.12),
-                0 18px 45px rgba(23, 35, 29, 0.09);
-        }
-
-.post {
-            transition:
-                transform 180ms ease,
-                box-shadow 180ms ease,
-                border-color 180ms ease;
-        }
-
-.post:hover {
-            transform: translateY(-2px);
-            box-shadow:
-                0 1px 0 rgba(23, 35, 29, 0.12),
-                0 22px 55px rgba(23, 35, 29, 0.12);
-        }
-
-.action-button {
-            transition:
-                background-color 150ms ease,
-                color 150ms ease,
-                transform 150ms ease;
-        }
-
-.action-button:active {
-            transform: translateY(1px);
-        }
-
-.leaf-mark {
-            display: inline-block;
-            transform: rotate(-18deg);
-        }
-
-.stamp {
-            border: 1px solid rgba(142, 63, 69, 0.6);
-            color: var(--berry);
-            letter-spacing: 0.13em;
-            transform: rotate(-2deg);
-        }
-
-.comment-drawer {
-            display: grid;
-            grid-template-rows: 0fr;
-            transition: grid-template-rows 220ms ease;
-        }
-
-.comment-drawer.open {
-            grid-template-rows: 1fr;
-        }
-
-.comment-drawer > div {
-            overflow: hidden;
-        }
-
-.custom-scroll::-webkit-scrollbar {
-            width: 8px;
-        }
-
-.custom-scroll::-webkit-scrollbar-track {
-            background: transparent;
-        }
-
-.custom-scroll::-webkit-scrollbar-thumb {
-            background: rgba(41, 68, 56, 0.22);
-            border-radius: 20px;
-        }
-
-@media (max-width: 768px) {
-            .ruled {
-                background-size: 100% 27px;
-            }
-        }
-        .turkey {
-            position: relative;
-            animation: turkey-steps 0.4s steps(2) infinite, turkey-travel 16s linear infinite, turkey-direction 16s step-end infinite;;
-            width: 96px;
-            height: 96px;
-            background: url("images/turkeywalkright.png") 0 0 / 192px 96px no-repeat;
-            image-rendering: pixelated;
-        }
-        @keyframes turkey-travel {
-            0%, 100% { left:0;}
-            50% { left: calc(100% - 96px);} 
-        }
-        @keyframes turkey-direction {
-            0%, 100% { background-image: url("images/turkeywalkright.png");}
-            50% { background-image: url("images/turkeywalkleft.png");}
-        }
-        @keyframes turkey-steps {
-            from { background-position: 0 0; }
-            to { background-position: -192px 0;}
-        }
-    </style>
->>>>>>> fac038c0cb5d36babebd02ad467d9607b46294c5
 </head>
 <body data-page="home">
-    <div id="leaf-stage" class="leaf-stage" aria-hidden="true"></div>
 
-<<<<<<< HEAD
-    <header class="site-header">
-        <div class="header-left">
-            <a class="wordmark" href="/">
-                <div class="seal-emblem" aria-hidden="true">
-                    <svg viewBox="0 0 24 24">
-                        <path d="M12 2C8 6 4 11 4 16C4 19.3 6.7 22 10 22C11.5 22 12 21 12 21C12 21 12.5 22 14 22C17.3 22 20 19.3 20 16C20 11 16 6 12 2Z"/>
-                        <path d="M12 7V17"/>
-                        <path d="M9 11L12 14L15 11"/>
-                    </svg>
-=======
-<body>
-
-<header class="sticky top-0 z-40 border-b border-[#294438]/15 bg-[#f1ead9]/90 backdrop-blur-md">
-    <div class="mx-auto flex max-w-[1380px] items-center justify-between px-5 py-4 lg:px-8">
-        <a href="#" class="flex items-center gap-3">
-            <span><img src="images/leaf.png" alt="" width="32" style="image-rendering: pixelated;"></span>
-
-<div>
-                <div class="display text-[19px] font-bold tracking-tight">
-                    harvest
->>>>>>> fac038c0cb5d36babebd02ad467d9607b46294c5
-                </div>
-                <div class="wordmark-text">
-                    <strong>harvest</strong>
-                    <small>field notes · vol. 02</small>
-                </div>
-            </a>
-        </div>
-
-        <nav class="site-nav" aria-label="Main Navigation">
-            <a class="active" href="/">specimen board</a>
-            <a href="/messages.html">dispatches <span id="message-badge" class="counter-pill hidden">0</span></a>
-            <a href="/gather.html">seasonal ledger</a>
-        </nav>
-
-        <div class="header-actions">
-            <button class="persona-switcher-btn" id="open-persona-switcher" title="Switch active harvester">
-                <div class="profile-avatar" id="nav-avatar">Y</div>
-                <div class="persona-meta">
-                    <strong id="nav-display-name">You</strong>
-                    <small id="nav-handle">@you</small>
-                </div>
-<<<<<<< HEAD
-            </button>
-            <button class="mobile-menu-trigger" id="mobile-menu-btn" aria-label="Toggle Navigation">
-                <svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
-=======
-
-<div class="my-12 max-w-3xl">
-                    <p class="mb-4 text-xs uppercase tracking-[0.3em] text-[#d4933a]">
-                        The season has started. </p>
-
-<h1 class="display max-w-4xl text-5xl leading-[0.93] tracking-[-0.045em] sm:text-7xl lg:text-[6.4rem]">
-                        What did you<br>
-                        <em class="font-normal text-[#d4933a]">gather?</em>
-                    </h1>
-
-<p class="mt-7 max-w-xl text-sm leading-7 text-[#f1ead9]/68 sm:text-base">
-                        A little corner of the internet for things worth collecting:
-                        recipes, projects, discoveries, photos, ideas, and anything
-                        else that came out of your week. </p>
-                </div>
-
-<div class="flex flex-wrap items-center gap-x-8 gap-y-3 text-xs text-[#f1ead9]/55">
-                    <span>share a note</span>
-                    <span></span>
-                    <span>find something useful</span>
-                    <span></span>
-                    <span>pass it on</span>
-                </div>
+<header class="site-header">
+    <div class="header-left">
+        <a class="wordmark" href="/">
+            <div class="seal-emblem" aria-hidden="true">
+                <svg viewBox="0 0 24 24">
+                    <path d="M12 2C8 6 4 11 4 16C4 19.3 6.7 22 10 22C11.5 22 12 21 12 21C12 21 12.5 22 14 22C17.3 22 20 19.3 20 16C20 11 16 6 12 2Z"/>
+                    <path d="M12 7V17"/>
+                    <path d="M9 11L12 14L15 11"/>
+                </svg>
             </div>
 
-<div class="relative hidden overflow-hidden border-l border-[#f1ead9]/10 lg:block">
-                <div class="absolute inset-0 flex items-center justify-center">
-                    <div class="relative h-72 w-72">
-
-<div class="absolute inset-0 rotate-6 rounded-[2.5rem] bg-[#e5dbc4]"></div>
-
-<div class="ruled absolute inset-0 -rotate-3 rounded-[2.5rem] bg-[#f1ead9] p-8 text-[#294438] paper-shadow">
-                            <div class="text-[9px] uppercase tracking-[0.25em] text-[#756f61]">
-                                today's basket
-                            </div>
-
-<div class="mt-8 space-y-5">
-                                <div>
-                                    <div class="text-xs text-[#756f61]">01</div>
-                                    <div class="display text-xl">something useful</div>
-                                </div>
-
-<div>
-                                    <div class="text-xs text-[#756f61]">02</div>
-                                    <div class="display text-xl">something beautiful</div>
-                                </div>
-
-<div>
-                                    <div class="text-xs text-[#756f61]">03</div>
-                                    <div class="display text-xl">something strange</div>
-                                </div>
-                            </div>
-
-<div class="absolute bottom-7 right-7 text-4xl opacity-40">
-                                
-                            </div>
-                        </div>
-                    </div>
-                </div>
+            <div class="wordmark-text">
+                <strong>harvest</strong>
             </div>
+        </a>
+    </div>
 
-</div>
-    </section>
-<div class="turkey-track">
-    <div class="turkey" aria-hidden="true"></div>
-</div>
-<!-- CONTENT -->
-    <section class="mt-8 grid gap-8 lg:grid-cols-[minmax(0,1fr)_290px]">
+    <nav class="site-nav" aria-label="Main Navigation">
+        <a class="active" href="/">Board</a>
+        <a href="/messages.html">
+            Messages
+            <span id="message-badge" class="counter-pill hidden">0</span>
+        </a>
+        <a href="/gather.html">Checklist</a>
+    </nav>
 
-<div>
+    <div class="header-actions">
+        <button
+            class="persona-switcher-btn"
+            id="open-persona-switcher"
+            title="Switch account"
+        >
+            <div class="profile-avatar" id="nav-avatar">Y</div>
 
-<!-- FILTER BAR -->
-            <div class="mb-5 flex flex-wrap items-center justify-between gap-4">
-                <div>
-                    <div class="text-[10px] uppercase tracking-[0.25em] text-[#756f61]">
-                        The board
-                    </div>
-                    <h2 class="display text-3xl tracking-[-0.03em]">
-                        Freshly gathered
-                    </h2>
-                </div>
-
-<div class="flex flex-wrap gap-2" id="filters">
-                    <button
-                        data-filter="all"
-                        class="filter-button rounded-full bg-[#294438] px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.13em] text-[#f1ead9]"
-                    >
-                        all
-                    </button>
-                    <button
-                        data-filter="grown"
-                        class="filter-button rounded-full border border-[#294438]/15 px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.13em] text-[#756f61] hover:border-[#294438]/40"
-                    >
-                        grown
-                    </button>
-                    <button
-                        data-filter="made"
-                        class="filter-button rounded-full border border-[#294438]/15 px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.13em] text-[#756f61] hover:border-[#294438]/40"
-                    >
-                        made
-                    </button>
-                    <button
-                        data-filter="found"
-                        class="filter-button rounded-full border border-[#294438]/15 px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.13em] text-[#756f61] hover:border-[#294438]/40"
-                    >
-                        found
-                    </button>
-                </div>
+            <div class="persona-meta">
+                <strong id="nav-display-name">You</strong>
+                <small id="nav-handle">@you</small>
             </div>
+        </button>
 
-<!-- FEATURED POST -->
-            <article
-                class="post post-card mb-5 overflow-hidden rounded-[1.7rem] border border-[#294438]/12 bg-[#f8f3e8] paper-shadow"
-                data-category="found"
-            >
-                <div class="grid lg:grid-cols-[1fr_300px]">
-
-<div class="p-7 sm:p-9">
-                        <div class="mb-7 flex items-center justify-between">
-                            <span class="text-[10px] font-bold uppercase tracking-[0.2em] text-[#8e3f45]">
-                                found
-                            </span>
-
-<span class="text-[10px] uppercase tracking-[0.14em] text-[#756f61]">
-                                17 min ago
-                            </span>
-                        </div>
-
-<h3 class="display max-w-3xl text-3xl leading-tight sm:text-4xl">
-                            I found a tiny roadside farm stand with
-                            <em>the best apples</em> I've had all year. </h3>
-
-<p class="mt-5 max-w-2xl text-sm leading-7 text-[#756f61]">
-                            No sign, no website, just a folding table and three crates. Bought six. Ate two before I got home. Completely worth stopping. </p>
-
-<div class="mt-8 flex flex-wrap items-center gap-3">
-                            <button class="like-button action-button flex items-center gap-2 rounded-full border border-[#294438]/15 px-3 py-2 text-xs text-[#756f61] hover:bg-[#e5dbc4]">
-                                <span></span>
-                                <span class="like-count">18</span>
-                            </button>
-
-<button class="comment-button action-button rounded-full border border-[#294438]/15 px-3 py-2 text-xs text-[#756f61] hover:bg-[#e5dbc4]">
-                                4 comments
-                            </button>
-
-<span class="ml-auto text-[10px] uppercase tracking-[0.15em] text-[#756f61]">
-                                @mira
-                            </span>
-                        </div>
-
-<div class="comment-drawer mt-5">
-                            <div>
-                                <div class="border-t border-[#294438]/10 pt-5">
-                                    <div class="space-y-4 text-sm">
-                                        <div>
-                                            <span class="font-bold">@jon</span>
-                                            <span class="text-[#756f61]">
-                                                I know exactly which stand you're talking about. </span>
-                                        </div>
-
-<div>
-                                            <span class="font-bold">@rhea</span>
-                                            <span class="text-[#756f61]">
-                                                The apple butter is ridiculous too. </span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-<div class="relative min-h-[220px] overflow-hidden bg-[#d4933a]">
-                        <div class="absolute inset-0 opacity-15">
-                            <div class="absolute left-10 top-8 text-[9rem]"></div>
-                            <div class="absolute bottom-[-2rem] right-[-1rem] text-[11rem]"></div>
-                        </div>
-
-<div class="relative flex h-full flex-col justify-between p-7 text-[#17231d]">
-                            <div class="text-[10px] font-bold uppercase tracking-[0.2em]">
-                                FIELD / 001
-                            </div>
-
-<div>
-                                <img src="images/apple.png" alt="Pixel art apple" width="128" style="image-rendering: pixelated;">
-                                <div class="mt-3 text-xs font-bold uppercase tracking-[0.16em]">
-                                    autumn fruit
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-</div>
-            </article>
-
-<!-- POSTS -->
-            <div id="post-list" class="space-y-4">
-
-<article class="post post-card rounded-[1.4rem] border border-[#294438]/10 bg-[#f8f3e8] px-6 py-6" data-category="made">
-                    <div class="flex gap-5">
-                        <div class="hidden w-9 shrink-0 pt-1 sm:block">
-                            <div class="display text-2xl text-[#d4933a]">02</div>
-                        </div>
-
-<div class="min-w-0 flex-1">
-                            <div class="mb-3 flex items-center justify-between gap-4">
-                                <span class="text-[10px] font-bold uppercase tracking-[0.18em] text-[#756f61]">
-                                    made
-                                </span>
-                                <span class="text-[10px] uppercase tracking-[0.14em] text-[#756f61]">
-                                    31 min ago
-                                </span>
-                            </div>
-
-<h3 class="display text-2xl leading-tight">
-                                Built a little weather widget for my desk. </h3>
-
-<p class="mt-3 max-w-2xl text-sm leading-6 text-[#756f61]">
-                                It pulls the forecast, changes the background each hour,
-                                and has one extremely unnecessary tiny sun animation. </p>
-
-<div class="mt-5 flex items-center gap-3">
-                                <button class="like-button action-button rounded-full border border-[#294438]/10 px-3 py-1.5 text-xs hover:bg-[#e5dbc4]">
-                                     <span class="like-count">11</span>
-                                </button>
-
-<button class="comment-button action-button rounded-full border border-[#294438]/10 px-3 py-1.5 text-xs hover:bg-[#e5dbc4]">
-                                    2 comments
-                                </button>
-
-<span class="ml-auto text-xs text-[#756f61]">@sam</span>
-                            </div>
-
-<div class="comment-drawer mt-4">
-                                <div>
-                                    <div class="border-t border-[#294438]/10 pt-4 text-sm text-[#756f61]">
-                                        <p><strong class="text-[#17231d]">@eli</strong> this is unnecessarily good</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </article>
-
-<article class="post post-card rounded-[1.4rem] border border-[#294438]/10 bg-[#f8f3e8] px-6 py-6" data-category="grown">
-                    <div class="flex gap-5">
-                        <div class="hidden w-9 shrink-0 pt-1 sm:block">
-                            <div class="display text-2xl text-[#607662]">03</div>
-                        </div>
-
-<div class="min-w-0 flex-1">
-                            <div class="mb-3 flex items-center justify-between gap-4">
-                                <span class="text-[10px] font-bold uppercase tracking-[0.18em] text-[#607662]">
-                                    grown
-                                </span>
-                                <span class="text-[10px] uppercase tracking-[0.14em] text-[#756f61]">
-                                    1 hr ago
-                                </span>
-                            </div>
-
-<h3 class="display text-2xl leading-tight">
-                                My basil finally stopped dying. </h3>
-
-<p class="mt-3 max-w-2xl text-sm leading-6 text-[#756f61]">
-                                Turns out watering it whenever I remember is not a system. Put it by the window. Changed everything. </p>
-
-<div class="mt-5 flex items-center gap-3">
-                                <button class="like-button action-button rounded-full border border-[#294438]/10 px-3 py-1.5 text-xs hover:bg-[#e5dbc4]">
-                                     <span class="like-count">26</span>
-                                </button>
-
-<button class="comment-button action-button rounded-full border border-[#294438]/10 px-3 py-1.5 text-xs hover:bg-[#e5dbc4]">
-                                    6 comments
-                                </button>
-
-<span class="ml-auto text-xs text-[#756f61]">@noor</span>
-                            </div>
-
-<div class="comment-drawer mt-4">
-                                <div>
-                                    <div class="border-t border-[#294438]/10 pt-4 text-sm text-[#756f61]">
-                                        <p><strong class="text-[#17231d]">@kai</strong> putting this in the things I should've known folder</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </article>
-
-<article class="post post-card rounded-[1.4rem] border border-[#294438]/10 bg-[#f8f3e8] px-6 py-6" data-category="found">
-                    <div class="flex gap-5">
-                        <div class="hidden w-9 shrink-0 pt-1 sm:block">
-                            <div class="display text-2xl text-[#8e3f45]">04</div>
-                        </div>
-
-<div class="min-w-0 flex-1">
-                            <div class="mb-3 flex items-center justify-between gap-4">
-                                <span class="text-[10px] font-bold uppercase tracking-[0.18em] text-[#8e3f45]">
-                                    found
-                                </span>
-                                <span class="text-[10px] uppercase tracking-[0.14em] text-[#756f61]">
-                                    2 hrs ago
-                                </span>
-                            </div>
-
-<h3 class="display text-2xl leading-tight">
-                                Someone left a box of free books by the bus stop. </h3>
-
-<p class="mt-3 max-w-2xl text-sm leading-6 text-[#756f61]">
-                                Took a programming book. Left two paperbacks in exchange. Public infrastructure is apparently just people being nice. </p>
-
-<div class="mt-5 flex items-center gap-3">
-                                <button class="like-button action-button rounded-full border border-[#294438]/10 px-3 py-1.5 text-xs hover:bg-[#e5dbc4]">
-                                     <span class="like-count">34</span>
-                                </button>
-
-<button class="comment-button action-button rounded-full border border-[#294438]/10 px-3 py-1.5 text-xs hover:bg-[#e5dbc4]">
-                                    8 comments
-                                </button>
-
-<span class="ml-auto text-xs text-[#756f61]">@devon</span>
-                            </div>
-
-<div class="comment-drawer mt-4">
-                                <div>
-                                    <div class="border-t border-[#294438]/10 pt-4 text-sm text-[#756f61]">
-                                        <p><strong class="text-[#17231d]">@mira</strong> this is the best kind of harvest</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </article>
-
-</div>
-
-<div id="empty-state" class="hidden py-20 text-center">
-                <div class="display text-4xl">Nothing gathered here yet.</div>
-                <p class="mt-3 text-sm text-[#756f61]">
-                    Be the first person to put something in this basket. </p>
-            </div>
-        </div>
-
-<!-- SIDEBAR -->
-        <aside class="space-y-5">
-
-<div class="rounded-[1.4rem] bg-[#17231d] p-6 text-[#f1ead9] paper-shadow">
-                <div class="mb-8 flex items-start justify-between">
-                    <div>
-                        <div class="text-[9px] uppercase tracking-[0.25em] text-[#d4933a]">
-                            this week's idea
-                        </div>
-                        <div class="display mt-2 text-2xl">
-                            Harvest
-                        </div>
-                    </div>
-
-<span class="text-3xl"><img src="images/pie.png" alt="" width="48" style="image-rendering: pixelated;"></span>
-                </div>
-
-<p class="text-sm leading-6 text-[#f1ead9]/60">
-                    Gather something. Make something. Grow something. Find something. Then leave it here for somebody else. </p>
-
-<div class="mt-8 border-t border-[#f1ead9]/10 pt-5">
-                    <div class="text-[9px] uppercase tracking-[0.2em] text-[#f1ead9]/40">
-                        open categories
-                    </div>
-
-<div class="mt-4 space-y-3">
-                        <div class="flex justify-between text-sm">
-                            <span>grown</span>
-                            <span class="text-[#f1ead9]/35">04</span>
-                        </div>
-
-<div class="flex justify-between text-sm">
-                            <span>made</span>
-                            <span class="text-[#f1ead9]/35">06</span>
-                        </div>
-
-<div class="flex justify-between text-sm">
-                            <span>found</span>
-                            <span class="text-[#f1ead9]/35">09</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-<div class="rounded-[1.4rem] border border-[#294438]/12 bg-[#e5dbc4] p-6">
-                <div class="text-[9px] uppercase tracking-[0.25em] text-[#756f61]">
-                    the basket
-                </div>
-
-<div class="mt-5 space-y-4 text-sm">
-                    <div class="flex gap-3">
-                        <span class="text-[#d4933a]">01</span>
-                        <span>something you learned</span>
-                    </div>
-
-<div class="flex gap-3">
-                        <span class="text-[#d4933a]">02</span>
-                        <span>something you made</span>
-                    </div>
-
-<div class="flex gap-3">
-                        <span class="text-[#d4933a]">03</span>
-                        <span>something worth sharing</span>
-                    </div>
-                </div>
-
-<button
-                    id="sidebar-compose"
-                    class="mt-7 w-full rounded-full border border-[#294438]/20 px-4 py-3 text-xs font-bold uppercase tracking-[0.13em] transition hover:bg-[#f1ead9]"
-                >
-                    Add something 
-                </button>
-            </div>
-
-</aside>
-
-</section>
-</main>
-
-<!-- COMPOSER -->
-<div
-    id="composer-backdrop"
-    class="fixed inset-0 z-50 hidden items-center justify-center bg-[#17231d]/65 p-5 backdrop-blur-sm"
->
-    <div
-        id="composer"
-        class="w-full max-w-2xl rounded-[1.8rem] bg-[#f1ead9] p-7 shadow-2xl sm:p-9"
-    >
-        <div class="flex items-start justify-between gap-5">
-            <div>
-                <div class="text-[9px] uppercase tracking-[0.25em] text-[#756f61]">
-                    new field note
-                </div>
-
-<h2 class="display mt-2 text-4xl tracking-[-0.04em]">
-                    What did you gather? </h2>
-            </div>
-
-<button
-                id="close-composer"
-                class="flex h-9 w-9 items-center justify-center rounded-full border border-[#294438]/15 text-lg hover:bg-[#e5dbc4]"
-                aria-label="Close"
-            >
-                
->>>>>>> fac038c0cb5d36babebd02ad467d9607b46294c5
-            </button>
-        </div>
-    </header>
-
+        <button
+            class="mobile-menu-trigger"
+            id="mobile-menu-btn"
+            aria-label="Toggle Navigation"
+        >
+            <svg viewBox="0 0 24 24">
+                <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M4 6h16M4 12h16M4 18h16"
+                />
+            </svg>
+        </button>
+    </div>
+</header>
     <div class="mobile-drawer" id="mobile-drawer">
-        <a href="/">Specimen Board</a>
-        <a href="/messages.html">Dispatches <span id="mobile-message-badge" class="counter-pill hidden">0</span></a>
-        <a href="/gather.html">Seasonal Ledger</a>
-        <a href="/profile.html">Your Field Book</a>
+        <a href="/">Board</a>
+        <a href="/messages.html">Messages <span id="mobile-message-badge" class="counter-pill hidden">0</span></a>
+        <a href="/gather.html">Checklist</a>
+        <a href="/profile.html">Your profile</a>
     </div>
 
     <main class="page-shell">
         <section class="home-intro">
             <div>
-                <p class="eyebrow">Autumn Observation Journal · Sector 04</p>
-                <h1>Things worth<br><em>gathering.</em></h1>
+                <h1>Things worth<br><em>keeping.</em></h1>
                 <p class="intro-copy">
-                    Heirloom flora, hand-turned hinges, wild orchard yields, and marginal observations. 
-                    Contribute what you discovered so others may inspect the trail.
+Post the stuff you stumble on, like a good farm stand, a plant that finally took, something you fixed or figured out. Write it down so the next person can find it too.
                 </p>
             </div>
 
             <div class="intro-aside">
-                <div class="season-mark">№ 48 — Frost</div>
+                <div class="season-mark">Late September</div>
                 <p>
-                    Field rule: Note the precise lane, conditions, and reason it deserved keeping.
+                    The rule around here: say where you found it and why it's worth keeping.
                 </p>
             </div>
         </section>
 
         <section class="board-tools">
             <div class="board-title">
-                <h2>Field Entries <span id="post-count">0</span></h2>
+                <h2>Latest notes <span id="post-count">0</span></h2>
             </div>
 
             <div class="board-actions">
                 <label class="search-box">
                     <span aria-hidden="true">⌕</span>
-                    <input id="post-search" type="search" placeholder="Search entries, harvesters, taxa...">
+                    <input id="post-search" type="search" placeholder="Search notes or people...">
                     <kbd>/</kbd>
                 </label>
 
                 <select id="sort-posts" aria-label="Sort order">
-                    <option value="newest">Chronological</option>
-                    <option value="popular">Most Gathered</option>
+                    <option value="newest">Newest first</option>
+                    <option value="popular">Most liked</option>
                 </select>
 
                 <button class="button button-dark" id="new-note">
-                    <span>+ New Observation</span>
+                    <span>+ New note</span>
                 </button>
             </div>
         </section>
 
         <div class="filter-bar" id="category-filters">
-            <button class="filter-btn active" data-filter="all">All Records</button>
-            <button class="filter-btn" data-filter="found">Found Curiosities</button>
-            <button class="filter-btn" data-filter="grown">Botanical Yield</button>
-            <button class="filter-btn" data-filter="made">Craft & Machinery</button>
-            <button class="filter-btn" data-filter="learned">Technique & Recipe</button>
+            <button class="filter-btn active" data-filter="all">All notes</button>
+            <button class="filter-btn" data-filter="found">Found</button>
+            <button class="filter-btn" data-filter="grown">Grown</button>
+            <button class="filter-btn" data-filter="made">Made</button>
+            <button class="filter-btn" data-filter="learned">Learned</button>
         </div>
 
         <div class="home-grid">
@@ -751,37 +126,36 @@ body::before {
                 <div id="post-list" class="post-list"></div>
 
                 <div id="empty-state" class="aside-card hidden" style="text-align: center; padding: 60px 20px;">
-                    <p class="eyebrow" style="justify-content: center;">Index Cleared</p>
-                    <h3 style="font-family: var(--font-serif); font-size: 28px; margin: 12px 0;">No observations found.</h3>
+                    <h3 style="font-family: var(--font-serif); font-size: 28px; margin: 12px 0;">Nothing here yet.</h3>
                     <p style="color: var(--muted); max-width: 360px; margin: 0 auto 20px;">
-                        Nothing matches your search criteria in this sector of the ledger.
+                        Nothing matches that search. Try another word, or clear the filters.
                     </p>
-                    <button class="button button-quiet" id="reset-filters">Reset Filters</button>
+                    <button class="button button-quiet" id="reset-filters">Clear filters</button>
                 </div>
             </div>
 
             <aside class="home-aside">
                 <section class="aside-card archival-rule">
-                    <p class="eyebrow">Ledger Discipline</p>
-                    <h3>Leave more behind than you harvest.</h3>
+                    <p class="eyebrow">House rule</p>
+                    <h3>Say where you found it.</h3>
                     <p>
-                        A genuine field note avoids vague praise. Name the tree variety, 
-                        the soil condition, the hinge material, or the exact baking minute.
+                        A note with a vague location helps nobody. Name the street, the tree,
+                        part number, the oven setting.
                     </p>
                 </section>
 
                 <section class="aside-card">
-                    <p class="eyebrow">Your Basket</p>
+                    <p class="eyebrow">Saved</p>
                     <div id="saved-preview-list" class="basket-preview-list">
-                        <div style="color: var(--muted); font-size: 13px;">Nothing saved to basket yet.</div>
+                        <div style="color: var(--muted); font-size: 13px;">Nothing saved yet.</div>
                     </div>
-                    <a href="/profile.html#basket" class="button button-quiet" style="width: 100%;">View Full Basket →</a>
+                    <a href="/profile.html" class="button button-quiet" style="width: 100%;">View all →</a>
                 </section>
 
                 <section class="aside-card">
-                    <p class="eyebrow">Field Registry</p>
+                    <p class="eyebrow">On the board</p>
                     <div style="margin-top: 10px; font-family: var(--font-serif); font-size: 17px;">
-                        <strong id="stat-people">5</strong> harvesters active across <strong id="stat-posts">4</strong> catalogued observations.
+                        <strong id="stat-people">5</strong> people have posted <strong id="stat-posts">4</strong> notes.
                     </div>
                 </section>
             </aside>
@@ -792,50 +166,52 @@ body::before {
         <section class="modal" role="dialog" aria-modal="true" aria-labelledby="composer-title">
             <button class="modal-close" id="close-composer" aria-label="Close dialog">×</button>
 
-            <p class="eyebrow">New Specimen Entry</p>
-            <h2 id="composer-title">Log a Field Observation</h2>
-            <p class="modal-subcopy">Record your note for the common table. Be specific regarding lane, recipe, or cut.</p>
+            <h2 id="composer-title">What did you find?</h2>
+            <p class="modal-subcopy">Post it to the board. The more specific, the more useful.</p>
 
             <form id="post-form">
-                <label class="field-label" for="post-text">Observation Notes</label>
+                <label class="field-label" for="post-text">Notes</label>
                 <textarea id="post-text" name="text" maxlength="1400" required
-                    placeholder="I discovered / bred / fabricated / verified that..."></textarea>
+                    placeholder="I found / grew / made / learned that..."></textarea>
 
                 <div class="field-meta-row">
                     <span id="post-characters">0 / 1400</span>
                     <div style="display: flex; gap: 8px;">
-                        <select id="post-category" name="category" aria-label="Taxonomy Category">
+                        <select id="post-category" name="category" aria-label="Category">
                             <option value="found">Found</option>
                             <option value="grown">Grown</option>
                             <option value="made">Made</option>
                             <option value="learned">Learned</option>
                         </select>
-                        <select id="post-weather" name="weather" aria-label="Weather Condition">
+                        <select id="post-weather" name="weather" aria-label="Weather that day">
                             <option value="brisk">Brisk</option>
-                            <option value="mist">Morning Mist</option>
+                            <option value="mist">Misty</option>
                             <option value="frost">Frost</option>
-                            <option value="sun">Crisp Sun</option>
+                            <option value="sun">Sunny</option>
                         </select>
                     </div>
                 </div>
 
                 <label class="upload-zone" for="post-image">
                     <input id="post-image" name="image" type="file" accept="image/*">
-                    <div style="font-size: 24px; color: var(--foxglove);" aria-hidden="true">📷</div>
+                    <svg class="upload-icon" viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M4 8a2 2 0 0 1 2-2h1.6l1.2-1.6A2 2 0 0 1 10.4 3.6h3.2a2 2 0 0 1 1.6.8L16.4 6H18a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2Z"/>
+                        <circle cx="12" cy="12.5" r="3.2"/>
+                    </svg>
                     <div>
-                        <strong style="display: block; font-size: 13px;">Attach Specimen Photograph</strong>
-                        <small id="image-name" style="color: var(--muted);">JPEG, PNG or WebP · 5MB limit</small>
+                        <strong style="display: block; font-size: 13px;">Add a photo</strong>
+                        <small id="image-name" style="color: var(--muted);">JPEG, PNG or WebP, up to 5MB</small>
                     </div>
                 </label>
 
                 <div id="image-preview-wrap" class="upload-preview-wrap hidden">
-                    <img id="image-preview" alt="Photograph preview">
+                    <img id="image-preview" alt="Photo preview">
                     <button type="button" class="remove-upload-btn" id="clear-upload">Remove</button>
                 </div>
 
                 <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 24px;">
                     <button type="button" class="button button-quiet" id="cancel-composer">Cancel</button>
-                    <button type="submit" class="button button-dark" id="submit-post-btn">Commit to Ledger</button>
+                    <button type="submit" class="button button-dark" id="submit-post-btn">Post it</button>
                 </div>
             </form>
         </section>
@@ -844,9 +220,8 @@ body::before {
     <div class="modal-backdrop hidden" id="persona-backdrop">
         <section class="modal" role="dialog" aria-modal="true" aria-labelledby="persona-title">
             <button class="modal-close" id="close-persona" aria-label="Close dialog">×</button>
-            <p class="eyebrow">Identity Registry</p>
-            <h2 id="persona-title">Switch Active Harvester</h2>
-            <p class="modal-subcopy">Select a naturalist identity to record notes or exchange dispatches.</p>
+            <h2 id="persona-title">Switch account</h2>
+            <p class="modal-subcopy">Pick an identity to browse and post as. This is a demo with a few local accounts.</p>
             <div id="persona-list" class="persona-grid"></div>
         </section>
     </div>

@@ -1,13 +1,15 @@
 const gather = {
+    groupLabels: { outside: "Outside", kitchen: "Kitchen", creative: "Making" },
+
     defaultItems: [
-        { id: "maple", title: "Spot the First Crimson Maple", text: "Locate one maple tree turning ahead of the valley canopy.", group: "outside", mark: "01" },
-        { id: "acorn", title: "Retrieve an Anomalous Oak Specimen", text: "Not the symmetrical acorn; gather the twisted or galled oak leaf.", group: "outside", mark: "02" },
-        { id: "market", title: "Support an Unmarked Orchard Stand", text: "Buy cider, squash, or honey crisps from an honor-system crate.", group: "outside", mark: "03" },
-        { id: "soup", title: "Simmer Winter Squash Broth", text: "Roast seeds with coarse sea salt and simmer roots slowly.", group: "kitchen", mark: "04" },
-        { id: "preserve", title: "Cold-Pack or Dry Autumn Herbs", text: "Hang bundled sage or jar quick pickled shallots for cellar storage.", group: "kitchen", mark: "05" },
-        { id: "draw", title: "Make One High-Contrast Specimen Study", text: "A single clean botanical drawing or uncropped photo of raw bark.", group: "creative", mark: "06" },
-        { id: "margin", title: "Record a Micro-Climate Temperature Shift", text: "Measure frost in the hollow versus the crest at dawn.", group: "creative", mark: "07" },
-        { id: "seed", title: "Leave a Seed or Tool for a Stranger", text: "Affix seeds to a community board or lend a good pruning shear.", group: "creative", mark: "08" }
+        { id: "maple", title: "Find one maple that turned early", text: "Somewhere in the valley one tree always turns early. Be the one who spots it.", group: "outside", mark: "01" },
+        { id: "acorn", title: "Pick up a weird leaf or acorn", text: "Not the perfect acorn. The galled, twisted, insect-bitten one.", group: "outside", mark: "02" },
+        { id: "market", title: "Buy from an unmarked farm stand", text: "The kind of stand with crates, a cash box, and nobody watching.", group: "outside", mark: "03" },
+        { id: "soup", title: "Make a pot of squash soup", text: "Roast the seeds with salt. Simmer the stock slow.", group: "kitchen", mark: "04" },
+        { id: "preserve", title: "Dry or pickle some herbs", text: "Hang the sage to dry, or quick-pickle shallots while they're cheap.", group: "kitchen", mark: "05" },
+        { id: "draw", title: "Draw or photograph one thing up close", text: "A leaf, a patch of bark, a seed head. One clean study.", group: "creative", mark: "06" },
+        { id: "margin", title: "Check the temperature twice", text: "In the hollow, then on the ridge, the same morning.", group: "creative", mark: "07" },
+        { id: "seed", title: "Leave something for a stranger", text: "Seeds on a community board, or a good tool lent out for the weekend.", group: "creative", mark: "08" }
     ],
 
     filter: "all",
@@ -39,38 +41,34 @@ const gather = {
         list.innerHTML = filtered.map(item => {
             const isDone = gathered.includes(item.id);
             return `
-                <article class="gather-item-card ${isDone ? "gathered" : ""}">
-                    <div class="item-index">${item.mark}</div>
+                <label class="gather-item ${isDone ? "done" : ""}">
+                    <input type="checkbox" data-id="${item.id}" ${isDone ? "checked" : ""}>
                     <div>
-                        <p class="eyebrow">${item.group}</p>
                         <h3>${app.escape(item.title)}</h3>
-                        <p>${app.escape(item.text)}</p>
+                        ${item.text ? `<p>${app.escape(item.text)}</p>` : ""}
                     </div>
-                    <button class="gather-toggle-btn" data-id="${item.id}">
-                        ${isDone ? "Gathered" : "Harvest"}
-                    </button>
-                </article>
+                </label>
             `;
         }).join("");
 
-        list.querySelectorAll(".gather-toggle-btn").forEach(btn => {
-            btn.addEventListener("click", () => this.toggle(btn.dataset.id));
+        list.querySelectorAll("input[data-id]").forEach(box => {
+            box.addEventListener("change", () => this.toggle(box.dataset.id, box.checked));
         });
 
         this.updateProgress(gathered.length, items.length);
     },
 
-    toggle(id) {
+    toggle(id, checked) {
         const key = `harvest-gathered-${app.handle}`;
         let gathered = this.getGathered();
         const index = gathered.indexOf(id);
 
         if (index >= 0) {
             gathered.splice(index, 1);
-            app.toast("Returned to field ledger.");
+            app.toast("Back on the list.");
         } else {
             gathered.push(id);
-            app.toast("Gathered into seasonal yield.");
+            app.toast("Marked done.");
         }
 
         localStorage.setItem(key, JSON.stringify(gathered));
@@ -78,33 +76,8 @@ const gather = {
     },
 
     updateProgress(done, total) {
-        const pct = total === 0 ? 0 : Math.round((done / total) * 100);
-        const pctEl = document.getElementById("progress-pct");
         const statsEl = document.getElementById("gather-stats-text");
-
-        if (pctEl) pctEl.textContent = `${pct}%`;
-        if (statsEl) statsEl.textContent = `${done} of ${total} Gathered`;
-
-        const canvas = document.getElementById("progress-canvas");
-        if (!canvas) return;
-        const ctx = canvas.getContext("2d");
-        const size = 120;
-        ctx.clearRect(0, 0, size, size);
-
-        ctx.beginPath();
-        ctx.arc(size / 2, size / 2, 50, 0, Math.PI * 2);
-        ctx.strokeStyle = "rgba(38, 56, 44, 0.12)";
-        ctx.lineWidth = 8;
-        ctx.stroke();
-
-        ctx.beginPath();
-        const start = -Math.PI / 2;
-        const end = start + (Math.PI * 2 * (pct / 100));
-        ctx.arc(size / 2, size / 2, 50, start, end);
-        ctx.strokeStyle = "#9c4c34";
-        ctx.lineWidth = 8;
-        ctx.lineCap = "round";
-        ctx.stroke();
+        if (statsEl) statsEl.textContent = `${done} of ${total} done`;
     },
 
     bindFilters() {
@@ -158,7 +131,7 @@ const gather = {
             form.reset();
             shut();
             this.render();
-            app.toast("Custom observation added to ledger.");
+            app.toast("Added to your list.");
         });
     }
 };
