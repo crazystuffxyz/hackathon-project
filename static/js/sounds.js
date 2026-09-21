@@ -25,14 +25,12 @@ document.addEventListener("click", (event) => {
 
     if (!clickable || clickable.disabled) return;
 
-    // Special sound for submitting a post
     if (clickable.id === "submit-post-btn") {
         postSound.currentTime = 0;
         postSound.play().catch(console.error);
         return;
     }
 
-    // Normal button/link sound
     buttonSound.currentTime = 0;
     buttonSound.play().catch(console.error);
 });
@@ -53,3 +51,35 @@ window.addEventListener("scroll", () => {
         scrollCooldown = false;
     }, 600);
 });
+
+const allSounds = [backgroundMusic, buttonSound, postSound, scrollSound];
+let soundMuted = localStorage.getItem("soundMuted") === "true";
+allSounds.forEach(sound => {
+    sound.muted = soundMuted;
+});
+
+const soundToggle = document.createElement("button");
+
+soundToggle.textContent = soundMuted ? "🔇" : "🔊";
+soundToggle.title = "Toggle sound";
+soundToggle.setAttribute("aria-label", "Toggle sound");
+soundToggle.style.position = "fixed";
+soundToggle.style.bottom = "20px";
+soundToggle.style.right = "20px";
+soundToggle.style.width = "44px";
+soundToggle.style.height = "44px";
+soundToggle.style.borderRadius = "50%";
+soundToggle.style.border = "none";
+soundToggle.style.fontSize = "24px";
+soundToggle.style.cursor = "pointer";
+soundToggle.style.zIndex = "9999";
+document.body.appendChild(soundToggle);
+soundToggle.addEventListener("click", () => {
+    soundMuted = !soundMuted;
+    allSounds.forEach((sound) => {
+        sound.muted = soundMuted;
+    });
+    localStorage.setItem("soundMuted", soundMuted);
+    soundToggle.textContent = soundMuted ? "🔇" : "🔊";
+});
+
