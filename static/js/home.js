@@ -3,6 +3,7 @@ const home = {
     filter: "all",
     difficulty: "all",
     takeAgain: "all",
+    ratingFilter: "all",
     query: "",
     sort: "newest",
     debounceTimer: null,
@@ -17,6 +18,7 @@ const home = {
         this.bindSearch();
         this.bindSort();
         this.bindTakeAgain();
+        this.bindRatingFilter();
 
         await this.loadPosts();
         await this.loadStats();
@@ -65,6 +67,14 @@ const home = {
 
         if (this.takeAgain !== "all") {
             filtered = filtered.filter(p => p.take_again === this.takeAgain);
+        }
+
+        if (this.ratingFilter !== "all") {
+            const minimumRating = Number(this.ratingFilter);
+
+            filtered = filtered.filter(
+                p => Number(p.rating) >= minimumRating
+            );
         }
 
         if (this.query) {
@@ -206,6 +216,10 @@ const home = {
             this.query = "";
             this.difficulty = "all";
             this.takeAgain = "all";
+            this.ratingFilter = "all";
+
+            const ratingSelect = document.getElementById("rating-filter");
+            if (ratingSelect) ratingSelect.value = "all";
 
             const search = document.getElementById("post-search");
             if (search) search.value = "";
@@ -264,6 +278,18 @@ const home = {
             this.render();
         });
     },
+
+    bindRatingFilter() {
+    const select = document.getElementById("rating-filter");
+
+    if (!select) return;
+
+    select.addEventListener("change", () => {
+        this.ratingFilter = select.value;
+        this.render();
+    });
+},
+
     bindSort() {
         const select = document.getElementById("sort-posts");
         select?.addEventListener("change", async () => {
