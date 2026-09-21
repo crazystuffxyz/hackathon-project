@@ -4,6 +4,7 @@ const home = {
     difficulty: "all",
     takeAgain: "all",
     ratingFilter: "all",
+    editingPostId: null,
     query: "",
     sort: "newest",
     debounceTimer: null,
@@ -177,6 +178,7 @@ const home = {
                         </button>
 
                         ${isAuthor ? `
+                            <button class="action-pill" data-action="edit">Edit</button>
                             <button class="delete-action" data-action="delete">Delete</button>
                         ` : ""}
                     </div>
@@ -355,38 +357,77 @@ const home = {
         });
 
         form.addEventListener("submit", async e => {
-            e.preventDefault();
-            const submitBtn = document.getElementById("submit-post-btn");
-            submitBtn.disabled = true;
-            submitBtn.textContent = "Posting...";
+    e.preventDefault();
 
-            const formData = new FormData(form);
-            formData.append("handle", app.handle);
+    const submitBtn = document.getElementById("submit-post-btn");
+    const wasEditing = Boolean(this.editingPostId);
 
-            try {
-                const newPost = await app.request("/api/posts", {
-                    method: "POST",
+    submitBtn.disabled = true;
+    submitBtn.textContent = wasEditing ? "Saving..." : "Posting...";
+
+    const formData = new FormData(form);
+    formData.append("handle", app.handle);
+
+    try {
+        let savedPost;
+
+        if (this.editingPostId) {
+            const editingId = this.editingPostId;
+
+            savedPost = await app.request(
+                `/api/posts/${editingId}`,
+                {
+                    method: "PUT",
                     body: formData
-                });
+                }
+            );
 
-                this.posts.unshift(newPost);
-                this.render();
-                form.reset();
-                previewWrap.classList.add("hidden");
-                document.getElementById("post-characters").textContent = "0 / 1400";
-                close();
-                app.toast("Posted.");
-            } catch (err) {
-                app.toast(err.message);
-            } finally {
-                submitBtn.disabled = false;
-                submitBtn.textContent = "Post it";
+            const index = this.posts.findIndex(
+                p => p.id === editingId
+            );
+
+            if (index !== -1) {
+                savedPost.comments = this.posts[index].comments || [];
+                savedPost.liked = this.posts[index].liked;
+                savedPost.saved = this.posts[index].saved;
+
+                this.posts[index] = savedPost;
+            }
+
+            this.editingPostId = null;
+        } else {
+            savedPost = await app.request("/api/posts", {
+                method: "POST",
+                body: formData
+            });
+
+            this.posts.unshift(savedPost);
+        }
+
+        this.render();
+
+        form.reset();
+        previewWrap.classList.add("hidden");
+
+        document.getElementById("post-characters").textContent = "0 / 1400";
+        document.getElementById("composer-title").textContent = "Write a review";
+
+        close();
+
+        app.toast(wasEditing ? "Review updated." : "Review posted.");
+
+    } catch (err) {
+        app.toast(err.message);
+
+        } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = "Post Review";
             }
         });
-    },
+    }   ,
 
-    renderBasketPreview() {
-        const saved = this.posts.filter(p => p.saved);
+        renderBasketPreview() {
+            const saved = this.posts.filter(p => p.saved);
         const container = document.getElementById("saved-preview-list");
         if (!container) return;
 
@@ -420,6 +461,44 @@ document.addEventListener("click", async e => {
     if (!post) return;
 
     const action = actionBtn.dataset.action;
+
+    if (action === "edit") {
+    home.editingPostId = post.id;
+
+    const teacher = document.getElementById("teacher-name");
+    const course = document.getElementById("course-name");
+    const text = document.getElementById("post-text");
+    const difficulty = document.getElementById("post-difficulty");
+    const workload = document.getElementById("post-workload");
+    const takeAgain = document.getElementById("take-again");
+    const rating = document.getElementById("rating");
+    const backdrop = document.getElementById("composer-backdrop");
+    const title = document.getElementById("composer-title");
+    const submitBtn = document.getElementById("submit-post-btn");
+    const characters = document.getElementById("post-characters");
+
+    if (teacher) teacher.value = post.teacher || "";
+    if (course) course.value = post.course || "";
+    if (text) text.value = post.text || "";
+    if (difficulty) difficulty.value = post.difficulty || "medium";
+    if (workload) workload.value = post.workload || "average";
+    if (takeAgain) takeAgain.value = post.take_again || "yes";
+    if (rating) rating.value = String(post.rating || 3);
+
+    if (characters) {
+        characters.textContent = `${post.text?.length || 0} / 1400`;
+    }
+
+    if (title) title.textContent = "Edit review";
+    if (submitBtn) submitBtn.textContent = "Save Changes";
+
+    if (backdrop) {
+        backdrop.classList.remove("hidden");
+        document.body.classList.add("modal-open");
+    }
+
+    return;
+}
 
     if (action === "comments") {
         card.classList.toggle("comments-open");

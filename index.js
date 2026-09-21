@@ -708,6 +708,107 @@ res.status(201).json(post);
     }
 );
 
+app.put(
+    "/api/posts/:id",
+    upload.single("image"),
+    (req, res) => {
+        const postId = Number(req.params.id);
+        const user = getUser(req.body.handle || "you");
+
+        const existing = db.prepare(`
+            SELECT * FROM posts WHERE id = ?
+        `).get(postId);
+
+        if (!existing) {
+            res.status(404).json({ error: "Review not found." });
+            return;
+        }
+
+        if (existing.author_id !== user.id) {
+            res.status(403).json({
+                error: "You can only edit your own reviews."
+            });
+            return;
+        }
+
+        const teacher = cleanText(req.body.teacher, 80);
+        const course = cleanText(req.body.course, 80);
+        const text = cleanText(req.body.text, 1400);
+        const difficulty = cleanText(req.body.difficulty, 20);
+        const workload = cleanText(req.body.workload, 20);
+        const takeAgain = req.body.take_again === "no" ? "no" : "yes";
+        const rating = Math.min(
+            5,
+            Math.max(1, Number(req.body.rating) || 3)
+        );
+
+        if (!teacher || !course || !text) {
+            res.status(400).json({
+                error: "Teacher, course, and review text are required."
+            });
+            return;
+        }
+
+        const image = req.file
+            ? `/uploads/${req.file.filename}`
+            : existing.image;
+
+        db.prepare(`
+            UPDATE posts
+            SET
+                teacher = ?,
+                course = ?,
+                difficulty = ?,
+                workload = ?,
+                take_again = ?,
+                rating = ?,
+                text = ?,
+                image = ?
+            WHERE id = ?
+        `).run(
+            teacher,
+            course,
+            difficulty,
+            workload,
+            takeAgain,
+            rating,
+            text,
+            image,
+            postId
+        );
+
+        const post = db.prepare(`
+            SELECT
+                p.id,
+                p.category,
+                p.teacher,
+                p.course,
+                p.difficulty,
+                p.workload,
+                p.take_again,
+                p.rating,
+                p.text,
+                p.image,
+                p.weather,
+                p.specimen_no,
+                p.likes,
+                p.created_at,
+                u.handle,
+                u.display_name,
+                u.location
+            FROM posts p
+            JOIN users u ON u.id = p.author_id
+            WHERE p.id = ?
+        `).get(postId);
+
+        post.liked = 0;
+        post.saved = 0;
+        post.comments = [];
+
+        res.json(post);
+    }
+);
+
 app.delete("/api/posts/:id", (req, res) => {
     const postId = Number(req.params.id);
     const user = getUser(req.body.handle || "you");
