@@ -135,7 +135,7 @@ const profile = {
                     this.posts = this.posts.filter(p => p.id !== id);
                     this.renderRecords();
                     await this.loadProfile();
-                    app.toast("Note deleted.");
+                    app.toast("Review deleted.");
                 } catch (err) {
                     app.toast(err.message);
                 }

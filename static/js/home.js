@@ -165,7 +165,7 @@ const home = {
 
                     ${post.image ? `
                         <div class="post-specimen-frame">
-                            <img src="${app.escape(post.image)}" alt="Photo from this note" loading="lazy">
+                            <img src="${app.escape(post.image)}" alt="Photo from this review" loading="lazy">
                         </div>
                     ` : ""}
 
@@ -440,7 +440,7 @@ const home = {
         if (!container) return;
 
         if (saved.length === 0) {
-            container.innerHTML = `<div style="color: var(--muted); font-size: 13px;">Nothing saved yet.</div>`;
+            container.innerHTML = `<div style="color: var(--muted); font-size: 13px; display: flex; align-items: center; gap: 8px;"><img src="/images/apple.png" alt="" style="width: 22px; image-rendering: pixelated;"> Nothing saved yet.</div>`;
             return;
         }
 

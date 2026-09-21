@@ -348,7 +348,7 @@ article.innerHTML = `
                             isLiked ? "bg-[#e5dbc4]" : ""
                         }"
                         type="button"
-                        aria-label="Appreciate this note"
+                        aria-label="Appreciate this review"
                     >
                         <span aria-hidden="true">${isLiked ? "" : ""}</span>
                         <span class="like-count ml-1 font-semibold">${post.likes || 0}</span>
@@ -489,8 +489,8 @@ if (activeView === "saved") {
 
 if (shareBtn) {
         shareBtn.addEventListener("click", async () => {
-            const title = "Harvest field note";
-            const text = post.content || "A field note from Harvest";
+            const title = "Harvest review";
+            const text = post.content || "A review from Harvest";
 
 try {
                 if (navigator.share) {
@@ -498,14 +498,14 @@ try {
                     return;
                 }
                 await navigator.clipboard.writeText(text);
-                showToast("Note copied to clipboard");
+                showToast("Review copied to clipboard");
             } catch (err) {
                 if (err && err.name !== "AbortError") {
                     try {
                         await navigator.clipboard.writeText(text);
-                        showToast("Note copied to clipboard");
+                        showToast("Review copied to clipboard");
                     } catch {
-                        showToast("Couldn't share note");
+                        showToast("Couldn't share review");
                     }
                 }
             }
@@ -641,9 +641,9 @@ if (postCount) {
         if (activeView === "saved") {
             postCount.textContent = `${count} in basket`;
         } else if (activeFilter !== "all" || searchQuery) {
-            postCount.textContent = `${count} of ${total} notes`;
+            postCount.textContent = `${count} of ${total} reviews`;
         } else {
-            postCount.textContent = `${count} notes`;
+            postCount.textContent = `${count} reviews`;
         }
     }
 
@@ -703,9 +703,9 @@ const count = savedPosts.length;
     if (count === 0) {
         countElem.textContent = "Nothing saved yet.";
     } else if (count === 1) {
-        countElem.textContent = "1 note tucked away.";
+        countElem.textContent = "1 review tucked away.";
     } else {
-        countElem.textContent = `${count} notes tucked away.`;
+        countElem.textContent = `${count} reviews tucked away.`;
     }
 }
 

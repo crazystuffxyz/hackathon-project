@@ -1448,3 +1448,13 @@ textarea.field-input {
         margin-bottom: 20px;
     }
 }
+
+.hero-sprite {
+    width: 120px;
+    image-rendering: pixelated;
+}
+
+.empty-sprite {
+    width: 90px;
+    image-rendering: pixelated;
+}

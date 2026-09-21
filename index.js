@@ -816,12 +816,12 @@ app.delete("/api/posts/:id", (req, res) => {
 const post = db.prepare(`SELECT * FROM posts WHERE id = ?`).get(postId);
 
 if (!post) {
-        res.status(404).json({ error: "Note not found." });
+        res.status(404).json({ error: "Review not found." });
         return;
 }
 
 if (post.author_id !== user.id) {
-        res.status(403).json({ error: "You can only delete your own notes." });
+        res.status(403).json({ error: "You can only delete your own reviews." });
         return;
 }
 
