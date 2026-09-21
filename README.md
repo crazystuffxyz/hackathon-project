@@ -1,6 +1,13 @@
-### (http://hackathon-project-5zh8.onrender.com/)
+# Installation Guide/How to Run
+
+### (http://hackathon-project-5zh8.onrender.com/) Demo link
 
 For the demo, simply click either the above link, which will directly take you to the live demo website. 
+
+(Most important). If you clone the Github, run npm install, then npm start to local host at port 8080. 
+If you aren't cloning the github, you just click the onrender.com link, and it'll take you straight there. Nothing else is required besides these instructions. (AFAIK)
+
+
 
 # Hackathon Project
 
@@ -14,7 +21,7 @@ Juntos Website - Third Space Week 1 Project
 
 ## Ai Disclaimer
 Ai was used to help make the boilerplate and help with technical issues, like when a merge failed we and we had we reset the main.
-All members have under 30% Ai usage, and no Ai was used for the actual coding or syntax of any of backend.
+All members have under 30% Ai usage overall or on this project, and no Ai was used for the actual coding or syntax of any of frontend, or backend. We just consulted it to fix issues that we had no idea how to fix, and that was all primarily on the merge trees being an absolute nightmare.
 
 ## Disclaimer
 
@@ -64,6 +71,11 @@ We tried to make the website useful while also giving it its own style instead o
 
 The project uses a fairly simple web stack so we could understand how the different parts worked together.
 
+Languages: 
+- JS
+- HTML
+- CSS 
+
 Frontend:
 - HTML
 - CSS
@@ -89,17 +101,10 @@ We chose mostly basic web technologies because this was our first Third Space pr
 
 We started by deciding what kind of website would fit the harvest theme while also being useful to students at our school. The idea of "harvest" became more than just the visual theme. We thought of students gathering experiences from classes and then sharing that information with other students. From there, we split the project into different parts. We worked on the website layout, backend, database, user interactions, artwork, animations, and sound. The site went through a lot of changes while we worked on it. Instead of designing everything perfectly at the beginning, we kept testing things, changing the layout, and adding features as the project developed. We also used GitHub branches so multiple people could work on different parts of the project without constantly editing the same files.
 
-## Challenges We Ran Into
+## Challenges We Ran Into / Problems
 
 One challenge was working on the same project with multiple people. Sometimes changes from one branch affected files that another person had also edited, so we had to learn how to merge changes and fix conflicts. Another challenge was getting all of the frontend and backend parts to work together. A feature might look correct on the page but still need changes to the JavaScript, server, or database before it actually worked. We also had smaller problems with things like file paths and assets. For example, our sound effects had to be placed in the correct static folders and referenced with the correct paths before the browser could load them. Audio was another thing we had to work around because browsers do not always allow background music to autoplay. We made the music start after the user interacts with the page instead. 
 
+## Assets
 
-## Tech Stack 
-
-Languages: JS, HTML, CSS
-
-Frontend: Static JS, TailwindCSS, and HTML.
-
-Backend:
-Multer, Node.js, In memory storage, Sqlite.
-
+(https://drive.google.com/drive/u/0/folders/1xTwHKIJuH1k746TiplxRR9phTtTKjCdD)
