@@ -57,11 +57,12 @@ const home = {
 
         if (this.query) {
             const q = this.query.toLowerCase();
-            filtered = filtered.filter(p => 
+            filtered = filtered.filter(p =>
                 p.text.toLowerCase().includes(q) ||
                 p.display_name.toLowerCase().includes(q) ||
                 p.handle.toLowerCase().includes(q) ||
-                (p.specimen_no && p.specimen_no.toLowerCase().includes(q))
+                (p.teacher && p.teacher.toLowerCase().includes(q)) ||
+                (p.course && p.course.toLowerCase().includes(q))
             );
         }
 
@@ -81,13 +82,10 @@ const home = {
         return `
             <article class="post-card" data-id="${post.id}">
                 <div class="post-card-top">
-                    <span class="specimen-tag category-${post.category}">
-                        ${app.escape(post.specimen_no || "note")} · ${app.escape(post.category)}
-                    </span>
                     <div class="post-meta-details">
-                        <span>${app.escape(app.weatherLabel(post.weather))}</span>
-                        <span>·</span>
-                        <time data-time="${post.created_at}">${app.timeAgo(post.created_at)}</time>
+                        <time data-time="${post.created_at}">
+                            ${app.timeAgo(post.created_at)}
+                        </time>
                     </div>
                 </div>
 

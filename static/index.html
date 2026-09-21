@@ -76,7 +76,7 @@
     <main class="page-shell">
         <section class="home-intro">
             <div>
-                <h1>Things worth<br><em>keeping.</em></h1>
+                <h1>Reviews worth<br><em>sharing.</em></h1>
                 <p class="intro-copy">
 Post the stuff you stumble on, like a good farm stand, a plant that finally took, something you fixed or figured out. Write it down so the next person can find it too.
                 </p>
@@ -92,13 +92,13 @@ Post the stuff you stumble on, like a good farm stand, a plant that finally took
 
         <section class="board-tools">
             <div class="board-title">
-                <h2>Latest notes <span id="post-count">0</span></h2>
+                <h2>Latest reviews <span id="post-count">0</span></h2>
             </div>
 
             <div class="board-actions">
                 <label class="search-box">
                     <span aria-hidden="true">⌕</span>
-                    <input id="post-search" type="search" placeholder="Search notes or people...">
+                    <input id="post-search" type="search" placeholder="Search teachers, courses, or reviews...">
                     <kbd>/</kbd>
                 </label>
 
@@ -108,17 +108,13 @@ Post the stuff you stumble on, like a good farm stand, a plant that finally took
                 </select>
 
                 <button class="button button-dark" id="new-note">
-                    <span>+ New note</span>
+                    <span>+ New review</span>
                 </button>
             </div>
         </section>
 
         <div class="filter-bar" id="category-filters">
-            <button class="filter-btn active" data-filter="all">All notes</button>
-            <button class="filter-btn" data-filter="found">Found</button>
-            <button class="filter-btn" data-filter="grown">Grown</button>
-            <button class="filter-btn" data-filter="made">Made</button>
-            <button class="filter-btn" data-filter="learned">Learned</button>
+            <button class="filter-btn active" data-filter="all">All reviews</button>
         </div>
 
         <div class="home-grid">
@@ -137,10 +133,9 @@ Post the stuff you stumble on, like a good farm stand, a plant that finally took
             <aside class="home-aside">
                 <section class="aside-card archival-rule">
                     <p class="eyebrow">House rule</p>
-                    <h3>Say where you found it.</h3>
+                    <h3>Be specific and fair.</h3>
                     <p>
-                        A note with a vague location helps nobody. Name the street, the tree,
-                        part number, the oven setting.
+                        Share useful details about the class, workload, teaching style, and what future students should know.
                     </p>
                 </section>
 
@@ -166,8 +161,8 @@ Post the stuff you stumble on, like a good farm stand, a plant that finally took
         <section class="modal" role="dialog" aria-modal="true" aria-labelledby="composer-title">
             <button class="modal-close" id="close-composer" aria-label="Close dialog">×</button>
 
-            <h2 id="composer-title">What did you find?</h2>
-            <p class="modal-subcopy">Post it to the board. The more specific, the more useful.</p>
+            <h2 id="composer-title">Write a review</h2>
+            <p class="modal-subcopy">Share your experience with a teacher and course.</p>
 
             <form id="post-form">
                 <label class="field-label" for="teacher-name">Teacher</label>
@@ -242,7 +237,9 @@ Post the stuff you stumble on, like a good farm stand, a plant that finally took
 
                 <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 24px;">
                     <button type="button" class="button button-quiet" id="cancel-composer">Cancel</button>
-                    <button type="submit" class="button button-dark" id="submit-post-btn">Post it</button>
+                    <button type="submit" class="button button-dark" id="submit-post-btn">
+                        Post Review
+                    </button>
                 </div>
             </form>
         </section>
