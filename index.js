@@ -952,7 +952,7 @@ if (error) {
 next();
 });
 
-app.get("/{*splat}", (req, res, next) => {
+app.get("/*splat", (req, res, next) => {
     if (req.path.startsWith("/api/")) {
         next();
         return;
@@ -964,3 +964,5 @@ app.get("/{*splat}", (req, res, next) => {
 app.listen(port, () => {
     console.log(`Harvest Field Ledger running at http://localhost:${port}`);
 });
+
+//Biggle borp please dont fillet me my specimen is in the freezer and I need to get back to my field notes.
