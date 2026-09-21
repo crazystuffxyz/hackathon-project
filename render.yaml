@@ -1,0 +1,6 @@
+ services:
+  - type: web
+    name: harvest-hackclub-site
+    env: node
+    plan: free
+    startCommand: npm install && npm start
