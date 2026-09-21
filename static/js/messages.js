@@ -36,7 +36,7 @@ const messages = {
         if (!people.length) {
             this.conversationsEl.innerHTML = `
                 <div style="padding: 24px; text-align: center; color: var(--muted); font-size: 13px;">
-                    No recorded field dialogues.<br>Begin one with the button above.
+                    No chats yet.<br>Start one with the button above.
                 </div>
             `;
             return;
@@ -47,7 +47,7 @@ const messages = {
                 <div class="profile-avatar conversation-avatar">${app.initials(p.display_name)}</div>
                 <div class="conversation-text">
                     <strong>${app.escape(p.display_name)}</strong>
-                    <p>${app.escape(p.latest_message || "No transmissions")}</p>
+                    <p>${app.escape(p.latest_message || "No messages yet")}</p>
                 </div>
                 <div class="conversation-meta">
                     <div>${app.timeAgo(p.latest_message_at)}</div>
@@ -70,7 +70,7 @@ const messages = {
             this.currentPerson = target;
             document.getElementById("chat-name").textContent = target.display_name;
             document.getElementById("chat-handle").textContent = `@${target.handle}`;
-            document.getElementById("chat-location").textContent = target.location || "The Old Woods";
+            document.getElementById("chat-location").textContent = target.location || "";
 
             this.chatEmptyEl.classList.add("hidden");
             this.chatRoomEl.classList.remove("hidden");

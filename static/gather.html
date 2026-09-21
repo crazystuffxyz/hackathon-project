@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="theme-color" content="#1b2920">
-    <title>Harvest — Seasonal Ledger & Checklist</title>
+    <meta name="description" content="A short seasonal checklist of small things worth doing outside, in the kitchen, and at the workbench.">
+    <title>Harvest — seasonal checklist</title>
     <link rel="stylesheet" href="/css/main.css">
 </head>
 <body data-page="gather">
@@ -16,15 +17,14 @@
                 </div>
                 <div class="wordmark-text">
                     <strong>harvest</strong>
-                    <small>seasonal ledger</small>
                 </div>
             </a>
         </div>
 
         <nav class="site-nav" aria-label="Main Navigation">
-            <a href="/">specimen board</a>
-            <a href="/messages.html">dispatches</a>
-            <a class="active" href="/gather.html">seasonal ledger</a>
+            <a href="/">Board</a>
+            <a href="/messages.html">Messages</a>
+            <a class="active" href="/gather.html">Checklist</a>
         </nav>
 
         <div class="header-actions">
@@ -42,55 +42,45 @@
     </header>
 
     <div class="mobile-drawer" id="mobile-drawer">
-        <a href="/">Specimen Board</a>
-        <a href="/messages.html">Dispatches</a>
-        <a href="/gather.html">Seasonal Ledger</a>
-        <a href="/profile.html">Your Field Book</a>
+        <a href="/">Board</a>
+        <a href="/messages.html">Messages</a>
+        <a href="/gather.html">Checklist</a>
+        <a href="/profile.html">Your profile</a>
     </div>
 
     <main class="page-shell">
         <section class="gather-hero">
             <div>
-                <p class="eyebrow">Autumn Yield Goals</p>
-                <h1>Go outside.<br><em>Notice the turning.</em></h1>
+                <h1>Go outside.<br><em>Notice things.</em></h1>
                 <p class="intro-copy">
-                    A checklist of small, deliberate autumn actions. Not a metric of efficiency, 
-                    merely a license to notice soil changes, light angles, and warm meals.
+A short list of small autumn things worth doing. No streaks, no points, just a nudge to pay attention while the season turns.
                 </p>
             </div>
 
-            <div class="progress-card">
-                <div class="progress-circle-wrap">
-                    <canvas id="progress-canvas" width="120" height="120"></canvas>
-                    <div class="progress-number" id="progress-pct">0%</div>
-                </div>
-                <strong id="gather-stats-text" style="display: block; font-family: var(--font-serif); font-size: 18px;">0 of 8 Gathered</strong>
-                <small style="color: var(--muted); font-family: var(--font-mono); font-size: 10px; text-transform: uppercase;">Active Season Ledger</small>
-            </div>
+            <p class="gather-count" id="gather-stats-text">0 of 8 done</p>
         </section>
 
         <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 14px; margin-top: 36px; padding-bottom: 16px; border-bottom: 1px solid var(--line);">
             <div class="filter-bar" id="gather-filters" style="margin: 0; padding: 0; border: none;">
-                <button class="filter-btn active" data-filter="all">All Items</button>
-                <button class="filter-btn" data-filter="outside">Wild & Field</button>
-                <button class="filter-btn" data-filter="kitchen">Hearth & Kitchen</button>
-                <button class="filter-btn" data-filter="creative">Craft & Study</button>
+                <button class="filter-btn active" data-filter="all">Everything</button>
+                <button class="filter-btn" data-filter="outside">Outside</button>
+                <button class="filter-btn" data-filter="kitchen">Kitchen</button>
+                <button class="filter-btn" data-filter="creative">Making</button>
             </div>
 
-            <button class="button button-quiet" id="add-custom-item-btn" style="height: 34px;">+ Log Custom Task</button>
+            <button class="button button-quiet" id="add-custom-item-btn" style="height: 34px;">+ Add your own</button>
         </div>
 
-        <section id="gather-list" class="gather-grid"></section>
+        <section id="gather-list" class="gather-list"></section>
 
         <div class="aside-card archival-rule" style="margin-top: 50px;">
-            <p class="eyebrow">The Naturalist's Criterion</p>
-            <h3>Specificity is the only antidote to oblivion.</h3>
+            <h3>Be specific.</h3>
             <p>
-                "Leaves fell" is forgotten by supper. "The red maple on 4th Lane turned before frost hit" 
-                is an address that another person can actually walk to.
+                "Saw some leaves fall" is forgettable. "The red maple on 4th Lane turned before the frost did"
+                is something a friend can actually go see.
             </p>
             <div style="margin-top: 18px;">
-                <a href="/?compose=1" class="button button-accent">Log Observation On Board →</a>
+                <a href="/?compose=1" class="button button-accent">Write a note about it →</a>
             </div>
         </div>
     </main>
@@ -98,28 +88,27 @@
     <div class="modal-backdrop hidden" id="custom-task-backdrop">
         <section class="modal" role="dialog" aria-modal="true" aria-labelledby="custom-task-title">
             <button class="modal-close" id="close-custom-task" aria-label="Close dialog">×</button>
-            <p class="eyebrow">Personal Observation</p>
-            <h2 id="custom-task-title">Add Seasonal Target</h2>
+            <h2 id="custom-task-title">Add something</h2>
             <form id="custom-task-form" style="display: grid; gap: 12px; margin-top: 16px;">
                 <div>
-                    <label class="field-label" for="task-title">Observation Title</label>
-                    <input class="field-input" id="task-title" required placeholder="e.g., Collect sweet chestnuts">
+                    <label class="field-label" for="task-title">What is it?</label>
+                    <input class="field-input" id="task-title" required placeholder="e.g. collect sweet chestnuts">
                 </div>
                 <div>
-                    <label class="field-label" for="task-desc">Specific Reason or Sector</label>
-                    <input class="field-input" id="task-desc" required placeholder="e.g., Check along the stone wall behind the meadow">
+                    <label class="field-label" for="task-desc">Any details</label>
+                    <input class="field-input" id="task-desc" required placeholder="e.g. along the stone wall by the meadow">
                 </div>
                 <div>
-                    <label class="field-label" for="task-group">Domain</label>
+                    <label class="field-label" for="task-group">Group</label>
                     <select class="field-input" id="task-group">
-                        <option value="outside">Wild & Field</option>
-                        <option value="kitchen">Hearth & Kitchen</option>
-                        <option value="creative">Craft & Study</option>
+                        <option value="outside">Outside</option>
+                        <option value="kitchen">Kitchen</option>
+                        <option value="creative">Making</option>
                     </select>
                 </div>
                 <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 14px;">
                     <button type="button" class="button button-quiet" id="cancel-custom-task">Cancel</button>
-                    <button type="submit" class="button button-dark">Add to Ledger</button>
+                    <button type="submit" class="button button-dark">Add it</button>
                 </div>
             </form>
         </section>
@@ -128,8 +117,7 @@
     <div class="modal-backdrop hidden" id="persona-backdrop">
         <section class="modal" role="dialog" aria-modal="true" aria-labelledby="persona-gather-title">
             <button class="modal-close" id="close-persona" aria-label="Close dialog">×</button>
-            <p class="eyebrow">Identity Registry</p>
-            <h2 id="persona-gather-title">Switch Harvester</h2>
+            <h2 id="persona-gather-title">Switch account</h2>
             <div id="persona-list" class="persona-grid"></div>
         </section>
     </div>

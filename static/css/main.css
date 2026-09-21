@@ -36,12 +36,9 @@ html {
 body {
     margin: 0;
     background-color: var(--paper);
-    background-image: 
+    background-image:
         radial-gradient(circle at 15% 10%, rgba(184, 124, 56, 0.05), transparent 35rem),
-        radial-gradient(circle at 85% 65%, rgba(90, 115, 92, 0.06), transparent 40rem),
-        linear-gradient(to right, rgba(38, 56, 44, 0.03) 1px, transparent 1px),
-        linear-gradient(to bottom, rgba(38, 56, 44, 0.03) 1px, transparent 1px);
-    background-size: 100% 100%, 100% 100%, 48px 48px, 48px 48px;
+        radial-gradient(circle at 85% 65%, rgba(90, 115, 92, 0.06), transparent 40rem);
     color: var(--ink);
     font-family: var(--font-sans);
     font-size: 15px;
@@ -133,16 +130,6 @@ a {
     line-height: 1;
 }
 
-.wordmark-text small {
-    display: block;
-    margin-top: 3px;
-    font-family: var(--font-mono);
-    font-size: 9px;
-    letter-spacing: 0.16em;
-    color: var(--muted);
-    text-transform: uppercase;
-}
-
 .site-nav {
     display: flex;
     align-items: center;
@@ -153,11 +140,9 @@ a {
     position: relative;
     padding: 26px 0 24px;
     color: var(--ink-soft);
-    font-family: var(--font-mono);
-    font-size: 11px;
+    font-size: 13px;
     font-weight: 600;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
+    letter-spacing: 0.01em;
     transition: color 150ms ease;
 }
 
@@ -284,10 +269,9 @@ a {
 .mobile-drawer a {
     padding: 10px 12px;
     border-bottom: 1px solid var(--line-light);
-    font-family: var(--font-mono);
-    font-size: 13px;
-    text-transform: uppercase;
-    letter-spacing: 0.12em;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.01em;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -305,24 +289,14 @@ a {
 
 .eyebrow {
     margin: 0;
-    font-family: var(--font-mono);
     font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 0.16em;
+    font-weight: 600;
+    letter-spacing: 0.08em;
     text-transform: uppercase;
     color: var(--muted);
     display: flex;
     align-items: center;
     gap: 8px;
-}
-
-.eyebrow::before {
-    content: "";
-    display: inline-block;
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: var(--foxglove);
 }
 
 .home-intro {
@@ -374,12 +348,10 @@ a {
 
 .intro-aside p {
     margin: 0;
-    font-family: var(--font-mono);
-    font-size: 11px;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--muted);
-    line-height: 1.8;
+    font-size: 13px;
+    color: var(--ink-soft);
+    line-height: 1.6;
+    font-style: italic;
 }
 
 .board-tools {
@@ -452,10 +424,8 @@ a {
     background: var(--paper-card);
     border: 1px solid var(--line);
     border-radius: 4px;
-    font-family: var(--font-mono);
-    font-size: 11px;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
+    font-size: 12px;
+    letter-spacing: 0.01em;
     color: var(--ink);
 }
 
@@ -468,11 +438,9 @@ a {
     padding: 0 20px;
     border-radius: 4px;
     border: 1px solid transparent;
-    font-family: var(--font-mono);
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.01em;
     transition: transform 140ms ease, background 140ms ease, border-color 140ms ease;
 }
 
@@ -532,11 +500,9 @@ a {
     background: none;
     border: none;
     padding: 6px 0;
-    font-family: var(--font-mono);
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.01em;
     color: var(--muted);
     position: relative;
 }
@@ -645,8 +611,7 @@ a {
 }
 
 .author-location {
-    font-family: var(--font-mono);
-    font-size: 11px;
+    font-size: 12px;
     color: var(--muted);
     font-style: italic;
 }
@@ -694,8 +659,7 @@ a {
     border-radius: 4px;
     padding: 6px 12px;
     background: var(--paper-card);
-    font-family: var(--font-mono);
-    font-size: 11px;
+    font-size: 12px;
     color: var(--ink-soft);
     transition: all 140ms ease;
 }
@@ -729,10 +693,7 @@ a {
     color: #90463b;
     border-color: transparent;
     background: none;
-    font-family: var(--font-mono);
-    font-size: 10px;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
+    font-size: 12px;
 }
 
 .delete-action:hover {
@@ -792,11 +753,8 @@ a {
     color: #fff;
     border: none;
     border-radius: 3px;
-    font-family: var(--font-mono);
-    font-size: 10px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
+    font-size: 12px;
+    font-weight: 600;
 }
 
 .home-aside {
@@ -865,38 +823,6 @@ a {
     color: var(--ink);
 }
 
-.leaf-stage {
-    position: fixed;
-    inset: 0;
-    pointer-events: none;
-    z-index: 60;
-    overflow: hidden;
-}
-
-.falling-leaf {
-    position: absolute;
-    top: -50px;
-    opacity: 0;
-    animation: leaf-fall-anim linear forwards;
-}
-
-@keyframes leaf-fall-anim {
-    0% {
-        opacity: 0;
-        transform: translate3d(0, 0, 0) rotate(0deg);
-    }
-    10% {
-        opacity: var(--leaf-opacity, 0.6);
-    }
-    90% {
-        opacity: var(--leaf-opacity, 0.6);
-    }
-    100% {
-        opacity: 0;
-        transform: translate3d(var(--drift, 120px), 110vh, 0) rotate(var(--rot, 360deg));
-    }
-}
-
 .modal-backdrop {
     position: fixed;
     inset: 0;
@@ -949,11 +875,10 @@ a {
 
 .field-label {
     display: block;
-    font-family: var(--font-mono);
-    font-size: 10px;
-    font-weight: 700;
+    font-size: 11px;
+    font-weight: 600;
     text-transform: uppercase;
-    letter-spacing: 0.12em;
+    letter-spacing: 0.06em;
     color: var(--muted);
     margin: 14px 0 6px;
 }
@@ -989,8 +914,7 @@ textarea.field-input {
     border: 1px solid var(--line);
     background: var(--paper);
     padding: 4px 8px;
-    font-family: var(--font-mono);
-    font-size: 11px;
+    font-size: 12px;
 }
 
 .upload-zone {
@@ -1006,6 +930,16 @@ textarea.field-input {
 
 .upload-zone input {
     display: none;
+}
+
+.upload-icon {
+    width: 24px;
+    height: 24px;
+    flex: none;
+    fill: none;
+    stroke: var(--foxglove);
+    stroke-width: 1.6;
+    stroke-linejoin: round;
 }
 
 .upload-preview-wrap {
@@ -1230,8 +1164,8 @@ textarea.field-input {
     border: 1px solid var(--line);
     background: var(--paper);
     padding: 4px 10px;
-    font-family: var(--font-mono);
-    font-size: 10px;
+    font-size: 12px;
+    color: var(--ink-soft);
     border-radius: 3px;
     white-space: nowrap;
 }
@@ -1255,11 +1189,7 @@ textarea.field-input {
 }
 
 .gather-hero {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) 280px;
-    gap: 40px;
-    align-items: center;
-    padding-bottom: 48px;
+    padding-bottom: 40px;
     border-bottom: 1px solid var(--line);
 }
 
@@ -1271,101 +1201,55 @@ textarea.field-input {
     margin: 14px 0 0;
 }
 
-.progress-card {
-    background: var(--paper-card);
-    border: 1px solid var(--line);
-    padding: 24px;
-    text-align: center;
-    border-radius: 4px;
-}
-
-.progress-circle-wrap {
-    width: 120px;
-    height: 120px;
-    margin: 0 auto 12px;
-    position: relative;
-    display: grid;
-    place-items: center;
-}
-
-.progress-circle-wrap canvas {
-    position: absolute;
-    inset: 0;
-}
-
-.progress-number {
-    font-family: var(--font-serif);
-    font-size: 32px;
-    font-weight: 600;
-    color: var(--foxglove);
-}
-
-.gather-grid {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 18px;
-    margin-top: 24px;
-}
-
-.gather-item-card {
-    background: var(--paper-card);
-    border: 1px solid var(--line);
-    padding: 20px 24px;
-    display: grid;
-    grid-template-columns: 36px minmax(0, 1fr) auto;
-    gap: 16px;
-    align-items: start;
-    border-radius: 3px;
-    transition: background 140ms ease;
-}
-
-.gather-item-card.gathered {
-    background: var(--paper-tint);
-    border-color: rgba(90, 115, 92, 0.4);
-}
-
-.gather-item-card.gathered h3 {
-    text-decoration: line-through;
+.gather-count {
+    margin: 20px 0 0;
+    font-size: 14px;
     color: var(--muted);
 }
 
-.item-index {
-    font-family: var(--font-serif);
-    font-size: 24px;
-    color: var(--ochre);
+.gather-list {
+    margin-top: 4px;
 }
 
-.gather-item-card h3 {
-    margin: 4px 0 6px;
+.gather-item {
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+    padding: 20px 4px;
+    border-bottom: 1px solid var(--line-light);
+    cursor: pointer;
+}
+
+.gather-item input {
+    width: 17px;
+    height: 17px;
+    margin: 4px 0 0;
+    flex: none;
+    accent-color: var(--lichen);
+}
+
+.gather-item h3 {
+    margin: 0 0 5px;
     font-family: var(--font-serif);
-    font-size: 20px;
+    font-size: 19px;
     font-weight: 500;
-    line-height: 1.2;
+    line-height: 1.25;
 }
 
-.gather-item-card p {
+.gather-item p {
     margin: 0;
     font-size: 13px;
     color: var(--ink-soft);
     line-height: 1.5;
 }
 
-.gather-toggle-btn {
-    padding: 6px 12px;
-    border: 1px solid var(--line);
-    background: var(--paper-card);
-    font-family: var(--font-mono);
-    font-size: 10px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    border-radius: 3px;
+.gather-item.done h3 {
+    text-decoration: line-through;
+    color: var(--muted);
 }
 
-.gather-item-card.gathered .gather-toggle-btn {
-    background: var(--lichen);
-    color: #fff;
-    border-color: var(--lichen);
+.gather-item.done p {
+    color: var(--muted);
 }
 
 .profile-card {
@@ -1424,10 +1308,9 @@ textarea.field-input {
 }
 
 .stat-cell span {
-    font-family: var(--font-mono);
-    font-size: 10px;
+    font-size: 11px;
     text-transform: uppercase;
-    letter-spacing: 0.12em;
+    letter-spacing: 0.06em;
     color: var(--muted);
 }
 
@@ -1440,10 +1323,8 @@ textarea.field-input {
     color: var(--cream);
     padding: 10px 20px;
     border-radius: 30px;
-    font-family: var(--font-mono);
-    font-size: 12px;
-    font-weight: 600;
-    letter-spacing: 0.05em;
+    font-size: 13px;
+    font-weight: 500;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
     opacity: 0;
     pointer-events: none;
@@ -1478,12 +1359,6 @@ textarea.field-input {
     .messages-layout:not(.chat-active) .chat-panel {
         display: none;
     }
-    .gather-hero {
-        grid-template-columns: 1fr;
-    }
-    .gather-grid {
-        grid-template-columns: 1fr;
-    }
     .profile-card {
         grid-template-columns: 1fr;
         text-align: center;
@@ -1492,7 +1367,7 @@ textarea.field-input {
 }
 
 @media print {
-    .site-header, .board-actions, .filter-bar, .home-aside, .modal-backdrop, .toast, .leaf-stage {
+    .site-header, .board-actions, .filter-bar, .home-aside, .modal-backdrop, .toast {
         display: none !important;
     }
     body {

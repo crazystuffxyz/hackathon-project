@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="theme-color" content="#1b2920">
-    <title>Harvest — Naturalist Field Book & Basket</title>
+    <meta name="description" content="Your Harvest profile: notes you've posted and the ones you've saved.">
+    <title>Harvest — profile</title>
     <link rel="stylesheet" href="/css/main.css">
 </head>
 <body data-page="profile">
@@ -16,15 +17,14 @@
                 </div>
                 <div class="wordmark-text">
                     <strong>harvest</strong>
-                    <small>field book</small>
                 </div>
             </a>
         </div>
 
         <nav class="site-nav" aria-label="Main Navigation">
-            <a href="/">specimen board</a>
-            <a href="/messages.html">dispatches</a>
-            <a href="/gather.html">seasonal ledger</a>
+            <a href="/">Board</a>
+            <a href="/messages.html">Messages</a>
+            <a href="/gather.html">Checklist</a>
         </nav>
 
         <div class="header-actions">
@@ -42,77 +42,75 @@
     </header>
 
     <div class="mobile-drawer" id="mobile-drawer">
-        <a href="/">Specimen Board</a>
-        <a href="/messages.html">Dispatches</a>
-        <a href="/gather.html">Seasonal Ledger</a>
-        <a href="/profile.html">Your Field Book</a>
+        <a href="/">Board</a>
+        <a href="/messages.html">Messages</a>
+        <a href="/gather.html">Checklist</a>
+        <a href="/profile.html">Your profile</a>
     </div>
 
     <main class="page-shell page-narrow">
         <section class="profile-card">
             <div class="large-avatar" id="profile-avatar">Y</div>
             <div class="profile-info">
-                <p class="eyebrow" id="profile-location">Valley Basin</p>
-                <h1 id="profile-name">Naturalist</h1>
+                <p class="eyebrow" id="profile-location"></p>
+                <h1 id="profile-name">Name</h1>
                 <p id="profile-handle" style="font-family: var(--font-mono); font-size: 13px; color: var(--muted);">@you</p>
-                <p id="profile-bio" style="font-family: var(--font-serif); font-size: 17px; margin-top: 10px; line-height: 1.5;">Field notes and observations.</p>
+                <p id="profile-bio" style="font-family: var(--font-serif); font-size: 17px; margin-top: 10px; line-height: 1.5;"></p>
             </div>
-            <button id="edit-profile" class="button button-quiet">Edit Inscription</button>
+            <button id="edit-profile" class="button button-quiet">Edit profile</button>
         </section>
 
         <section class="stats-grid">
             <div class="stat-cell">
                 <strong id="profile-posts">0</strong>
-                <span>Logged Records</span>
+                <span>Notes</span>
             </div>
             <div class="stat-cell">
                 <strong id="profile-likes">0</strong>
-                <span>Gathered Endorsements</span>
+                <span>Likes received</span>
             </div>
             <div class="stat-cell">
                 <strong id="profile-saved">0</strong>
-                <span>Basket Items</span>
+                <span>Saved</span>
             </div>
         </section>
 
         <div class="filter-bar" style="margin-bottom: 24px;">
-            <button class="filter-btn active" id="tab-basket">Saved In Basket</button>
-            <button class="filter-btn" id="tab-authored">Authored Entries</button>
+            <button class="filter-btn active" id="tab-basket">Saved</button>
+            <button class="filter-btn" id="tab-authored">Your notes</button>
         </div>
 
         <section id="profile-records-list" class="post-list"></section>
 
         <div id="profile-empty" class="aside-card hidden" style="text-align: center; padding: 48px 20px;">
-            <p class="eyebrow" style="justify-content: center;">Empty Compartment</p>
-            <h3 style="font-family: var(--font-serif); font-size: 26px; margin: 10px 0;">No items found here.</h3>
-            <p style="color: var(--muted); margin: 0 0 16px;">Save notes from the board or author fresh observations.</p>
-            <a href="/" class="button button-quiet">Return to Specimen Board</a>
+            <h3 style="font-family: var(--font-serif); font-size: 26px; margin: 10px 0;">Nothing here yet.</h3>
+            <p style="color: var(--muted); margin: 0 0 16px;">Save notes from the board, or write your own.</p>
+            <a href="/" class="button button-quiet">Back to the board</a>
         </div>
     </main>
 
     <div class="modal-backdrop hidden" id="profile-backdrop">
         <section class="modal" role="dialog" aria-modal="true" aria-labelledby="profile-edit-title">
             <button class="modal-close" id="close-profile" aria-label="Close dialog">×</button>
-            <p class="eyebrow">Inscription Details</p>
-            <h2 id="profile-edit-title">Edit Field Book Registry</h2>
+            <h2 id="profile-edit-title">Edit profile</h2>
 
             <form id="profile-form" style="display: grid; gap: 14px; margin-top: 16px;">
                 <div>
-                    <label class="field-label" for="display-name">Naturalist Name</label>
+                    <label class="field-label" for="display-name">Name</label>
                     <input class="field-input" id="display-name" maxlength="60" required>
                 </div>
                 <div>
-                    <label class="field-label" for="bio">Field Bio & Interests</label>
+                    <label class="field-label" for="bio">About you</label>
                     <textarea class="field-input" id="bio" maxlength="240" rows="3"></textarea>
                 </div>
                 <div>
-                    <label class="field-label" for="location">Station or Sector</label>
-                    <input class="field-input" id="location" maxlength="60" placeholder="e.g. Cranberry Bog Lane">
+                    <label class="field-label" for="location">Where you are</label>
+                    <input class="field-input" id="location" maxlength="60" placeholder="e.g. near the mill">
                 </div>
 
                 <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 14px;">
                     <button type="button" class="button button-quiet" id="cancel-profile">Cancel</button>
-                    <button class="button button-dark" type="submit">Commit Changes</button>
+                    <button class="button button-dark" type="submit">Save changes</button>
                 </div>
             </form>
         </section>
@@ -121,8 +119,7 @@
     <div class="modal-backdrop hidden" id="persona-backdrop">
         <section class="modal" role="dialog" aria-modal="true" aria-labelledby="persona-profile-title">
             <button class="modal-close" id="close-persona" aria-label="Close dialog">×</button>
-            <p class="eyebrow">Identity Registry</p>
-            <h2 id="persona-profile-title">Switch Harvester</h2>
+            <h2 id="persona-profile-title">Switch account</h2>
             <div id="persona-list" class="persona-grid"></div>
         </section>
     </div>
