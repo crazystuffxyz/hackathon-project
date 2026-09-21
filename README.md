@@ -1,4 +1,6 @@
-### (https://kitten-footsore-nail.ngrok-free.dev/)
+### (http://hackathon-project-5zh8.onrender.com/)
+
+For the demo, simply click either the above link, which will directly take you to the live demo website. 
 
 # Hackathon Project
 
@@ -50,8 +52,8 @@ Some of the main features we worked on include:
 - image uploads
 - different pages for browsing and interacting with the site
 - a harvest-themed design
-- original pixel art
-- a walking turkey animation
+- original pixel art (In main, but is primarily in  longfei-images)
+- a walking turkey animation (In branch right now)
 - custom button, posting, and scrolling sound effects
 - background music
 - responsive/interactive UI elements
@@ -92,7 +94,12 @@ We started by deciding what kind of website would fit the harvest theme while al
 One challenge was working on the same project with multiple people. Sometimes changes from one branch affected files that another person had also edited, so we had to learn how to merge changes and fix conflicts. Another challenge was getting all of the frontend and backend parts to work together. A feature might look correct on the page but still need changes to the JavaScript, server, or database before it actually worked. We also had smaller problems with things like file paths and assets. For example, our sound effects had to be placed in the correct static folders and referenced with the correct paths before the browser could load them. Audio was another thing we had to work around because browsers do not always allow background music to autoplay. We made the music start after the user interacts with the page instead. 
 
 
+## Tech Stack 
 
+Languages: JS, HTML, CSS
 
+Frontend: Static JS, TailwindCSS, and HTML.
 
+Backend:
+Multer, Node.js, In memory storage, Sqlite.
 

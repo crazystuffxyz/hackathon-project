@@ -1,6 +1,17 @@
+function normalizeTeacherName(name) {
+    return String(name || "")
+        .trim()
+        .toLowerCase()
+        .replace(/^(mr|mrs|ms|dr)\.?\s+/, "");
+}
+
 const home = {
     posts: [],
     filter: "all",
+    difficulty: "all",
+    takeAgain: "all",
+    ratingFilter: "all",
+    editingPostId: null,
     query: "",
     sort: "newest",
     debounceTimer: null,
@@ -11,8 +22,11 @@ const home = {
     async start() {
         this.bindComposer();
         this.bindFilters();
+        this.bindDifficulty();
         this.bindSearch();
         this.bindSort();
+        this.bindTakeAgain();
+        this.bindRatingFilter();
 
         await this.loadPosts();
         await this.loadStats();
@@ -55,13 +69,31 @@ const home = {
             filtered = filtered.filter(p => p.category === this.filter);
         }
 
+        if (this.difficulty !== "all") {
+            filtered = filtered.filter(p => p.difficulty === this.difficulty);
+        }
+
+        if (this.takeAgain !== "all") {
+            filtered = filtered.filter(p => p.take_again === this.takeAgain);
+        }
+
+        if (this.ratingFilter !== "all") {
+            const minimumRating = Number(this.ratingFilter);
+
+            filtered = filtered.filter(
+                p => Number(p.rating) >= minimumRating
+            );
+        }
+
         if (this.query) {
             const q = this.query.toLowerCase();
-            filtered = filtered.filter(p => 
+            filtered = filtered.filter(p =>
                 p.text.toLowerCase().includes(q) ||
                 p.display_name.toLowerCase().includes(q) ||
                 p.handle.toLowerCase().includes(q) ||
-                (p.specimen_no && p.specimen_no.toLowerCase().includes(q))
+                (p.teacher && p.teacher.toLowerCase().includes(q)) ||
+                (p.course && p.course.toLowerCase().includes(q)) ||
+                (p.rating && p.rating.toString() === q)
             );
         }
 
@@ -72,6 +104,7 @@ const home = {
         if (countEl) countEl.textContent = this.posts.length;
 
         this.renderBasketPreview();
+        this.renderTeacherSummaries();
     },
 
     renderCard(post) {
@@ -81,17 +114,42 @@ const home = {
         return `
             <article class="post-card" data-id="${post.id}">
                 <div class="post-card-top">
-                    <span class="specimen-tag category-${post.category}">
-                        ${app.escape(post.specimen_no || "note")} · ${app.escape(post.category)}
-                    </span>
                     <div class="post-meta-details">
-                        <span>${app.escape(app.weatherLabel(post.weather))}</span>
-                        <span>·</span>
-                        <time data-time="${post.created_at}">${app.timeAgo(post.created_at)}</time>
+                        <time data-time="${post.created_at}">
+                            ${app.timeAgo(post.created_at)}
+                        </time>
                     </div>
                 </div>
 
                 <div class="post-body">
+
+                    <div class="review-heading">
+                        <h3>${app.escape(post.teacher || "Unknown Teacher")}</h3>
+                        <p>${app.escape(post.course || "Unknown Course")}</p>
+                    </div>
+
+                    <div class="review-meta">
+                        <div>
+                            Difficulty: ${app.escape(
+                                (post.difficulty || "medium").replace(/^\w/, c => c.toUpperCase())
+                            )}
+                        </div>
+
+                        <div>
+                            Workload: ${app.escape(
+                                (post.workload || "average").replace(/^\w/, c => c.toUpperCase())
+                            )}
+                        </div>
+                        <div>
+                            Would Take Again: ${post.take_again === "yes" ? "Yes" : "No"}
+                        </div>
+                        <div class="review-rating">
+                            Rating:
+                            ${"★".repeat(Number(post.rating) || 3)}
+                            ${"☆".repeat(5 - (Number(post.rating) || 3))}
+                        </div>
+                    </div>
+
                     <div class="post-author-row">
                         <div class="author-chip">
                             <div class="profile-avatar">${app.initials(post.display_name)}</div>
@@ -128,6 +186,7 @@ const home = {
                         </button>
 
                         ${isAuthor ? `
+                            <button class="action-pill" data-action="edit">Edit</button>
                             <button class="delete-action" data-action="delete">Delete</button>
                         ` : ""}
                     </div>
@@ -165,14 +224,40 @@ const home = {
         document.getElementById("reset-filters")?.addEventListener("click", () => {
             this.filter = "all";
             this.query = "";
+            this.difficulty = "all";
+            this.takeAgain = "all";
+            this.ratingFilter = "all";
+
+            const ratingSelect = document.getElementById("rating-filter");
+            if (ratingSelect) ratingSelect.value = "all";
+
             const search = document.getElementById("post-search");
             if (search) search.value = "";
+
+            const difficultySelect = document.getElementById("difficulty-filter");
+            if (difficultySelect) difficultySelect.value = "all";
+
+            const takeAgainSelect = document.getElementById("take-again-filter");
+            if (takeAgainSelect) takeAgainSelect.value = "all";
+
             document.querySelectorAll("#category-filters .filter-btn").forEach(b => {
                 b.classList.toggle("active", b.dataset.filter === "all");
             });
+
             this.render();
         });
     },
+
+    bindDifficulty() {
+    const select = document.getElementById("difficulty-filter");
+
+    if (!select) return;
+
+    select.addEventListener("change", () => {
+        this.difficulty = select.value;
+        this.render();
+    });
+},
 
     bindSearch() {
         const input = document.getElementById("post-search");
@@ -193,6 +278,27 @@ const home = {
             }
         });
     },
+    bindTakeAgain() {
+        const select = document.getElementById("take-again-filter");
+
+        if (!select) return;
+
+        select.addEventListener("change", () => {
+            this.takeAgain = select.value;
+            this.render();
+        });
+    },
+
+    bindRatingFilter() {
+    const select = document.getElementById("rating-filter");
+
+    if (!select) return;
+
+    select.addEventListener("change", () => {
+        this.ratingFilter = select.value;
+        this.render();
+    });
+},
 
     bindSort() {
         const select = document.getElementById("sort-posts");
@@ -259,38 +365,77 @@ const home = {
         });
 
         form.addEventListener("submit", async e => {
-            e.preventDefault();
-            const submitBtn = document.getElementById("submit-post-btn");
-            submitBtn.disabled = true;
-            submitBtn.textContent = "Posting...";
+    e.preventDefault();
 
-            const formData = new FormData(form);
-            formData.append("handle", app.handle);
+    const submitBtn = document.getElementById("submit-post-btn");
+    const wasEditing = Boolean(this.editingPostId);
 
-            try {
-                const newPost = await app.request("/api/posts", {
-                    method: "POST",
+    submitBtn.disabled = true;
+    submitBtn.textContent = wasEditing ? "Saving..." : "Posting...";
+
+    const formData = new FormData(form);
+    formData.append("handle", app.handle);
+
+    try {
+        let savedPost;
+
+        if (this.editingPostId) {
+            const editingId = this.editingPostId;
+
+            savedPost = await app.request(
+                `/api/posts/${editingId}`,
+                {
+                    method: "PUT",
                     body: formData
-                });
+                }
+            );
 
-                this.posts.unshift(newPost);
-                this.render();
-                form.reset();
-                previewWrap.classList.add("hidden");
-                document.getElementById("post-characters").textContent = "0 / 1400";
-                close();
-                app.toast("Posted.");
-            } catch (err) {
-                app.toast(err.message);
-            } finally {
-                submitBtn.disabled = false;
-                submitBtn.textContent = "Post it";
+            const index = this.posts.findIndex(
+                p => p.id === editingId
+            );
+
+            if (index !== -1) {
+                savedPost.comments = this.posts[index].comments || [];
+                savedPost.liked = this.posts[index].liked;
+                savedPost.saved = this.posts[index].saved;
+
+                this.posts[index] = savedPost;
+            }
+
+            this.editingPostId = null;
+        } else {
+            savedPost = await app.request("/api/posts", {
+                method: "POST",
+                body: formData
+            });
+
+            this.posts.unshift(savedPost);
+        }
+
+        this.render();
+
+        form.reset();
+        previewWrap.classList.add("hidden");
+
+        document.getElementById("post-characters").textContent = "0 / 1400";
+        document.getElementById("composer-title").textContent = "Write a review";
+
+        close();
+
+        app.toast(wasEditing ? "Review updated." : "Review posted.");
+
+    } catch (err) {
+        app.toast(err.message);
+
+        } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = "Post Review";
             }
         });
-    },
+    }   ,
 
-    renderBasketPreview() {
-        const saved = this.posts.filter(p => p.saved);
+        renderBasketPreview() {
+            const saved = this.posts.filter(p => p.saved);
         const container = document.getElementById("saved-preview-list");
         if (!container) return;
 
@@ -306,6 +451,70 @@ const home = {
             </div>
         `).join("");
     },
+
+    renderTeacherSummaries() {
+    const container = document.getElementById("teacher-summary-list");
+    if (!container) return;
+
+    const teachers = {};
+
+    this.posts.forEach(post => {
+        if (!post.teacher) return;
+
+        const key = normalizeTeacherName(post.teacher);
+
+        if (!teachers[key]) {
+            teachers[key] = {
+                name: key,
+                ratings: [],
+                takeAgain: 0,
+                total: 0
+            };
+        }
+
+        const teacher = teachers[key];
+
+        teacher.total++;
+
+        if (post.rating) {
+            teacher.ratings.push(Number(post.rating));
+        }
+
+        if (post.take_again === "yes") {
+            teacher.takeAgain++;
+        }
+    });
+
+    const list = Object.values(teachers);
+
+    if (list.length === 0) {
+        container.innerHTML = `
+            <div style="color: var(--muted); font-size: 13px;">
+                No teacher reviews yet.
+            </div>
+        `;
+        return;
+    }
+
+    container.innerHTML = list.map(teacher => {
+        const average = teacher.ratings.length
+            ? teacher.ratings.reduce((a, b) => a + b, 0) / teacher.ratings.length
+            : 0;
+
+        const takeAgainPercent = Math.round(
+            (teacher.takeAgain / teacher.total) * 100
+        );
+
+        return `
+            <div class="teacher-summary" data-teacher="${app.escape(teacher.name)}">
+                <strong>${app.escape(teacher.name)}</strong>
+                <div>${average.toFixed(1)} ★ average</div>
+                <div>${teacher.total} review${teacher.total === 1 ? "" : "s"}</div>
+                <div>${takeAgainPercent}% would take again</div>
+            </div>
+        `;
+    }).join("");
+},
 
     refreshTimes() {
         this.list.querySelectorAll("time[data-time]").forEach(el => {
@@ -324,6 +533,44 @@ document.addEventListener("click", async e => {
     if (!post) return;
 
     const action = actionBtn.dataset.action;
+
+    if (action === "edit") {
+    home.editingPostId = post.id;
+
+    const teacher = document.getElementById("teacher-name");
+    const course = document.getElementById("course-name");
+    const text = document.getElementById("post-text");
+    const difficulty = document.getElementById("post-difficulty");
+    const workload = document.getElementById("post-workload");
+    const takeAgain = document.getElementById("take-again");
+    const rating = document.getElementById("rating");
+    const backdrop = document.getElementById("composer-backdrop");
+    const title = document.getElementById("composer-title");
+    const submitBtn = document.getElementById("submit-post-btn");
+    const characters = document.getElementById("post-characters");
+
+    if (teacher) teacher.value = post.teacher || "";
+    if (course) course.value = post.course || "";
+    if (text) text.value = post.text || "";
+    if (difficulty) difficulty.value = post.difficulty || "medium";
+    if (workload) workload.value = post.workload || "average";
+    if (takeAgain) takeAgain.value = post.take_again || "yes";
+    if (rating) rating.value = String(post.rating || 3);
+
+    if (characters) {
+        characters.textContent = `${post.text?.length || 0} / 1400`;
+    }
+
+    if (title) title.textContent = "Edit review";
+    if (submitBtn) submitBtn.textContent = "Save Changes";
+
+    if (backdrop) {
+        backdrop.classList.remove("hidden");
+        document.body.classList.add("modal-open");
+    }
+
+    return;
+}
 
     if (action === "comments") {
         card.classList.toggle("comments-open");
@@ -422,6 +669,21 @@ document.addEventListener("submit", async e => {
     } catch (err) {
         app.toast(err.message);
     }
+});
+
+document.addEventListener("click", e => {
+    const summary = e.target.closest(".teacher-summary");
+    if (!summary) return;
+
+    const teacher = summary.dataset.teacher;
+
+    const search = document.getElementById("post-search");
+    if (search) {
+        search.value = teacher;
+    }
+
+    home.query = teacher;
+    home.render();
 });
 
 document.addEventListener("DOMContentLoaded", () => home.start());

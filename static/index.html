@@ -77,7 +77,7 @@
     <main class="page-shell">
         <section class="home-intro">
             <div>
-                <h1>Things worth<br><em>keeping.</em></h1>
+                <h1>Reviews worth<br><em>sharing.</em></h1>
                 <p class="intro-copy">
 Post the stuff you stumble on, like a good farm stand, a plant that finally took, something you fixed or figured out. Write it down so the next person can find it too.
                 </p>
@@ -93,33 +93,54 @@ Post the stuff you stumble on, like a good farm stand, a plant that finally took
 
         <section class="board-tools">
             <div class="board-title">
-                <h2>Latest notes <span id="post-count">0</span></h2>
+                <h2>Latest reviews <span id="post-count">0</span></h2>
             </div>
 
-            <div class="board-actions">
+                        <div class="board-actions">
                 <label class="search-box">
                     <span aria-hidden="true">⌕</span>
-                    <input id="post-search" type="search" placeholder="Search notes or people...">
+                    <input
+                        id="post-search"
+                        type="search"
+                        placeholder="Search teachers, courses, or reviews..."
+                    >
                     <kbd>/</kbd>
                 </label>
 
                 <select id="sort-posts" aria-label="Sort order">
                     <option value="newest">Newest first</option>
                     <option value="popular">Most liked</option>
+                    <option value="rating">Highest rating</option>
+                </select>
+
+                <select id="difficulty-filter" aria-label="Filter by difficulty">
+                    <option value="all">All difficulties</option>
+                    <option value="easy">Easy</option>
+                    <option value="medium">Medium</option>
+                    <option value="hard">Hard</option>
+                </select>
+
+                <select id="rating-filter" aria-label="Filter by rating">
+                    <option value="all">All ratings</option>
+                    <option value="5">5★ only</option>
+                    <option value="4">4★ & up</option>
+                    <option value="3">3★ & up</option>
+                </select>
+
+                <select id="take-again-filter" aria-label="Filter by would take again">
+                    <option value="all">Take again: All</option>
+                    <option value="yes">Would take again</option>
+                    <option value="no">Would not take again</option>
                 </select>
 
                 <button class="button button-dark" id="new-note">
-                    <span>+ New note</span>
+                    <span>+ New review</span>
                 </button>
             </div>
         </section>
 
         <div class="filter-bar" id="category-filters">
-            <button class="filter-btn active" data-filter="all">All notes</button>
-            <button class="filter-btn" data-filter="found">Found</button>
-            <button class="filter-btn" data-filter="grown">Grown</button>
-            <button class="filter-btn" data-filter="made">Made</button>
-            <button class="filter-btn" data-filter="learned">Learned</button>
+            <button class="filter-btn active" data-filter="all">All reviews</button>
         </div>
 
         <div class="home-grid">
@@ -138,11 +159,19 @@ Post the stuff you stumble on, like a good farm stand, a plant that finally took
             <aside class="home-aside">
                 <section class="aside-card archival-rule">
                     <p class="eyebrow">House rule</p>
-                    <h3>Say where you found it.</h3>
+                    <h3>Be specific and fair.</h3>
                     <p>
-                        A note with a vague location helps nobody. Name the street, the tree,
-                        part number, the oven setting.
+                        Share useful details about the class, workload, teaching style, and what future students should know.
                     </p>
+                </section>
+
+                <section class="aside-card">
+                    <p class="eyebrow">Teacher summaries</p>
+                    <div id="teacher-summary-list">
+                        <div style="color: var(--muted); font-size: 13px;">
+                            No teacher reviews yet.
+                        </div>
+                    </div>
                 </section>
 
                 <section class="aside-card">
@@ -167,32 +196,75 @@ Post the stuff you stumble on, like a good farm stand, a plant that finally took
         <section class="modal" role="dialog" aria-modal="true" aria-labelledby="composer-title">
             <button class="modal-close" id="close-composer" aria-label="Close dialog">×</button>
 
-            <h2 id="composer-title">What did you find?</h2>
-            <p class="modal-subcopy">Post it to the board. The more specific, the more useful.</p>
+            <h2 id="composer-title">Write a review</h2>
+            <p class="modal-subcopy">Share your experience with a teacher and course.</p>
 
             <form id="post-form">
+                <label class="field-label" for="teacher-name">Teacher</label>
+                <input
+                    type="text"
+                    id="teacher-name"
+                    name="teacher"
+                    maxlength="80"
+                    required
+                    placeholder="The teacher's name"
+                >
+
+                <label class="field-label" for="course-name">Course</label>
+                <input
+                    type="text"
+                    id="course-name"
+                    name="course"
+                    maxlength="80"
+                    required
+                    placeholder="The course name"
+                >
                 <label class="field-label" for="post-text">Notes</label>
-                <textarea id="post-text" name="text" maxlength="1400" required
-                    placeholder="I found / grew / made / learned that..."></textarea>
-
+                <textarea
+                    id="post-text"
+                    name="text"
+                    maxlength="1400"
+                    required
+                    placeholder="Share your experience with this teacher or course..."
+                ></textarea>
                 <div class="field-meta-row">
-                    <span id="post-characters">0 / 1400</span>
-                    <div style="display: flex; gap: 8px;">
-                        <select id="post-category" name="category" aria-label="Category">
-                            <option value="found">Found</option>
-                            <option value="grown">Grown</option>
-                            <option value="made">Made</option>
-                            <option value="learned">Learned</option>
-                        </select>
-                        <select id="post-weather" name="weather" aria-label="Weather that day">
-                            <option value="brisk">Brisk</option>
-                            <option value="mist">Misty</option>
-                            <option value="frost">Frost</option>
-                            <option value="sun">Sunny</option>
-                        </select>
-                    </div>
-                </div>
+                        <span id="post-characters">0 / 1400</span>
 
+                        <div style="display: flex; gap: 8px;">
+                            <select id="post-difficulty" name="difficulty" aria-label="Course difficulty">
+                                <option value="easy">Easy</option>
+                                <option value="medium" selected>Medium</option>
+                                <option value="hard">Hard</option>
+                            </select>
+
+                            <select id="post-workload" name="workload" aria-label="Course workload">
+                                <option value="light">Light workload</option>
+                                <option value="average" selected>Average workload</option>
+                                <option value="heavy">Heavy workload</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <label class="field-label" for="take-again">
+                        Would take this teacher/course again?
+                    </label>
+
+                    <select id="take-again" name="take_again">
+                        <option value="yes" selected>Yes</option>
+                        <option value="no">No</option>
+                    </select>
+                    <label class="field-label" for="rating">
+                        Overall rating
+                    </label>
+
+                    <select id="rating" name="rating" required>
+                        <option value="5">5 - Excellent</option>
+                        <option value="4">4 - Good</option>
+                        <option value="3" selected>3 - Average</option>
+                        <option value="2">2 - Below Average</option>
+                        <option value="1">1 - Poor</option>
+                    </select>
+                    
                 <label class="upload-zone" for="post-image">
                     <input id="post-image" name="image" type="file" accept="image/*">
                     <svg class="upload-icon" viewBox="0 0 24 24" aria-hidden="true">
@@ -212,7 +284,9 @@ Post the stuff you stumble on, like a good farm stand, a plant that finally took
 
                 <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 24px;">
                     <button type="button" class="button button-quiet" id="cancel-composer">Cancel</button>
-                    <button type="submit" class="button button-dark" id="submit-post-btn">Post it</button>
+                    <button type="submit" class="button button-dark" id="submit-post-btn">
+                        Post Review
+                    </button>
                 </div>
             </form>
         </section>
@@ -231,5 +305,6 @@ Post the stuff you stumble on, like a good farm stand, a plant that finally took
     <script src="/js/home.js"></script>
     <script src="/js/turkey.js"></script>
     <script src="/js/leaves.js"></script>
+    <script src="/js/sounds.js" defer></script>
 </body>
 </html>
