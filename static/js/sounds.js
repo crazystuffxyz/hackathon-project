@@ -1,3 +1,16 @@
+const backgroundMusic = new Audio("/sounds/harvestv2.wav");
+
+backgroundMusic.volume = 0.05;
+backgroundMusic.loop = true;
+backgroundMusic.preload = "auto";
+
+document.addEventListener("pointerdown", () => {
+    if (backgroundMusic.paused) {
+        backgroundMusic.currentTime = 0;
+        backgroundMusic.play().catch(console.error);
+    }
+}, { once: true });
+
 const buttonSound = new Audio("/sounds/button.wav");
 const postSound = new Audio("/sounds/post.wav");
 
