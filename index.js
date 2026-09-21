@@ -943,7 +943,8 @@ app.use((error, req, res, next) => {
     }
 
 if (error) {
-        res.status(400).json({
+        console.error(error);
+        res.status(error.status || 500).json({
             error: error.message
         });
         return;
@@ -958,7 +959,7 @@ app.get("/{*splat}", (req, res, next) => {
         return;
     }
 
-    res.sendFile(path.join(staticDir, "index.html"));
+    res.status(404).sendFile(path.join(staticDir, "404.html"));
 });
 
 app.listen(port, () => {
