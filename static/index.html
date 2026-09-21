@@ -198,22 +198,31 @@ Post the stuff you stumble on, like a good farm stand, a plant that finally took
                     placeholder="Share your experience with this teacher or course..."
                 ></textarea>
                 <div class="field-meta-row">
-                    <span id="post-characters">0 / 1400</span>
-                    <div style="display: flex; gap: 8px;">
-                        <select id="post-difficulty" name="difficulty" aria-label="Course difficulty">
-                        <option value="easy">Easy</option>
-                        <option value="medium" selected>Medium</option>
-                        <option value="hard">Hard</option>
-                    </select>
+                        <span id="post-characters">0 / 1400</span>
 
-                    <select id="post-workload" name="workload" aria-label="Course workload">
-                        <option value="light">Light workload</option>
-                        <option value="average" selected>Average workload</option>
-                        <option value="heavy">Heavy workload</option>
-                    </select>
+                        <div style="display: flex; gap: 8px;">
+                            <select id="post-difficulty" name="difficulty" aria-label="Course difficulty">
+                                <option value="easy">Easy</option>
+                                <option value="medium" selected>Medium</option>
+                                <option value="hard">Hard</option>
+                            </select>
+
+                            <select id="post-workload" name="workload" aria-label="Course workload">
+                                <option value="light">Light workload</option>
+                                <option value="average" selected>Average workload</option>
+                                <option value="heavy">Heavy workload</option>
+                            </select>
+                        </div>
                     </div>
-                </div>
 
+                    <label class="field-label" for="take-again">
+                        Would take this teacher/course again?
+                    </label>
+
+                    <select id="take-again" name="take_again">
+                        <option value="yes" selected>Yes</option>
+                        <option value="no">No</option>
+                    </select>
                 <label class="upload-zone" for="post-image">
                     <input id="post-image" name="image" type="file" accept="image/*">
                     <svg class="upload-icon" viewBox="0 0 24 24" aria-hidden="true">

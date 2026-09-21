@@ -110,6 +110,9 @@ const home = {
                                 (post.workload || "average").replace(/^\w/, c => c.toUpperCase())
                             )}
                         </div>
+                        <div>
+                            Would Take Again: ${post.take_again === "yes" ? "Yes" : "No"}
+                        </div>
                     </div>
 
                     <div class="post-author-row">

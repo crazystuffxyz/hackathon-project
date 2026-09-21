@@ -97,7 +97,7 @@ CREATE INDEX IF NOT EXISTS posts_likes_idx
         ON posts(likes DESC, created_at DESC);
 `);
 
-const postColumns = db.prepare("Pragma table_info(posts)").all()
+const postColumns = db.prepare("PRAGMA table_info(posts)").all()
 .map(column => column.name);
 
 if (!postColumns.includes("teacher")) {
@@ -125,6 +125,13 @@ if (!postColumns.includes("workload")) {
     db.exec(`
         ALTER TABLE posts
         ADD COLUMN workload TEXT NOT NULL DEFAULT 'average'
+    `);
+}
+
+if (!postColumns.includes("take_again")) {
+    db.exec(`
+        ALTER TABLE posts
+        ADD COLUMN take_again TEXT NOT NULL DEFAULT 'yes'
     `);
 }
 
@@ -509,40 +516,41 @@ if (req.query.author) {
     }
 
 const posts = db.prepare(`
-        SELECT
-            p.id,
-            p.category,
-            p.teacher,
-            p.course,
-            p.difficulty,
-            p.workload,
-            p.text,
-            p.image,
-            p.weather,
-            p.specimen_no,
-            p.likes,
-            p.created_at,
-            u.handle,
-            u.display_name,
-            u.location,
-            EXISTS(
-                SELECT 1
-                FROM likes
-                WHERE likes.post_id = p.id
-                AND likes.user_id = @userId
-            ) AS liked,
-            EXISTS(
-                SELECT 1
-                FROM saves
-                WHERE saves.post_id = p.id
-                AND saves.user_id = @userId
-            ) AS saved
-        FROM posts p
-        JOIN users u ON u.id = p.author_id
-        WHERE 1=1 ${filterSql}
-        ORDER BY ${order}
-        LIMIT 100
-    `).all(params);
+    SELECT
+        p.id,
+        p.category,
+        p.teacher,
+        p.course,
+        p.difficulty,
+        p.workload,
+        p.take_again,
+        p.text,
+        p.image,
+        p.weather,
+        p.specimen_no,
+        p.likes,
+        p.created_at,
+        u.handle,
+        u.display_name,
+        u.location,
+        EXISTS(
+            SELECT 1
+            FROM likes
+            WHERE likes.post_id = p.id
+            AND likes.user_id = @userId
+        ) AS liked,
+        EXISTS(
+            SELECT 1
+            FROM saves
+            WHERE saves.post_id = p.id
+            AND saves.user_id = @userId
+        ) AS saved
+    FROM posts p
+    JOIN users u ON u.id = p.author_id
+    WHERE 1=1 ${filterSql}
+    ORDER BY ${order}
+    LIMIT 100
+`).all(params);
 
 const postIds = posts.map(p => p.id);
 
@@ -622,6 +630,7 @@ const specimenNo = generateSpecimenNo();
 
 const difficulty = cleanText(req.body.difficulty, 20);
 const workload = cleanText(req.body.workload, 20);
+const takeAgain = req.body.take_again === "no" ? "no" : "yes";
 
 const result = db.prepare(`
     INSERT INTO posts (
@@ -635,9 +644,10 @@ const result = db.prepare(`
         specimen_no,
         created_at,
         difficulty,
-        workload
+        workload,
+        take_again
     )
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
 `).run(
     user.id,
     category,
@@ -649,7 +659,8 @@ const result = db.prepare(`
     specimenNo,
     now(),
     difficulty,
-    workload
+    workload,
+    takeAgain
 );
 const post = db.prepare(`
             SELECT
@@ -659,6 +670,9 @@ const post = db.prepare(`
                 p.teacher,
                 p.course,
                 p.image,
+                p.difficulty,
+                p.workload,
+                p.take_again,
                 p.weather,
                 p.specimen_no,
                 p.likes,
