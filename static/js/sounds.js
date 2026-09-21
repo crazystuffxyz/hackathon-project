@@ -23,3 +23,20 @@ document.addEventListener("click", (event) => {
     buttonSound.currentTime = 0;
     buttonSound.play().catch(console.error);
 });
+
+const scrollSound = new Audio("/sounds/scroll.wav");
+scrollSound.volume = 0.2;
+scrollSound.preload = "auto";
+
+let scrollCooldown = false;
+
+window.addEventListener("scroll", () => {
+    if (scrollCooldown) return;
+    scrollSound.currentTime = 0;
+    scrollSound.play().catch(() => {});
+
+    scrollCooldown = true;
+    setTimeout(() => {
+        scrollCooldown = false;
+    }, 600);
+});
