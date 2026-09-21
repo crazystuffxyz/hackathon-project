@@ -4,8 +4,8 @@
 
 For the demo, simply click either the above link, which will directly take you to the live demo website. 
 
-## (Most important). If you clone the Github, run npm install, then npm start to local host at port 8080. 
-# If you aren't cloning the github, you just click the onrender.com link, and it'll take you straight there. Nothing else is required besides these instructions. (AFAIK)
+(Most important). If you clone the Github, run npm install, then npm start to local host at port 8080. 
+If you aren't cloning the github, you just click the onrender.com link, and it'll take you straight there. Nothing else is required besides these instructions. (AFAIK)
 
 
 
