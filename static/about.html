@@ -3,22 +3,183 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="theme-color" content="1b2920">
+        <meta name="description" content="About Harvest. Website for posting information">
 
-        <title>About</title>
+        <title> Harvest: About</title>
+
+        <link rel="stylesheet" href="/css/main.css">
 
         <!-- Tailwind Play CDN-->
          <script src="https://cdn.tailwindcss.com"></script>
          <script src="/js/tailwind.config.js"></script>
     </head>
 
-    <body>
+    <body data-page="about">
+    <header class="site-header">
+        <div class="header-left">
+            <a class="wordmark" href="/">
+                <div class="seal-emblem" aria-hidden="true">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M12 2C8 6 4 11 4 16C4 19.3 6.7 22 10 22C11.5 22 12 21 12 21C12 21 12.5 22 14 22C17.3 22 20 19.3 20 16C20 11 16 6 12 2Z"/>
+                        <path d="M12 7V17"/>
+                        <path d="M9 11L12 14L15 11"/>
+                    </svg>
+                </div>
+
+                <div class="wordmark-text">
+                    <strong>harvest</strong>
+                    <small>A _____ (fill in later)</small>
+                </div>
+            </a>
+        </div>
+        
+        
+        
         <h1>About</h1>
 
         <!--add more stuff here-->
-        <nav>
+        <nav class="site-nav" aria-label="Main Navigation">
+            <a href="/">specimen board</a>
+            <a href="/messages.html">dispatches</a>
+            <a href="/gather.html">seasonal ledger</a>
             <a href="/">Home</a>
-            <a href="/about.html">About</a>
+            <a href="active" href="/about.html">about</a>
         </nav>
 
+        <div class="header-actions">
+            <button class="persona-switcher-btn" id="open-persona switcher">
+                <div class="profile-avatar" id="nav-avatar">Y</div>
+                <div class="persona-meta">
+                    <strong id="nav-display-name">You</strong>
+                    <small id="nav-handle">@you</small>
+                </div>
+            </button>
+
+            <button class="mobile-menu-trigger" id="mobile-menu-btn" aria-label="Toggle Navigation">
+                <svg viewBox="0 0 24 24">
+                    <path stroke-linecap="round" 
+                    stroke-linejoin="round" 
+                    stroke-width="2" 
+                    d="M4 6h16M4 12h16M4 18h16"/>
+                </svg>
+            </button>
+        </div>
+    </header>
+
+    <div class="mobile-drawer" id="mobile-drawer">
+        <a href="/">Specimen Board</a>
+        <a href="/messages.html">Dispatches</a>
+        <a href="/gather.html">Seasonal Ledger</a>
+        <a href="/profile.html">Your Field Book</a>
+        <a href="/about.html">About Harvest</a>
+    </div>
+
+    <main class="page-shell page-narrow">
+
+
+        <section class="profile-card">
+            <div class="profile-info">
+                <p class="eyebrow">About Harvest</p>
+                <h1><em>Harvest is a website to fufill this weeks
+                    theme before we overhual it</h1></em></h1>
+                <p style="font-family: var(--font-serif); font-size: 18x; line-height: 1.6; margin-top: 14px">
+                    This is a project for the 3rd Space program, and is meant to be a framework for a future school website.
+                    It is not meant to be a comprehensive tool, nor a draft for the future website. Instead,
+                    it serves as a way for us to look at what the vault has, and little other purpose.
+                </p>
+            </div>
+        </section>
+
+        <section class="aside-card" style="margin-top: 24px">
+            <p class="eyebrow">The Idea</p>
+
+            <h2 style="font-family: var(--font-serif); font-size: 30px; margin: 10x 0 16px;">
+                blah blah blah. Insert fall Harvest themed stuff.
+            </h2>
+
+            <p style="color: var(--muted); line-height: 1.7;">
+                This will eventually be a website that will help serve as a place for students
+                to write and post information about the school, helping all students, staff, faculty,
+                and parents stay informed and ready for anything.
+            </p>
+
+            <p style="color: var(--muted); line-height: 1.7; margin-top: 14px;">
+                The end goal is to provide not only a unified place for high school students,
+                but also to provide it without the need to accept predatory terms of service,
+                subject yourself to addictive algorithms, or need to use artificial intelligence
+                to get the information you need. 
+
+                We want to use our expertise to provide a place for students to be able to contribute
+                and excel.
+            </p>
+        </section>
+
+        <section class="stats-grid" style="margin-top: 24px;">
+            <div class="stat-cell">
+                <strong>01</strong>
+                <span>Gather</span>
+            </div>
+
+            <div class="stat-cell">
+                <strong>02</strong>
+                <span>Document</span>
+            </div>
+
+            <div class="stat-cell">
+                <strong>03</strong>
+                <span>Share</span>
+            </div>
+        </section>
+
+        <section class="aside-card archival-rule" style="margin-top: 24px;">
+            <p class="eyebrow">Rules I Guess</p>
+            <h3>
+                I don't know, we haven't gotten that far yet. We'll figure it out later.
+            </h3>
+
+            <p>
+                Uhm. Be super good at improvising and be sure to cooperate with ur teammates,
+                so they know that you aren't making important descisions without them!
+            </p>
+        </section>
+
+        <section class="aside-card" style="margin-top: 24px;">
+            <p class="eyebrow">Start Doing Something</p>
+
+            <h3>
+                I have no clue at all. I am super sleep deprived, and i can't think of anything.
+                we'll of course make this open source, so I'm just gonna say if you see any problems with 
+                the code, notify us!!!!
+            </h3>
+            
+            <p style="color: var(--muted); margin-bottom: 18px;">
+                If you want to contribute, our contact information is on the website. 
+                Don't be afraid to reach out, we appreciate every type of feeback, and we'd love to
+                have more perspectives available for everybody!
+            </p>
+
+            <a href="/" class="button">Return to Specimen Board
+
+            </a>
+        </section>
+    </main>
+
+    <div class="modal-backdrop hidden" id="persona-backdrop">
+        <section class="modal" role="dialog" aria-modal="true" area-labelledby="persona-about-title">
+            <button class="modal-close" 
+                    id="close-persona"
+                    aria-label="Close dialog">
+                    ×
+            </button>
+            <p class="eyebrow">Identity Registry?</p>
+
+            <h2 id="persona-title">Switch person</h2>
+
+            <div id="persona-list" class="persona-grid"></div>
+        </section>
+    </div>
+
+    <script src="js/persona.js"></script>
     </body>
 </html>
