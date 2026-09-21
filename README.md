@@ -103,3 +103,6 @@ Frontend: Static JS, TailwindCSS, and HTML.
 Backend:
 Multer, Node.js, In memory storage, Sqlite.
 
+## Other Relevant Repos
+(https://github.com/barblili/Junto-website)
+ ^ I-wan is also this, it is just in a separate folder.This was our first attempt.
