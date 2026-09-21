@@ -75,3 +75,18 @@ Other tools:
 - ngrok for hosting a temporary public demo
 
 We chose mostly basic web technologies because this was our first Third Space project and we wanted to focus on building something complete instead of using a lot of complicated frameworks.
+
+## How We Made It
+
+We started by deciding what kind of website would fit the harvest theme while also being useful to students at our school. The idea of "harvest" became more than just the visual theme. We thought of students gathering experiences from classes and then sharing that information with other students. From there, we split the project into different parts. We worked on the website layout, backend, database, user interactions, artwork, animations, and sound. The site went through a lot of changes while we worked on it. Instead of designing everything perfectly at the beginning, we kept testing things, changing the layout, and adding features as the project developed. We also used GitHub branches so multiple people could work on different parts of the project without constantly editing the same files.
+
+## Challenges We Ran Into
+
+One challenge was working on the same project with multiple people. Sometimes changes from one branch affected files that another person had also edited, so we had to learn how to merge changes and fix conflicts. Another challenge was getting all of the frontend and backend parts to work together. A feature might look correct on the page but still need changes to the JavaScript, server, or database before it actually worked. We also had smaller problems with things like file paths and assets. For example, our sound effects had to be placed in the correct static folders and referenced with the correct paths before the browser could load them. Audio was another thing we had to work around because browsers do not always allow background music to autoplay. We made the music start after the user interacts with the page instead. 
+
+
+
+
+
+
+
