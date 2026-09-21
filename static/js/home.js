@@ -1,3 +1,10 @@
+function normalizeTeacherName(name) {
+    return String(name || "")
+        .trim()
+        .toLowerCase()
+        .replace(/^(mr|mrs|ms|dr)\.?\s+/, "");
+}
+
 const home = {
     posts: [],
     filter: "all",
@@ -97,6 +104,7 @@ const home = {
         if (countEl) countEl.textContent = this.posts.length;
 
         this.renderBasketPreview();
+        this.renderTeacherSummaries();
     },
 
     renderCard(post) {
@@ -444,6 +452,70 @@ const home = {
         `).join("");
     },
 
+    renderTeacherSummaries() {
+    const container = document.getElementById("teacher-summary-list");
+    if (!container) return;
+
+    const teachers = {};
+
+    this.posts.forEach(post => {
+        if (!post.teacher) return;
+
+        const key = normalizeTeacherName(post.teacher);
+
+        if (!teachers[key]) {
+            teachers[key] = {
+                name: key,
+                ratings: [],
+                takeAgain: 0,
+                total: 0
+            };
+        }
+
+        const teacher = teachers[key];
+
+        teacher.total++;
+
+        if (post.rating) {
+            teacher.ratings.push(Number(post.rating));
+        }
+
+        if (post.take_again === "yes") {
+            teacher.takeAgain++;
+        }
+    });
+
+    const list = Object.values(teachers);
+
+    if (list.length === 0) {
+        container.innerHTML = `
+            <div style="color: var(--muted); font-size: 13px;">
+                No teacher reviews yet.
+            </div>
+        `;
+        return;
+    }
+
+    container.innerHTML = list.map(teacher => {
+        const average = teacher.ratings.length
+            ? teacher.ratings.reduce((a, b) => a + b, 0) / teacher.ratings.length
+            : 0;
+
+        const takeAgainPercent = Math.round(
+            (teacher.takeAgain / teacher.total) * 100
+        );
+
+        return `
+            <div class="teacher-summary" data-teacher="${app.escape(teacher.name)}">
+                <strong>${app.escape(teacher.name)}</strong>
+                <div>${average.toFixed(1)} ★ average</div>
+                <div>${teacher.total} review${teacher.total === 1 ? "" : "s"}</div>
+                <div>${takeAgainPercent}% would take again</div>
+            </div>
+        `;
+    }).join("");
+},
+
     refreshTimes() {
         this.list.querySelectorAll("time[data-time]").forEach(el => {
             el.textContent = app.timeAgo(Number(el.dataset.time));
@@ -597,6 +669,21 @@ document.addEventListener("submit", async e => {
     } catch (err) {
         app.toast(err.message);
     }
+});
+
+document.addEventListener("click", e => {
+    const summary = e.target.closest(".teacher-summary");
+    if (!summary) return;
+
+    const teacher = summary.dataset.teacher;
+
+    const search = document.getElementById("post-search");
+    if (search) {
+        search.value = teacher;
+    }
+
+    home.query = teacher;
+    home.render();
 });
 
 document.addEventListener("DOMContentLoaded", () => home.start());
