@@ -71,6 +71,11 @@ We tried to make the website useful while also giving it its own style instead o
 
 The project uses a fairly simple web stack so we could understand how the different parts worked together.
 
+Languages: 
+- JS
+- HTML
+- CSS 
+
 Frontend:
 - HTML
 - CSS
@@ -99,16 +104,6 @@ We started by deciding what kind of website would fit the harvest theme while al
 ## Challenges We Ran Into / Problems
 
 One challenge was working on the same project with multiple people. Sometimes changes from one branch affected files that another person had also edited, so we had to learn how to merge changes and fix conflicts. Another challenge was getting all of the frontend and backend parts to work together. A feature might look correct on the page but still need changes to the JavaScript, server, or database before it actually worked. We also had smaller problems with things like file paths and assets. For example, our sound effects had to be placed in the correct static folders and referenced with the correct paths before the browser could load them. Audio was another thing we had to work around because browsers do not always allow background music to autoplay. We made the music start after the user interacts with the page instead. 
-
-
-## Tech Stack 
-
-Languages: JS, HTML, CSS
-
-Frontend: Static JS, TailwindCSS, and HTML.
-
-Backend:
-Multer, Node.js, In memory storage, Sqlite.
 
 ## Assets
 
