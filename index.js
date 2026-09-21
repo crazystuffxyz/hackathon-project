@@ -145,7 +145,7 @@ function getUser(handle, create = true) {
         const result = db.prepare(`
             INSERT INTO users (handle, display_name, bio, location, created_at)
             VALUES (?, ?, ?, ?, ?)
-        `).run(handle, name || "Harvester", "Gathering observations in the field.", "Valley Basin", now());
+        `).run(handle, name || "Neighbor", "Just here to see what turns up.", "Valley Basin", now());
 
         user = db.prepare(`
             SELECT id, handle, display_name, bio, location, created_at
@@ -202,7 +202,7 @@ const posts = [
         [
             users.noor.id,
             "grown",
-            "My basil survived September into late October. Pinching off flowering heads before morning frost proved decisive. I am officially convinced plants respond to patient observation.",
+            "Basil made it to late October this year. I kept pinching the flower heads off every morning before the frost hit. Not sure if the plants liked the attention or I just got lucky, I'll take it.",
             basilIllustration,
             "brisk",
             "CAT. N-221",
@@ -212,7 +212,7 @@ const posts = [
         [
             users.sam.id,
             "made",
-            "I wired a desk reading lantern from an obsolete flatbed scanner carriage, a counterweight brass hinge, and grounded braided cotton wire. The diffused lamp light is completely hum-free.",
+            "Built a desk lamp out of a dead flatbed scanner carriage, a brass hinge, and some braided cord from a drawer. Runs cool, and the light doesn't flicker.",
             scannerLampIllustration,
             "clear",
             "CAT. S-049",
@@ -222,7 +222,7 @@ const posts = [
         [
             users.jon.id,
             "learned",
-            "The secret to rich crumb in pumpkin bread is letting the folded batter rest exactly twelve minutes before firing. Starch granules swell and caramelize far more evenly.",
+            "Learned this the hard way with pumpkin bread: let the folded batter sit for twelve minutes before it goes in the oven. The crumb comes out noticeably better. I don't fully know why, it just does.",
             null,
             "frost",
             "CAT. J-318",
@@ -258,7 +258,7 @@ db.prepare(`
         VALUES (?, ?, ?, ?) `).run(
         firstPost.id,
         users.jon.id,
-        "The coffee can detail makes this feel authentic and timeless.",
+        "The coffee can on the stool is what sells it",
         now() - 7 * 60 * 1000
     );
 
@@ -267,7 +267,7 @@ db.prepare(`
         VALUES (?, ?, ?, ?) `).run(
         secondPost.id,
         users.mira.id,
-        "Can confirm pinching tips works magic before the frost arrives!",
+        "Same, mine made it to november last year doing this",
         now() - 32 * 60 * 1000
     );
 }
@@ -323,11 +323,11 @@ add.run(
 );
 }
 
-seedUser("mira", "Mira Vance", "Collecting heirloom apples, pressed lichen, and cartographic curiosities.", "Cranberry Bog Lane");
-seedUser("noor", "Noor Thorne", "Sourdough hydration, winter root cellar vegetables, quiet craft.", "Stony Brook");
-seedUser("sam", "Sam Oakhaven", "Salvaging industrial optics and dead copper mechanisms into daily tools.", "Mill Race Canal");
-seedUser("jon", "Jon Gale", "Forest trail margins, hand-bound pamphlets, bird observations.", "High Pastures");
-seedUser("you", "Field Naturalist", "Recording notes, specimens, and seasonal harvest trails.", "Valley Basin");
+seedUser("mira", "Mira Vance", "Heirloom apples, pressed lichen, old maps. That kind of thing.", "Cranberry Bog Lane");
+seedUser("noor", "Noor Thorne", "Sourdough, root cellar vegetables, quiet craft.", "Stony Brook");
+seedUser("sam", "Sam Oakhaven", "Pulls lamps and hand tools out of dead machines.", "Mill Race Canal");
+seedUser("jon", "Jon Gale", "Trail walks, hand-bound pamphlets, birds.", "High Pastures");
+seedUser("you", "Field Naturalist", "Just here to keep track of what turns up.", "Valley Basin");
 
 seedPosts();
 seedMessages();
@@ -566,7 +566,7 @@ const weather = cleanText(req.body.weather || "brisk", 20);
 
 if (!text) {
             res.status(400).json({
-                error: "A field observation requires notes." });
+                error: "Write something first." });
             return;
 }
 
@@ -633,7 +633,7 @@ if (!post) {
 }
 
 if (post.author_id !== user.id) {
-        res.status(403).json({ error: "You may only strike your own field entries." });
+        res.status(403).json({ error: "You can only delete your own notes." });
         return;
 }
 
@@ -723,7 +723,7 @@ app.post("/api/posts/:id/comments", (req, res) => {
 
 if (!text) {
         res.status(400).json({
-            error: "A field note marginalia needs content." });
+            error: "A comment needs some text." });
         return;
 }
 
@@ -875,13 +875,13 @@ const text = cleanText(req.body.text, 900);
 
 if (!recipient) {
         res.status(404).json({
-            error: "That harvester does not have a field station here." });
+            error: "That person isn't registered here." });
         return;
 }
 
 if (!text) {
         res.status(400).json({
-            error: "A dispatch requires written words." });
+            error: "A message needs some text." });
         return;
 }
 
@@ -937,7 +937,7 @@ res.json({
 app.use((error, req, res, next) => {
     if (error instanceof multer.MulterError) {
         res.status(400).json({
-            error: `Specimen image upload error: ${error.message}`
+            error: `Image upload failed: ${error.message}`
         });
         return;
     }
