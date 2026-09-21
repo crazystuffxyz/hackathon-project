@@ -170,25 +170,47 @@ Post the stuff you stumble on, like a good farm stand, a plant that finally took
             <p class="modal-subcopy">Post it to the board. The more specific, the more useful.</p>
 
             <form id="post-form">
-                <label class="field-label" for="post-text">Notes</label>
-                <textarea id="post-text" name="text" maxlength="1400" required
-                    placeholder="I found / grew / made / learned that..."></textarea>
+                <label class="field-label" for="teacher-name">Teacher</label>
+                <input
+                    type="text"
+                    id="teacher-name"
+                    name="teacher"
+                    maxlength="80"
+                    required
+                    placeholder="The teacher's name"
+                >
 
+                <label class="field-label" for="course-name">Course</label>
+                <input
+                    type="text"
+                    id="course-name"
+                    name="course"
+                    maxlength="80"
+                    required
+                    placeholder="The course name"
+                >
+                <label class="field-label" for="post-text">Notes</label>
+                <textarea
+                    id="post-text"
+                    name="text"
+                    maxlength="1400"
+                    required
+                    placeholder="Share your experience with this teacher or course..."
+                ></textarea>
                 <div class="field-meta-row">
                     <span id="post-characters">0 / 1400</span>
                     <div style="display: flex; gap: 8px;">
-                        <select id="post-category" name="category" aria-label="Category">
-                            <option value="found">Found</option>
-                            <option value="grown">Grown</option>
-                            <option value="made">Made</option>
-                            <option value="learned">Learned</option>
-                        </select>
-                        <select id="post-weather" name="weather" aria-label="Weather that day">
-                            <option value="brisk">Brisk</option>
-                            <option value="mist">Misty</option>
-                            <option value="frost">Frost</option>
-                            <option value="sun">Sunny</option>
-                        </select>
+                        <select id="post-difficulty" name="difficulty" aria-label="Course difficulty">
+                        <option value="easy">Easy</option>
+                        <option value="medium" selected>Medium</option>
+                        <option value="hard">Hard</option>
+                    </select>
+
+                    <select id="post-workload" name="workload" aria-label="Course workload">
+                        <option value="light">Light workload</option>
+                        <option value="average" selected>Average workload</option>
+                        <option value="heavy">Heavy workload</option>
+                    </select>
                     </div>
                 </div>
 

@@ -97,6 +97,37 @@ CREATE INDEX IF NOT EXISTS posts_likes_idx
         ON posts(likes DESC, created_at DESC);
 `);
 
+const postColumns = db.prepare("Pragma table_info(posts)").all()
+.map(column => column.name);
+
+if (!postColumns.includes("teacher")) {
+    db.exec(`
+        ALTER TABLE posts
+        ADD COLUMN teacher TEXT NOT NULL DEFAULT ''
+    `);
+}
+
+if (!postColumns.includes("course")) {
+    db.exec(`
+        ALTER TABLE posts
+        ADD COLUMN course TEXT NOT NULL DEFAULT ''
+    `);
+}
+
+if (!postColumns.includes("difficulty")) {
+    db.exec(`
+        ALTER TABLE posts
+        ADD COLUMN difficulty TEXT NOT NULL DEFAULT 'medium'
+    `);
+}
+
+if (!postColumns.includes("workload")) {
+    db.exec(`
+        ALTER TABLE posts
+        ADD COLUMN workload TEXT NOT NULL DEFAULT 'average'
+    `);
+}
+
 function now() {
     return Date.now();
 }
@@ -481,6 +512,10 @@ const posts = db.prepare(`
         SELECT
             p.id,
             p.category,
+            p.teacher,
+            p.course,
+            p.difficulty,
+            p.workload,
             p.text,
             p.image,
             p.weather,
@@ -550,6 +585,15 @@ app.post(
     (req, res) => {
         const user = getUser(req.body.handle || "you");
         const text = cleanText(req.body.text, 1400);
+        const teacher = cleanText(req.body.teacher, 80);
+        const course = cleanText(req.body.course, 80);
+
+        if (!teacher || !course) {
+    res.status(400).json({
+        error: "Add a teacher and course."
+    });
+    return;
+}
 
 const allowedCategories = new Set([
             "found",
@@ -576,31 +620,44 @@ const image = req.file
 
 const specimenNo = generateSpecimenNo();
 
-const result = db.prepare(`
-            INSERT INTO posts (
-                author_id,
-                category,
-                text,
-                image,
-                weather,
-                specimen_no,
-                created_at
-            )
-            VALUES (?, ?, ?, ?, ?, ?, ?) `).run(
-            user.id,
-            category,
-            text,
-            image,
-            weather,
-            specimenNo,
-            now()
-        );
+const difficulty = cleanText(req.body.difficulty, 20);
+const workload = cleanText(req.body.workload, 20);
 
+const result = db.prepare(`
+    INSERT INTO posts (
+        author_id,
+        category,
+        teacher,
+        course,
+        text,
+        image,
+        weather,
+        specimen_no,
+        created_at,
+        difficulty,
+        workload
+    )
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+`).run(
+    user.id,
+    category,
+    teacher,
+    course,
+    text,
+    image,
+    weather,
+    specimenNo,
+    now(),
+    difficulty,
+    workload
+);
 const post = db.prepare(`
             SELECT
                 p.id,
                 p.category,
                 p.text,
+                p.teacher,
+                p.course,
                 p.image,
                 p.weather,
                 p.specimen_no,

@@ -92,6 +92,26 @@ const home = {
                 </div>
 
                 <div class="post-body">
+
+                    <div class="review-heading">
+                        <h3>${app.escape(post.teacher || "Unknown Teacher")}</h3>
+                        <p>${app.escape(post.course || "Unknown Course")}</p>
+                    </div>
+
+                    <div class="review-meta">
+                        <div>
+                            Difficulty: ${app.escape(
+                                (post.difficulty || "medium").replace(/^\w/, c => c.toUpperCase())
+                            )}
+                        </div>
+
+                        <div>
+                            Workload: ${app.escape(
+                                (post.workload || "average").replace(/^\w/, c => c.toUpperCase())
+                            )}
+                        </div>
+                    </div>
+
                     <div class="post-author-row">
                         <div class="author-chip">
                             <div class="profile-avatar">${app.initials(post.display_name)}</div>
