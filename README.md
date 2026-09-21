@@ -103,3 +103,6 @@ Frontend: Static JS, TailwindCSS, and HTML.
 Backend:
 Multer, Node.js, In memory storage, Sqlite.
 
+## Assets
+
+(https://drive.google.com/drive/u/0/folders/1xTwHKIJuH1k746TiplxRR9phTtTKjCdD)
