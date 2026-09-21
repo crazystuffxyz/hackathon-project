@@ -95,10 +95,14 @@ Post the stuff you stumble on, like a good farm stand, a plant that finally took
                 <h2>Latest reviews <span id="post-count">0</span></h2>
             </div>
 
-            <div class="board-actions">
+                        <div class="board-actions">
                 <label class="search-box">
                     <span aria-hidden="true">⌕</span>
-                    <input id="post-search" type="search" placeholder="Search teachers, courses, or reviews...">
+                    <input
+                        id="post-search"
+                        type="search"
+                        placeholder="Search teachers, courses, or reviews..."
+                    >
                     <kbd>/</kbd>
                 </label>
 
@@ -106,6 +110,19 @@ Post the stuff you stumble on, like a good farm stand, a plant that finally took
                     <option value="newest">Newest first</option>
                     <option value="popular">Most liked</option>
                     <option value="rating">Highest rating</option>
+                </select>
+
+                <select id="difficulty-filter" aria-label="Filter by difficulty">
+                    <option value="all">All difficulties</option>
+                    <option value="easy">Easy</option>
+                    <option value="medium">Medium</option>
+                    <option value="hard">Hard</option>
+                </select>
+
+                <select id="take-again-filter" aria-label="Filter by would take again">
+                    <option value="all">Take again: All</option>
+                    <option value="yes">Would take again</option>
+                    <option value="no">Would not take again</option>
                 </select>
 
                 <button class="button button-dark" id="new-note">

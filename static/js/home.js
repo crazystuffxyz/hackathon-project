@@ -1,6 +1,8 @@
 const home = {
     posts: [],
     filter: "all",
+    difficulty: "all",
+    takeAgain: "all",
     query: "",
     sort: "newest",
     debounceTimer: null,
@@ -11,8 +13,10 @@ const home = {
     async start() {
         this.bindComposer();
         this.bindFilters();
+        this.bindDifficulty();
         this.bindSearch();
         this.bindSort();
+        this.bindTakeAgain();
 
         await this.loadPosts();
         await this.loadStats();
@@ -53,6 +57,14 @@ const home = {
 
         if (this.filter !== "all") {
             filtered = filtered.filter(p => p.category === this.filter);
+        }
+
+        if (this.difficulty !== "all") {
+            filtered = filtered.filter(p => p.difficulty === this.difficulty);
+        }
+
+        if (this.takeAgain !== "all") {
+            filtered = filtered.filter(p => p.take_again === this.takeAgain);
         }
 
         if (this.query) {
@@ -192,14 +204,36 @@ const home = {
         document.getElementById("reset-filters")?.addEventListener("click", () => {
             this.filter = "all";
             this.query = "";
+            this.difficulty = "all";
+            this.takeAgain = "all";
+
             const search = document.getElementById("post-search");
             if (search) search.value = "";
+
+            const difficultySelect = document.getElementById("difficulty-filter");
+            if (difficultySelect) difficultySelect.value = "all";
+
+            const takeAgainSelect = document.getElementById("take-again-filter");
+            if (takeAgainSelect) takeAgainSelect.value = "all";
+
             document.querySelectorAll("#category-filters .filter-btn").forEach(b => {
                 b.classList.toggle("active", b.dataset.filter === "all");
             });
+
             this.render();
         });
     },
+
+    bindDifficulty() {
+    const select = document.getElementById("difficulty-filter");
+
+    if (!select) return;
+
+    select.addEventListener("change", () => {
+        this.difficulty = select.value;
+        this.render();
+    });
+},
 
     bindSearch() {
         const input = document.getElementById("post-search");
@@ -220,7 +254,16 @@ const home = {
             }
         });
     },
+    bindTakeAgain() {
+        const select = document.getElementById("take-again-filter");
 
+        if (!select) return;
+
+        select.addEventListener("change", () => {
+            this.takeAgain = select.value;
+            this.render();
+        });
+    },
     bindSort() {
         const select = document.getElementById("sort-posts");
         select?.addEventListener("change", async () => {
