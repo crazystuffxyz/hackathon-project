@@ -30,7 +30,7 @@ db.exec(`
         handle TEXT NOT NULL UNIQUE,
         display_name TEXT NOT NULL,
         bio TEXT NOT NULL DEFAULT '',
-        location TEXT NOT NULL DEFAULT 'The Old Woods',
+        location TEXT NOT NULL DEFAULT 'Somewhere nearby',
         created_at INTEGER NOT NULL
     );
 
@@ -145,7 +145,7 @@ function getUser(handle, create = true) {
         const result = db.prepare(`
             INSERT INTO users (handle, display_name, bio, location, created_at)
             VALUES (?, ?, ?, ?, ?)
-        `).run(handle, name || "Neighbor", "Just here to see what turns up.", "Valley Basin", now());
+        `).run(handle, name || "Neighbor", "Just here to see what turns up.", "Somewhere nearby", now());
 
         user = db.prepare(`
             SELECT id, handle, display_name, bio, location, created_at
@@ -317,17 +317,17 @@ add.run(
 add.run(
         sam.id,
         you.id,
-        "Finished adjusting the ballast on the cold-cathode lamp. Working cleanly.",
+        "Finished adjusting the ballast on the lamp. It runs clean now.",
         now() - 23 * 60 * 60 * 1000,
         now() - 22 * 60 * 60 * 1000
 );
 }
 
-seedUser("mira", "Mira Vance", "Heirloom apples, pressed lichen, old maps. That kind of thing.", "Cranberry Bog Lane");
-seedUser("noor", "Noor Thorne", "Sourdough, root cellar vegetables, quiet craft.", "Stony Brook");
-seedUser("sam", "Sam Oakhaven", "Pulls lamps and hand tools out of dead machines.", "Mill Race Canal");
-seedUser("jon", "Jon Gale", "Trail walks, hand-bound pamphlets, birds.", "High Pastures");
-seedUser("you", "Field Naturalist", "Just here to keep track of what turns up.", "Valley Basin");
+seedUser("mira", "Mira Vance", "Collector of old kitchen tools and even older recipes.", "Hudson Valley, NY");
+seedUser("noor", "Noor Thorne", "Home baker. I cook whatever's in season and skip the rest.", "Lancaster, PA");
+seedUser("sam", "Sam Whitaker", "I rescue lamps and hand tools from old machines and get them working again.", "Portland, ME");
+seedUser("jon", "Jon Gale", "Trail walks, bookbinding, birding.", "Asheville, NC");
+seedUser("you", "Field Naturalist", "Just here to keep track of what turns up.", "Kingston, NY");
 
 seedPosts();
 seedMessages();
