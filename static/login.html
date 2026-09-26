@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#1b2920">
+    <meta name="description" content="Sign in to Harvest.">
+    <title>Harvest — Sign in</title>
+    <link rel="stylesheet" href="/css/main.css">
+</head>
+<body data-page="login">
+    <main class="page-shell page-narrow" style="min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 40px 20px;">
+        <section class="aside-card" style="width: 100%; max-width: 430px; padding: 36px 32px;">
+            <p class="eyebrow">Welcome to Harvest</p>
+            <h1 style="font-family: var(--font-serif); font-size: 32px; margin: 8px 0 6px;">Sign in</h1>
+            <p style="color: var(--muted); font-size: 14px; margin: 0 0 22px;">
+                One account per network. Choose your username well.
+            </p>
+            <div style="display: flex; gap: 8px; margin-bottom: 20px;">
+                <button type="button" class="filter-btn active" id="tab-login">Log in</button>
+                <button type="button" class="filter-btn" id="tab-signup">Create account</button>
+            </div>
+            <form id="login-form">
+                <label style="display: block; font-family: var(--font-mono); font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: var(--muted); margin-bottom: 6px;">Username</label>
+                <input data-field="username" autocomplete="username" required style="width: 100%; box-sizing: border-box; padding: 10px 12px; margin-bottom: 14px; border: 1px solid rgba(41, 68, 56, 0.25); border-radius: 10px; background: transparent; font-family: var(--font-mono); font-size: 14px;">
+                <label style="display: block; font-family: var(--font-mono); font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: var(--muted); margin-bottom: 6px;">Password</label>
+                <input data-field="password" type="password" autocomplete="current-password" required style="width: 100%; box-sizing: border-box; padding: 10px 12px; margin-bottom: 14px; border: 1px solid rgba(41, 68, 56, 0.25); border-radius: 10px; background: transparent; font-family: var(--font-mono); font-size: 14px;">
+                <button class="button" type="submit" style="width: 100%;">Log in</button>
+            </form>
+            <form id="signup-form" class="hidden">
+                <label style="display: block; font-family: var(--font-mono); font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: var(--muted); margin-bottom: 6px;">Username</label>
+                <input data-field="username" autocomplete="username" required minlength="3" maxlength="24" style="width: 100%; box-sizing: border-box; padding: 10px 12px; margin-bottom: 14px; border: 1px solid rgba(41, 68, 56, 0.25); border-radius: 10px; background: transparent; font-family: var(--font-mono); font-size: 14px;">
+                <label style="display: block; font-family: var(--font-mono); font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: var(--muted); margin-bottom: 6px;">Display name (optional)</label>
+                <input data-field="displayName" maxlength="60" style="width: 100%; box-sizing: border-box; padding: 10px 12px; margin-bottom: 14px; border: 1px solid rgba(41, 68, 56, 0.25); border-radius: 10px; background: transparent; font-family: var(--font-mono); font-size: 14px;">
+                <label style="display: block; font-family: var(--font-mono); font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: var(--muted); margin-bottom: 6px;">Password (8+ characters)</label>
+                <input data-field="password" type="password" autocomplete="new-password" required minlength="8" style="width: 100%; box-sizing: border-box; padding: 10px 12px; margin-bottom: 14px; border: 1px solid rgba(41, 68, 56, 0.25); border-radius: 10px; background: transparent; font-family: var(--font-mono); font-size: 14px;">
+                <button class="button" type="submit" style="width: 100%;">Create account</button>
+            </form>
+            <p id="auth-error" class="hidden" style="margin: 14px 0 0; color: var(--foxglove); font-size: 13px;"></p>
+        </section>
+    </main>
+    <script src="/js/app.js"></script>
+    <script src="/js/login.js"></script>
+</body>
+</html>

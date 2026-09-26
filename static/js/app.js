@@ -1,5 +1,6 @@
 const app = {
-    handle: localStorage.getItem("harvest-handle") || "you",
+    handle: null,
+    user: null,
     toastTimer: null,
     usersCache: [],
 
@@ -69,26 +70,32 @@ const app = {
         }, 2600);
     },
 
-    setHandle(newHandle) {
-        app.handle = newHandle || "you";
-        localStorage.setItem("harvest-handle", app.handle);
-        app.loadNavProfile();
+    async loadSession() {
+        try {
+            const data = await app.request("/api/me");
+            app.user = data.user;
+            app.handle = data.user ? data.user.handle : null;
+        } catch {
+            app.user = null;
+            app.handle = null;
+        }
     },
 
     async loadNavProfile() {
+        if (!app.user) return;
+
         try {
-            const data = await app.request(`/api/profile?handle=${encodeURIComponent(app.handle)}`);
             const handleEl = document.getElementById("nav-handle");
             const avatarEl = document.getElementById("nav-avatar");
             const nameEl = document.getElementById("nav-display-name");
 
-            if (handleEl) handleEl.textContent = `@${data.user.handle}`;
-            if (nameEl) nameEl.textContent = data.user.display_name;
-            if (avatarEl) avatarEl.textContent = app.initials(data.user.display_name);
+            if (handleEl) handleEl.textContent = `@${app.user.handle}`;
+            if (nameEl) nameEl.textContent = app.user.display_name;
+            if (avatarEl) avatarEl.textContent = app.initials(app.user.display_name);
 
-            const unreadData = await app.request(`/api/messages?handle=${encodeURIComponent(app.handle)}`);
+            const unreadData = await app.request("/api/messages");
             const unreadTotal = unreadData.reduce((acc, c) => acc + (c.unread_count || 0), 0);
-            
+
             const badge = document.getElementById("message-badge");
             const mobileBadge = document.getElementById("mobile-message-badge");
 
@@ -105,43 +112,43 @@ const app = {
         }
     },
 
-    async setupPersonaSwitcher() {
+    async setupAccountPanel() {
         const btn = document.getElementById("open-persona-switcher");
         const backdrop = document.getElementById("persona-backdrop");
         const list = document.getElementById("persona-list");
         const closeBtn = document.getElementById("close-persona");
 
-        if (!btn || !backdrop || !list) return;
+        if (!btn || !backdrop || !list || !app.user) return;
 
-        btn.addEventListener("click", async () => {
-            try {
-                const users = await app.request(`/api/users?handle=${encodeURIComponent(app.handle)}`);
-                app.usersCache = users;
+        btn.addEventListener("click", () => {
+            list.innerHTML = `
+                <div class="persona-option current">
+                    <div class="profile-avatar">${app.initials(app.user.display_name)}</div>
+                    <div style="flex: 1;">
+                        <strong>${app.escape(app.user.display_name)}</strong>
+                        <span>@${app.escape(app.user.handle)} · ${app.escape(app.user.location)}</span>
+                    </div>
+                    <span style="font-family: var(--font-mono); font-size: 10px; color: var(--foxglove);">ACTIVE</span>
+                </div>
+                <button class="persona-option" id="logout-btn">
+                    <div class="profile-avatar">→</div>
+                    <div style="flex: 1;">
+                        <strong>Log out</strong>
+                        <span>Back to the login screen</span>
+                    </div>
+                </button>
+            `;
 
-                list.innerHTML = users.map(u => `
-                    <button class="persona-option ${u.handle === app.handle ? "current" : ""}" data-handle="${app.escape(u.handle)}">
-                        <div class="profile-avatar">${app.initials(u.display_name)}</div>
-                        <div style="flex: 1;">
-                            <strong>${app.escape(u.display_name)}</strong>
-                            <span>@${app.escape(u.handle)} · ${app.escape(u.location)}</span>
-                        </div>
-                        ${u.handle === app.handle ? `<span style="font-family: var(--font-mono); font-size: 10px; color: var(--foxglove);">ACTIVE</span>` : ""}
-                    </button>
-                `).join("");
+            document.getElementById("logout-btn").addEventListener("click", async () => {
+                try {
+                    await app.request("/api/logout", { method: "POST" });
+                    window.location.href = "/login.html";
+                } catch (err) {
+                    app.toast(err.message);
+                }
+            });
 
-                list.querySelectorAll(".persona-option").forEach(item => {
-                    item.addEventListener("click", () => {
-                        app.setHandle(item.dataset.handle);
-                        backdrop.classList.add("hidden");
-                        app.toast(`Switched to @${item.dataset.handle}`);
-                        setTimeout(() => window.location.reload(), 200);
-                    });
-                });
-
-                backdrop.classList.remove("hidden");
-            } catch (err) {
-                app.toast(err.message);
-            }
+            backdrop.classList.remove("hidden");
         });
 
         if (closeBtn) {
@@ -163,9 +170,19 @@ const app = {
         });
     },
 
-    init() {
-        app.loadNavProfile();
-        app.setupPersonaSwitcher();
+    async init() {
+        await app.ready;
+
+        const onLoginPage = window.location.pathname.endsWith("/login.html");
+        if (!onLoginPage && !app.user) {
+            window.location.replace("/login.html");
+            return;
+        }
+
+        if (app.user) {
+            app.loadNavProfile();
+            app.setupAccountPanel();
+        }
         app.setupMobileNav();
 
         document.addEventListener("keydown", e => {
@@ -176,5 +193,7 @@ const app = {
         });
     }
 };
+
+app.ready = app.loadSession();
 
 document.addEventListener("DOMContentLoaded", app.init);

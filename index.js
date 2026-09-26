@@ -10,6 +10,8 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const app = express();
+app.set("trust proxy", 1);
+
 const port = process.env.PORT || 8080;
 
 const root = __dirname;
@@ -31,7 +33,9 @@ db.exec(`
         display_name TEXT NOT NULL,
         bio TEXT NOT NULL DEFAULT '',
         location TEXT NOT NULL DEFAULT 'Somewhere nearby',
-        created_at INTEGER NOT NULL
+        created_at INTEGER NOT NULL,
+        password_hash TEXT,
+        ip_address TEXT
     );
 
 CREATE TABLE IF NOT EXISTS posts (
@@ -95,6 +99,12 @@ CREATE INDEX IF NOT EXISTS posts_created_idx
 
 CREATE INDEX IF NOT EXISTS posts_likes_idx
         ON posts(likes DESC, created_at DESC);
+CREATE TABLE IF NOT EXISTS sessions (
+        token TEXT PRIMARY KEY,
+        user_id INTEGER NOT NULL,
+        expires_at INTEGER NOT NULL,
+        FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+    );
 `);
 
 const postColumns = db.prepare("PRAGMA table_info(posts)").all()
@@ -142,6 +152,15 @@ if (!postColumns.includes("rating")) {
     `);
 }
 
+const userColumns = db.prepare("PRAGMA table_info(users)").all()
+    .map(column => column.name);
+if (!userColumns.includes("password_hash")) {
+    db.exec(`ALTER TABLE users ADD COLUMN password_hash TEXT`);
+}
+if (!userColumns.includes("ip_address")) {
+    db.exec(`ALTER TABLE users ADD COLUMN ip_address TEXT`);
+}
+
 function now() {
     return Date.now();
 }
@@ -160,6 +179,63 @@ function cleanText(value, maxLength = 1000) {
         .trim()
         .replace(/\r\n/g, "\n")
         .slice(0, maxLength);
+}
+
+function hashPassword(password) {
+    const salt = crypto.randomBytes(16).toString("hex");
+    return scryptHash(password, salt).then(hash => `${salt}:${hash}`);
+}
+
+async function verifyPassword(password, stored) {
+    if (!stored || !stored.includes(":")) {
+        return false;
+    }
+    const [salt, expected] = stored.split(":");
+    const actual = await scryptHash(password, salt);
+    const a = Buffer.from(actual, "hex");
+    const b = Buffer.from(expected, "hex");
+    return a.length === b.length && crypto.timingSafeEqual(a, b);
+}
+
+function scryptHash(password, salt) {
+    return new Promise((resolve, reject) => {
+        crypto.scrypt(String(password), salt, 64, (err, key) => {
+            if (err) reject(err);
+            else resolve(key.toString("hex"));
+        });
+    });
+}
+function publicUser(user) {
+    if (!user) {
+        return null;
+    }
+    const { password_hash, ip_address, ...safe } = user;
+    return safe;
+}
+const SESSION_TTL = 30 * 24 * 60 * 60 * 1000;
+function createSession(userId) {
+    const token = crypto.randomBytes(32).toString("hex");
+    db.prepare(`
+        INSERT INTO sessions (token, user_id, expires_at)
+        VALUES (?, ?, ?)
+    `).run(token, userId, now() + SESSION_TTL);
+    return token;
+}
+function parseCookies(header) {
+    const jar = {};
+    for (const part of String(header || "").split(";")) {
+        const index = part.indexOf("=");
+        if (index > -1) {
+            const key = part.slice(0, index).trim();
+            const value = part.slice(index + 1).trim();
+            try {
+                jar[key] = decodeURIComponent(value);
+            } catch {
+                jar[key] = value;
+            }
+        }
+    }
+    return jar;
 }
 
 function generateSpecimenNo() {
@@ -182,34 +258,18 @@ function getUser(handle, create = true) {
         WHERE handle = ?
     `).get(handle);
 
-    if (!user && create) {
-        const name = handle
-            .replace(/[_-]+/g, " ")
-            .replace(/\b\w/g, letter => letter.toUpperCase());
-
-        const result = db.prepare(`
-            INSERT INTO users (handle, display_name, bio, location, created_at)
-            VALUES (?, ?, ?, ?, ?)
-        `).run(handle, name || "Neighbor", "Just here to see what turns up.", "Somewhere nearby", now());
-
-        user = db.prepare(`
-            SELECT id, handle, display_name, bio, location, created_at
-            FROM users
-            WHERE id = ?
-        `).get(result.lastInsertRowid);
-    }
-
     return user;
 }
 
-function seedUser(handle, displayName, bio, location) {
+async function seedUser(handle, displayName, bio, location, password) {
     let user = db.prepare(`
         SELECT * FROM users WHERE handle = ? `).get(handle);
 
 if (!user) {
         db.prepare(`
-            INSERT INTO users (handle, display_name, bio, location, created_at)
-            VALUES (?, ?, ?, ?, ?) `).run(handle, displayName, bio, location, now());
+            INSERT INTO users (handle, display_name, bio, location, password_hash, created_at)
+            VALUES (?, ?, ?, ?, ?, ?)
+        `).run(handle, displayName, bio, location, await hashPassword(password), now());
 }
 }
 
@@ -237,50 +297,75 @@ const posts = [
         [
             users.mira.id,
             "found",
-            "There is a tiny farm stand two roads past the old library. No sign, no website, just three crates of honeycrisp and a coffee can on a cedar stool. I bought six.",
+            "Dana Whitfield",
+            "AP Biology",
+            "Dr. Whitfield runs the best labs I've had here. Every unit ends with a real dissection or field sample instead of a worksheet, and her study guides match the tests almost line for line. Go to office hours once and she'll remember your name all semester.",
             appleIllustration,
             "mist",
             "CAT. M-104",
             18,
-            now() - 18 * 60 * 1000
+            now() - 18 * 60 * 1000,
+            "medium",
+            "average",
+            "yes",
+            5
         ],
         [
             users.noor.id,
-            "grown",
-            "Basil made it to late October this year. I kept pinching the flower heads off every morning before the frost hit. Not sure if the plants liked the attention or I just got lucky, I'll take it.",
+            "found",
+            "Marcus Oyelaran",
+            "World History",
+            "Mr. Oyelaran lectures without slides and somehow it works. Heavy reading week to week, but the discussions are genuinely interesting and he grades essays on your argument, not on trivia. Stay on top of the reading and it's very doable.",
             basilIllustration,
             "brisk",
             "CAT. N-221",
             31,
-            now() - 53 * 60 * 1000
+            now() - 53 * 60 * 1000,
+            "medium",
+            "heavy",
+            "yes",
+            4
         ],
         [
             users.sam.id,
-            "made",
-            "Built a desk lamp out of a dead flatbed scanner carriage, a brass hinge, and some braided cord from a drawer. Runs cool, and the light doesn't flicker.",
+            "found",
+            "Priya Raghavan",
+            "Intro to Engineering",
+            "Ms. Raghavan is tough but the fairest grader in the department. The scanner project sounds scary and then you realize she gives you a full parts bench and unlimited shop hours. She'll stay late if you're stuck. Take her if you actually want to build things.",
             scannerLampIllustration,
             "clear",
             "CAT. S-049",
             26,
-            now() - 92 * 60 * 1000
+            now() - 92 * 60 * 1000,
+            "hard",
+            "average",
+            "yes",
+            5
         ],
         [
             users.jon.id,
-            "learned",
-            "Learned this the hard way with pumpkin bread: let the folded batter sit for twelve minutes before it goes in the oven. The crumb comes out noticeably better. I don't fully know why, it just does.",
+            "found",
+            "Elliot Marsh",
+            "Creative Writing",
+            "Mr. Marsh canceling workshop three weeks in a row was the only consistent thing about this class. Feedback on submitted work was one word or nothing, and the final portfolio guidelines changed twice. Easy credit, but I didn't learn much.",
             null,
             "frost",
             "CAT. J-318",
             42,
-            now() - 148 * 60 * 1000
+            now() - 148 * 60 * 1000,
+            "easy",
+            "light",
+            "no",
+            2
         ]
 ];
 
 const insert = db.prepare(`
         INSERT INTO posts (
-            author_id, category, text, image, weather, specimen_no, likes, created_at
+            author_id, category, teacher, course, text, image, weather, specimen_no, likes, created_at,
+            difficulty, workload, take_again, rating
         )
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?) `);
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) `);
 
 const addAll = db.transaction(items => {
         for (const item of items) {
@@ -303,7 +388,7 @@ db.prepare(`
         VALUES (?, ?, ?, ?) `).run(
         firstPost.id,
         users.jon.id,
-        "The coffee can on the stool is what sells it",
+        "The study guides really do match the tests, can confirm",
         now() - 7 * 60 * 1000
     );
 
@@ -312,7 +397,7 @@ db.prepare(`
         VALUES (?, ?, ?, ?) `).run(
         secondPost.id,
         users.mira.id,
-        "Same, mine made it to november last year doing this",
+        "The reading load is real but worth it, take him",
         now() - 32 * 60 * 1000
     );
 }
@@ -368,12 +453,11 @@ add.run(
 );
 }
 
-seedUser("mira", "Mira Vance", "Collector of old kitchen tools and even older recipes.", "Hudson Valley, NY");
-seedUser("noor", "Noor Thorne", "Home baker. I cook whatever's in season and skip the rest.", "Lancaster, PA");
-seedUser("sam", "Sam Whitaker", "I rescue lamps and hand tools from old machines and get them working again.", "Portland, ME");
-seedUser("jon", "Jon Gale", "Trail walks, bookbinding, birding.", "Asheville, NC");
-seedUser("you", "Field Naturalist", "Just here to keep track of what turns up.", "Kingston, NY");
-
+await seedUser("mira", "Mira Vance", "Collector of old kitchen tools and even older recipes.", "Hudson Valley, NY", "harvest123");
+await seedUser("noor", "Noor Thorne", "Home baker. I cook whatever's in season and skip the rest.", "Lancaster, PA", "harvest123");
+await seedUser("sam", "Sam Whitaker", "I rescue lamps and hand tools from old machines and get them working again.", "Portland, ME", "harvest123");
+await seedUser("jon", "Jon Gale", "Trail walks, bookbinding, birding.", "Asheville, NC", "harvest123");
+await seedUser("you", "Field Naturalist", "Just here to keep track of what turns up.", "Kingston, NY", "harvest123");
 seedPosts();
 seedMessages();
 
@@ -400,7 +484,9 @@ limits: {
 
 fileFilter: (req, file, callback) => {
         if (!file.mimetype.startsWith("image/")) {
-            callback(new Error("Only image uploads are allowed."));
+            const err = new Error("Only image uploads are allowed.");
+            err.status = 400;
+            callback(err);
             return;
         }
 
@@ -413,13 +499,124 @@ app.use(express.urlencoded({ extended: true }));
 app.use("/uploads", express.static(uploadDir));
 app.use(express.static(staticDir));
 
-app.get("/api/profile", (req, res) => {
-    const user = getUser(req.query.handle || "you");
-
-if (!user) {
-        res.status(400).json({ error: "A valid handle is required." });
-        return;
+app.use((req, res, next) => {
+    const token = parseCookies(req.headers.cookie).harvest_session;
+    req.user = null;
+    if (token) {
+        const session = db.prepare(`
+            SELECT s.token, s.expires_at, u.id, u.handle, u.display_name, u.bio, u.location, u.created_at
+            FROM sessions s
+            JOIN users u ON u.id = s.user_id
+            WHERE s.token = ?
+        `).get(token);
+        if (session && session.expires_at > now()) {
+            req.user = session;
+        } else if (session) {
+            db.prepare(`DELETE FROM sessions WHERE token = ?`).run(token);
+        }
+    }
+    next();
+});
+function cookieOpts(req) {
+    return {
+        httpOnly: true,
+        sameSite: "lax",
+        secure: req.secure === true,
+        maxAge: SESSION_TTL,
+        path: "/"
+    };
 }
+
+function normalizeIp(value) {
+    let ip = String(value || "");
+    if (ip.startsWith("::ffff:")) {
+        ip = ip.slice(7);
+    }
+    return ip;
+}
+
+function isLoopback(ip) {
+    return ip === "::1" || ip.startsWith("127.");
+}
+
+app.post("/api/signup", async (req, res) => {
+    const handle = cleanHandle(req.body.username);
+    const password = String(req.body.password || "");
+    const displayName = cleanText(req.body.displayName, 60) || handle.replace(/[_-]+/g, " ").replace(/\b\w/g, c => c.toUpperCase());
+    const ip = normalizeIp(req.ip);
+    if (!handle || !password) {
+        res.status(400).json({ error: "Username and password are required." });
+        return;
+    }
+    if (password.length < 8) {
+        res.status(400).json({ error: "Password needs at least 8 characters." });
+        return;
+    }
+    if (ip && !isLoopback(ip)) {
+        const existing = db.prepare(`SELECT id FROM users WHERE ip_address = ?`).get(ip);
+        if (existing) {
+            res.status(403).json({ error: "One account per network — this network already has an account." });
+            return;
+        }
+    }
+    if (db.prepare(`SELECT id FROM users WHERE handle = ?`).get(handle)) {
+        res.status(400).json({ error: "That username is taken." });
+        return;
+    }
+    let result;
+    try {
+        result = db.prepare(`
+            INSERT INTO users (handle, display_name, bio, location, password_hash, ip_address, created_at)
+            VALUES (?, ?, ?, ?, ?, ?, ?)
+        `).run(handle, displayName, "", "Somewhere nearby", await hashPassword(password), ip, now());
+    } catch (err) {
+        if (String(err.code || "").startsWith("SQLITE_CONSTRAINT")) {
+            res.status(400).json({ error: "That username is taken." });
+            return;
+        }
+        throw err;
+    }
+    const user = db.prepare(`SELECT * FROM users WHERE id = ?`).get(result.lastInsertRowid);
+    res.cookie("harvest_session", createSession(user.id), cookieOpts(req));
+    res.status(201).json({ user: publicUser(user) });
+});
+app.post("/api/login", async (req, res) => {
+    const handle = cleanHandle(req.body.username);
+    const user = handle ? db.prepare(`SELECT * FROM users WHERE handle = ?`).get(handle) : null;
+    if (!user || !(await verifyPassword(req.body.password, user.password_hash))) {
+        res.status(401).json({ error: "Wrong username or password." });
+        return;
+    }
+    res.cookie("harvest_session", createSession(user.id), cookieOpts(req));
+    res.json({ user: publicUser(user) });
+});
+app.post("/api/logout", (req, res) => {
+    const token = parseCookies(req.headers.cookie).harvest_session;
+    if (token) {
+        db.prepare(`DELETE FROM sessions WHERE token = ?`).run(token);
+    }
+    res.clearCookie("harvest_session", { path: "/" });
+    res.json({ success: true });
+});
+app.get("/api/me", (req, res) => {
+    res.json({ user: publicUser(req.user) });
+});
+function requireUser(req, res, next) {
+    if (!req.user) {
+        res.status(401).json({ error: "Please log in." });
+        return;
+    }
+    next();
+}
+
+function toPostId(value) {
+    const id = Number(value);
+    return Number.isInteger(id) && id > 0 ? id : null;
+}
+
+
+app.get("/api/profile", requireUser, (req, res) => {
+    const user = req.user;
 
 const postCount = db.prepare(`
         SELECT COUNT(*) AS count
@@ -446,20 +643,8 @@ res.json({
     });
 });
 
-app.put("/api/profile", (req, res) => {
-    const currentHandle = cleanHandle(req.body.handle);
-
-if (!currentHandle) {
-        res.status(400).json({ error: "Your handle is required." });
-        return;
-}
-
-const user = getUser(currentHandle);
-
-if (!user) {
-        res.status(404).json({ error: "Profile not found." });
-        return;
-}
+app.put("/api/profile", requireUser, (req, res) => {
+const user = req.user;
 
 const displayName = cleanText(req.body.displayName, 60);
     const bio = cleanText(req.body.bio, 240);
@@ -482,8 +667,7 @@ res.json({
 });
 });
 
-app.get("/api/users", (req, res) => {
-    const currentHandle = cleanHandle(req.query.handle || "you");
+app.get("/api/users", requireUser, (req, res) => {
 
 const users = db.prepare(`
         SELECT
@@ -493,15 +677,14 @@ const users = db.prepare(`
             bio,
             location
         FROM users
-        ORDER BY CASE WHEN handle = ? THEN 0 ELSE 1 END, display_name COLLATE NOCASE ASC
-    `).all(currentHandle);
+        ORDER BY CASE WHEN handle = @me THEN 0 ELSE 1 END, display_name COLLATE NOCASE ASC
+    `).all({ me: req.user.handle });
 
 res.json(users);
 });
 
-app.get("/api/posts", (req, res) => {
-    const handle = cleanHandle(req.query.handle || "you");
-    const user = getUser(handle);
+app.get("/api/posts", requireUser, (req, res) => {
+    const user = req.user;
 
 let order = "p.created_at DESC";
 
@@ -599,9 +782,10 @@ res.json(posts);
 
 app.post(
     "/api/posts",
+    requireUser,
     upload.single("image"),
     (req, res) => {
-        const user = getUser(req.body.handle || "you");
+        const user = req.user;
         const text = cleanText(req.body.text, 1400);
         const teacher = cleanText(req.body.teacher, 80);
         const course = cleanText(req.body.course, 80);
@@ -710,10 +894,17 @@ res.status(201).json(post);
 
 app.put(
     "/api/posts/:id",
+    requireUser,
     upload.single("image"),
     (req, res) => {
-        const postId = Number(req.params.id);
-        const user = getUser(req.body.handle || "you");
+        const postId = toPostId(req.params.id);
+
+        if (!postId) {
+            res.status(404).json({ error: "Review not found." });
+            return;
+        }
+
+        const user = req.user;
 
         const existing = db.prepare(`
             SELECT * FROM posts WHERE id = ?
@@ -809,9 +1000,15 @@ app.put(
     }
 );
 
-app.delete("/api/posts/:id", (req, res) => {
-    const postId = Number(req.params.id);
-    const user = getUser(req.body.handle || "you");
+app.delete("/api/posts/:id", requireUser, (req, res) => {
+    const postId = toPostId(req.params.id);
+
+    if (!postId) {
+        res.status(404).json({ error: "Review not found." });
+        return;
+    }
+
+    const user = req.user;
 
 const post = db.prepare(`SELECT * FROM posts WHERE id = ?`).get(postId);
 
@@ -829,9 +1026,15 @@ db.prepare(`DELETE FROM posts WHERE id = ?`).run(postId);
     res.json({ success: true, id: postId });
 });
 
-app.post("/api/posts/:id/like", (req, res) => {
-    const postId = Number(req.params.id);
-    const user = getUser(req.body.handle || "you");
+app.post("/api/posts/:id/like", requireUser, (req, res) => {
+    const postId = toPostId(req.params.id);
+
+    if (!postId) {
+        res.status(404).json({ error: "Review not found." });
+        return;
+    }
+
+    const user = req.user;
 
 const post = db.prepare(`
         SELECT id FROM posts WHERE id = ? `).get(postId);
@@ -880,9 +1083,22 @@ const updated = db.prepare(`
 res.json(updated);
 });
 
-app.post("/api/posts/:id/save", (req, res) => {
-    const postId = Number(req.params.id);
-    const user = getUser(req.body.handle || "you");
+app.post("/api/posts/:id/save", requireUser, (req, res) => {
+    const postId = toPostId(req.params.id);
+
+    if (!postId) {
+        res.status(404).json({ error: "Review not found." });
+        return;
+    }
+
+    const user = req.user;
+
+const post = db.prepare(`SELECT id FROM posts WHERE id = ?`).get(postId);
+
+if (!post) {
+        res.status(404).json({ error: "Review not found." });
+        return;
+}
 
 const existing = db.prepare(`
         SELECT 1
@@ -904,10 +1120,16 @@ res.json({
     });
 });
 
-app.post("/api/posts/:id/comments", (req, res) => {
-    const postId = Number(req.params.id);
-    const user = getUser(req.body.handle || "you");
+app.post("/api/posts/:id/comments", requireUser, (req, res) => {
+    const postId = toPostId(req.params.id);
+    const user = req.user;
     const text = cleanText(req.body.text, 500);
+
+if (!postId) {
+        res.status(404).json({
+            error: "Review not found." });
+        return;
+}
 
 if (!text) {
         res.status(400).json({
@@ -953,9 +1175,8 @@ const comment = db.prepare(`
 res.status(201).json(comment);
 });
 
-app.get("/api/messages", (req, res) => {
-    const handle = cleanHandle(req.query.handle || "you");
-    const user = getUser(handle);
+app.get("/api/messages", requireUser, (req, res) => {
+    const user = req.user;
 
 const conversationHandle = cleanHandle(req.query.with || "");
 
@@ -1055,8 +1276,8 @@ ORDER BY last_message.created_at DESC
 res.json(conversations);
 });
 
-app.post("/api/messages", (req, res) => {
-    const sender = getUser(req.body.from || "you");
+app.post("/api/messages", requireUser, (req, res) => {
+    const sender = req.user;
     const recipient = getUser(req.body.to, false);
 
 const text = cleanText(req.body.text, 900);

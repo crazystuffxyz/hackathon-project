@@ -14,18 +14,25 @@ const gather = {
 
     filter: "all",
 
+    readStored(key) {
+        try {
+            const parsed = JSON.parse(localStorage.getItem(key) || "[]");
+            return Array.isArray(parsed) ? parsed : [];
+        } catch {
+            return [];
+        }
+    },
+
     getItems() {
-        const stored = localStorage.getItem("harvest-custom-tasks");
-        const custom = stored ? JSON.parse(stored) : [];
-        return [...this.defaultItems, ...custom];
+        return [...this.defaultItems, ...this.readStored("harvest-custom-tasks")];
     },
 
     getGathered() {
-        const key = `harvest-gathered-${app.handle}`;
-        return JSON.parse(localStorage.getItem(key) || "[]");
+        return this.readStored(`harvest-gathered-${app.handle}`);
     },
 
-    start() {
+    async start() {
+        await app.ready;
         this.render();
         this.bindFilters();
         this.bindCustomTaskModal();
@@ -61,6 +68,7 @@ const gather = {
     toggle(id, checked) {
         const key = `harvest-gathered-${app.handle}`;
         let gathered = this.getGathered();
+        gathered = gathered.filter(x => typeof x === "string");
         const index = gathered.indexOf(id);
 
         if (index >= 0) {
@@ -115,8 +123,7 @@ const gather = {
             const group = document.getElementById("task-group").value;
             if (!title) return;
 
-            const stored = localStorage.getItem("harvest-custom-tasks");
-            const custom = stored ? JSON.parse(stored) : [];
+            const custom = this.readStored("harvest-custom-tasks");
             const index = this.defaultItems.length + custom.length + 1;
 
             custom.push({

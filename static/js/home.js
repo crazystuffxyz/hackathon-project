@@ -20,6 +20,8 @@ const home = {
     empty: document.getElementById("empty-state"),
 
     async start() {
+        await app.ready;
+        if (!app.user) return;
         this.bindComposer();
         this.bindFilters();
         this.bindDifficulty();
@@ -41,9 +43,7 @@ const home = {
 
     async loadPosts() {
         try {
-            this.posts = await app.request(
-                `/api/posts?handle=${encodeURIComponent(app.handle)}&sort=${this.sort}`
-            );
+            this.posts = await app.request(`/api/posts?sort=${this.sort}`);
             this.render();
         } catch (err) {
             app.toast(err.message);
@@ -374,7 +374,6 @@ const home = {
     submitBtn.textContent = wasEditing ? "Saving..." : "Posting...";
 
     const formData = new FormData(form);
-    formData.append("handle", app.handle);
 
     try {
         let savedPost;
@@ -580,9 +579,7 @@ document.addEventListener("click", async e => {
     if (action === "like") {
         try {
             const res = await app.request(`/api/posts/${id}/like`, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ handle: app.handle })
+                method: "POST"
             });
             post.likes = res.likes;
             post.liked = Boolean(res.liked);
@@ -599,9 +596,7 @@ document.addEventListener("click", async e => {
     if (action === "save") {
         try {
             const res = await app.request(`/api/posts/${id}/save`, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ handle: app.handle })
+                method: "POST"
             });
             post.saved = res.saved;
             actionBtn.classList.toggle("active", post.saved);
@@ -618,9 +613,7 @@ document.addEventListener("click", async e => {
         if (!confirm("Delete this note for good?")) return;
         try {
             await app.request(`/api/posts/${id}`, {
-                method: "DELETE",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ handle: app.handle })
+                method: "DELETE"
             });
             home.posts = home.posts.filter(p => p.id !== id);
             home.render();
@@ -646,7 +639,7 @@ document.addEventListener("submit", async e => {
         const comment = await app.request(`/api/posts/${id}/comments`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ handle: app.handle, text })
+            body: JSON.stringify({ text })
         });
 
         const post = home.posts.find(p => p.id === id);

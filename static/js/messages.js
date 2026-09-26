@@ -9,6 +9,8 @@ const messages = {
     shellEl: document.getElementById("messages-shell"),
 
     async start() {
+        await app.ready;
+        if (!app.user) return;
         await this.loadConversations();
         this.bindComposer();
         this.bindPrompts();
@@ -25,7 +27,7 @@ const messages = {
 
     async loadConversations() {
         try {
-            const list = await app.request(`/api/messages?handle=${encodeURIComponent(app.handle)}`);
+            const list = await app.request("/api/messages");
             this.renderConversations(list);
         } catch (err) {
             app.toast(err.message);
@@ -63,7 +65,7 @@ const messages = {
 
     async openPerson(handle) {
         try {
-            const users = await app.request(`/api/users?handle=${encodeURIComponent(app.handle)}`);
+            const users = await app.request("/api/users");
             const target = users.find(u => u.handle === handle);
             if (!target) return;
 
@@ -89,9 +91,9 @@ const messages = {
 
     async loadChat(handle, quiet = false) {
         try {
-            const data = await app.request(
-                `/api/messages?handle=${encodeURIComponent(app.handle)}&with=${encodeURIComponent(handle)}`
-            );
+            const data = await app.request(`/api/messages?with=${encodeURIComponent(handle)}`);
+
+            if (this.currentPerson && this.currentPerson.handle !== handle) return;
 
             const isScrolledToBottom = 
                 this.chatMessagesEl.scrollHeight - this.chatMessagesEl.clientHeight <= this.chatMessagesEl.scrollTop + 60;
@@ -133,7 +135,6 @@ const messages = {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({
-                        from: app.handle,
                         to: this.currentPerson.handle,
                         text
                     })
@@ -177,7 +178,7 @@ const messages = {
         const close = document.getElementById("close-picker");
 
         try {
-            const people = await app.request(`/api/users?handle=${encodeURIComponent(app.handle)}`);
+            const people = await app.request("/api/users");
             const filtered = people.filter(p => p.handle !== app.handle);
 
             list.innerHTML = filtered.map(p => `

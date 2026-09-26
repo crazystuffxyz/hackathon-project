@@ -4,6 +4,8 @@ const profile = {
     posts: [],
 
     async start() {
+        await app.ready;
+        if (!app.user) return;
         await this.loadProfile();
         await this.loadPosts();
         this.bindEditor();
@@ -16,7 +18,7 @@ const profile = {
 
     async loadProfile() {
         try {
-            const data = await app.request(`/api/profile?handle=${encodeURIComponent(app.handle)}`);
+            const data = await app.request("/api/profile");
             this.user = data.user;
 
             document.getElementById("profile-name").textContent = data.user.display_name;
@@ -35,7 +37,7 @@ const profile = {
 
     async loadPosts() {
         try {
-            this.posts = await app.request(`/api/posts?handle=${encodeURIComponent(app.handle)}`);
+            this.posts = await app.request("/api/posts");
             this.renderRecords();
         } catch (err) {
             app.toast(err.message);
@@ -106,9 +108,7 @@ const profile = {
                 const id = Number(card.dataset.id);
                 try {
                     await app.request(`/api/posts/${id}/save`, {
-                        method: "POST",
-                        headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify({ handle: app.handle })
+                        method: "POST"
                     });
                     const target = this.posts.find(p => p.id === id);
                     if (target) target.saved = 0;
@@ -128,9 +128,7 @@ const profile = {
                 const id = Number(card.dataset.id);
                 try {
                     await app.request(`/api/posts/${id}`, {
-                        method: "DELETE",
-                        headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify({ handle: app.handle })
+                        method: "DELETE"
                     });
                     this.posts = this.posts.filter(p => p.id !== id);
                     this.renderRecords();
@@ -190,7 +188,6 @@ const profile = {
                     method: "PUT",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({
-                        handle: app.handle,
                         displayName: document.getElementById("display-name").value,
                         bio: document.getElementById("bio").value,
                         location: document.getElementById("location").value

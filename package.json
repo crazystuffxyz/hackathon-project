@@ -11,7 +11,7 @@
     "url": "git+https://github.com/crazystuffxyz/hackathon-project.git"
   },
   "license": "MIT",
-  "author": "Check the github u lazy bum",
+  "author": "longfeijin88-oss, barblili, crazystuffxyz",
   "type": "module",
   "main": "index.js",
   "scripts": {

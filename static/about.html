@@ -9,10 +9,6 @@
         <title> Harvest: About</title>
 
         <link rel="stylesheet" href="/css/main.css">
-
-        <!-- Tailwind Play CDN-->
-         <script src="https://cdn.tailwindcss.com"></script>
-         <script src="/js/tailwind.config.js"></script>
     </head>
 
     <body data-page="about">
@@ -22,29 +18,25 @@
                 <div class="seal-emblem" aria-hidden="true">
                     <svg viewBox="0 0 24 24">
                         <path d="M12 2C8 6 4 11 4 16C4 19.3 6.7 22 10 22C11.5 22 12 21 12 21C12 21 12.5 22 14 22C17.3 22 20 19.3 20 16C20 11 16 6 12 2Z"/>
-                        <path d="M12 7V17git"/>
+                        <path d="M12 7V17"/>
                         <path d="M9 11L12 14L15 11"/>
                     </svg>
                 </div>
 
                 <div class="wordmark-text">
                     <strong>harvest</strong>
-                    <small>A _____ (fill in later)</small>
+                    <small>things worth keeping</small>
                 </div>
             </a>
         </div> 
         
         
-        
-        <h1>About</h1>
 
-        <!--add more stuff here-->
         <nav class="site-nav" aria-label="Main Navigation">
-            <a href="/">specimen board</a>
-            <a href="/messages.html">dispatches</a>
-            <a href="/gather.html">seasonal ledger</a>
-            <a href="/">Home</a>
-            <a class="active" href="/about.html">about</a>
+            <a href="/">Board</a>
+            <a href="/messages.html">Messages</a>
+            <a href="/gather.html">Checklist</a>
+            <a class="active" href="/about.html">About</a>
         </nav>
 
         <div class="header-actions">
@@ -68,11 +60,11 @@
     </header>
 
     <div class="mobile-drawer" id="mobile-drawer">
-        <a href="/">Specimen Board</a>
-        <a href="/messages.html">Dispatches</a>
-        <a href="/gather.html">Seasonal Ledger</a>
-        <a href="/profile.html">Your Field Book</a>
-        <a href="/about.html">About Harvest</a>
+        <a href="/">Board</a>
+        <a href="/messages.html">Messages</a>
+        <a href="/gather.html">Checklist</a>
+        <a href="/profile.html">Your profile</a>
+        <a href="/about.html">About</a>
     </div>
 
     <main class="page-shell page-narrow">
@@ -81,8 +73,7 @@
         <section class="profile-card">
             <div class="profile-info">
                 <p class="eyebrow">About Harvest</p>
-                <h1><em>Harvest is a website to fufill this week's
-                    theme before we overhaul it</h1></em></h1>
+                <h1><em>A teacher review board, built by students.</em></h1>
                 <p style="font-family: var(--font-serif); font-size: 18px; line-height: 1.6; margin-top: 14px">
                     This is a project for the 3rd Space program, and is meant to be a framework for a future school website.
                     It is not meant to be a comprehensive tool, nor a draft for the future website. Instead,
@@ -95,7 +86,7 @@
             <p class="eyebrow">The Idea</p>
 
             <h2 style="font-family: var(--font-serif); font-size: 30px; margin: 10px 0 16px;">
-                blah blah blah. Insert fall Harvest themed stuff.
+                Real reviews, from people who actually took the class.
             </h2>
 
             <p style="color: var(--muted); line-height: 1.7;">
@@ -133,14 +124,13 @@
         </section>
 
         <section class="aside-card archival-rule" style="margin-top: 24px;">
-            <p class="eyebrow">Rules I Guess</p>
+            <p class="eyebrow">House rules</p>
             <h3>
-                I don't know, we haven't gotten that far yet. We'll figure it out later.
+                Be specific and fair.
             </h3>
 
             <p>
-                Uhm. Be super good at improvising and be sure to cooperate with ur teammates,
-                so they know that you aren't making important descisions without them!
+                Say which class you took, how the workload actually felt, and what you wish <br> you'd known on day one. Review the class, not the person.
             </p>
         </section>
 
@@ -166,15 +156,15 @@
     </main>
 
     <div class="modal-backdrop hidden" id="persona-backdrop">
-        <section class="modal" role="dialog" aria-modal="true" area-labelledby="persona-title">
+        <section class="modal" role="dialog" aria-modal="true" aria-labelledby="persona-title">
             <button class="modal-close" 
                     id="close-persona"
                     aria-label="Close dialog">
                     ×
             </button>
-            <p class="eyebrow">Identity Registry?</p>
+            <p class="eyebrow">Your account</p>
 
-            <h2 id="persona-title">Switch person</h2>
+            <h2 id="persona-title">Account</h2>
 
             <div id="persona-list" class="persona-grid"></div>
         </section>
