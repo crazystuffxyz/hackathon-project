@@ -493,5 +493,18 @@
     </script>
 
     <script src="/js/explorer.js" defer></script>
+
+    <script>
+        const schoolTrack = document.getElementById("school-Track");
+
+        document.getElementById("schools-prev").addEventListener("click", () => {
+            schoolTrack.scrollBy({ left: -schoolTrack.clientWidth * 0.8, behavior: "smooth" })
+        });
+
+        document.getElementById("schools-next").addEventListener("click", () => {
+            schoolTrack.scrollBy({ left: schoolTrack.clientWidth * 0.8, behavior: "smooth" })
+        });
+
+    </script>
 </body>
 </html>
