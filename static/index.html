@@ -360,6 +360,16 @@
             scroll-behavior: smooth;
             padding-bottom: 12px;
         }
+        #review-search {
+            display: block;
+            width: 100%;
+            margin: 8px 0 24px;
+            padding: 12px 16px;
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            background: var(--paper-card);
+            font: inherit;
+        }
     </style>
 </head>
 <body>
@@ -417,6 +427,10 @@
         <main>
             <h1 class="feed-heading">Teacher Reviews</h1>
             <p class="feed-intro">See what other students think before choosing your next class.</p>
+            <label for="review-search">Search reviews</label>
+            <input id="review-search" type="search"
+                placeholder="Search by teacher, course, or keyword…">
+            <p id="search-empty" hidden>No matching reviews. Try another search.</p>
             <div id="posts-feed">
                 <!-- Posts will render here and can also be pre-rendered server-side -->
                 <article class="post-card">
@@ -575,6 +589,15 @@
             schoolTrack.scrollBy({ left: schoolTrack.clientWidth * 0.8, behavior: "smooth" })
         });
 
+    </script>
+    <script>
+    const reviewSearch = document.getElementById("review-search");
+    reviewSearch.addEventListener("input", () => {
+        const query = reviewSearch.value.trim().toLowerCase();
+        const cards = [...document.querySelectorAll("#posts-feed .post-card")];
+        cards.forEach(card => card.hidden = !card.textContent.toLowerCase().includes(query));
+        document.getElementById("search-empty").hidden = cards.some(card => !card.hidden);
+    });
     </script>
 </body>
 </html>
