@@ -60,6 +60,33 @@ function renderReviews(posts) {
         author.style.fontSize = "12px";
         author.style.color = "var(--muted)";
         footer.appendChild(author);
+        const likeButton = document.createElement("button");
+        likeButton.type = "button";
+        likeButton.className = "button button-quiet";
+        likeButton.textContent = post.liked ? "♥ Liked" : "♡ Like";
+        likeButton.setAttribute("aria-pressed", String(Boolean(post.liked)));
+        footer.appendChild(likeButton);
+        likeButton.addEventListener("click", async () => {
+        likeButton.disabled = true;
+        try {
+            const response = await fetch(`/api/posts/${post.id}/like`, {
+                method: "POST"
+            });
+            if (!response.ok) {
+                throw new Error("Could not update your like. Please try again.");
+            }
+                const updated = await response.json();
+                post.likes = updated.likes;
+                post.liked = updated.liked;
+                author.textContent = `By @${post.handle} · ${post.likes} likes`;
+                likeButton.textContent = post.liked ? "♥ Liked" : "♡ Like";
+                likeButton.setAttribute("aria-pressed", String(Boolean(post.liked)));
+                    } catch (error) {
+                alert(error.message);
+            } finally {
+                likeButton.disabled = false;
+            }
+        });
         body.appendChild(footer);
         card.appendChild(body);
         feed.appendChild(card);
