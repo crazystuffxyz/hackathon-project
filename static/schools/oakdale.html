@@ -197,5 +197,32 @@
     <footer>
         Harvest © 2026 - School communities connected.
     </footer>
+
+    <!-- New stuff?-->
+    <script>
+        function openTab(evt, tabeName) {
+            const tabcontent = document.getElementsByClassName("tabcontent");
+            for (let i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].style.display = "none";
+            }
+
+            document.getElementById(tabName).style.display = "block";
+            evt.currentTarget.classList.add("active");
+        }
+
+        let currentSlideIndex = 0;
+        function changeSlide(direction) {
+            const slides = document.querySelectorAll('.image-slider .slide');
+            if (slides.length === 0) return;
+
+            slides[currentSlideIndex].classList.remove('active');
+
+            currentSlideIndex +=direction;
+            if (currentSlideIndex >= slides.length) currentSlideIndex=0;
+            if (currentSlideIndex <0) currentSlideIndex = slides.length - 1;
+
+            slides[currentSlideIndex].classList.add('active');
+        }
+    </script>
 </body>
 </html>
