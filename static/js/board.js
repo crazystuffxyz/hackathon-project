@@ -162,6 +162,8 @@ reviewStatus.textContent = "Posting review...";
     }
             reviewForm.reset();
     reviewStatus.textContent = "Review posted!";
+    document.getElementById("review-search").value = "";
+    document.getElementById("review-sort").value = "newest";
     try {
         await loadReviews();
     } catch {
