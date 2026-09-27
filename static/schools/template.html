@@ -285,7 +285,7 @@
             <div class="showcase-tabs">
                 <button class="tab-btn active" onclick="openTab(event, 'campus-tab')">Campus and Maps</button>
                 <button class="tab-btn" onclick="openTab(event, 'campus-life-tab')">Campus Life</button>
-                <button class="tab-btn" onclick="openTab(event, 'Extracurriculars-tab')">Extracurriculars</button>
+                <button class="tab-btn" onclick="openTab(event, 'ericulars-tab')">extracurriculars</button>
                 <button class="tab-btn" onclick="openTab(event, 'academics-tab')">Academics</button>
             </div>
 
@@ -381,7 +381,7 @@
 
         let currentSlideIndex = 0;
         function changeSlide(direction) {
-            const slide = document.querySelectorAll('.image-slider .slide');
+            const slides = document.querySelectorAll('.image-slider .slides');
             if (slides.length === 0) return;
 
             slides[currentSlideIndex].classList.remove("active");
