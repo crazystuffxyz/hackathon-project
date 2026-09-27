@@ -400,6 +400,31 @@
             [hidden] {
             display: none !important;
         }
+
+        .school-card {
+            flex: 0 0 240px;
+            padding: 0;
+            overflow: hidden;
+            text-decoration: none;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .school-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(27, 41, 32, 0.1);
+        }
+
+        .school-card img {
+            width: 100%;
+            height: 110px;
+            object-fit: cover;
+            display: block;
+            border-bottom: 1px solid var(--line);
+        }
+
+        .school-card-content {
+            padding: 14px 16px;
+        }
     </style>
 </head>
 <body>
@@ -419,6 +444,13 @@
         </nav>
     </header>
 
+    <div class="hero-banner">
+        <div class="hero-content">
+            <h1>Welcome to the Harvest</h1>
+            <p>Your one-stop shop for academic resources and reviews.</p>
+        </div>
+    </div>
+
     <section class="school-section">
         <div class="school-section-header">
             <h2>Explore Schools</h2>
@@ -431,26 +463,31 @@
 
         <div class="school-track" id="school-track">
             <a href="/schools/loopey.html" class="school-card">
+                <img src="https://via.placeholder.com/240x110" alt="Loopey High School">
                 <h3>Loopey High School</h3>
                 <p>Fafo County, Yoinkly sploush</p>
             </a>
 
             <a href="/schools/template.html" class="school-card">
+                <img src="https://via.placeholder.com/240x110" alt="Template High School">
                 <h3>Template High School</h3> 
                 <p>template County, template</p>
             </a>
 
             <a href="/schools/oakdale.html" class="school-card">
+                <img src="https://via.placeholder.com/240x110" alt="Oakdale High School">
                 <h3>Oakdale High School</h3>
                 <p>River County, Glorpington</p>
             </a>
 
             <a href="/schools/sonono.html" class="school-card">
+                <img src="https://via.placeholder.com/240x110" alt="Sonono High School">   
                 <h3>Sonono High School</h3>
                 <p>Lorp County, Glorpington</p>
             </a>
 
             <a href="/schools/yoink.html" class="school-card">
+                <img src="https://via.placeholder.com/240x110" alt="Yoink High School">
                 <h3>Yoink High School</h3>
                 <p>River County, Glorpington</p>
             </a>
@@ -566,7 +603,7 @@
     <script src="/js/explorer.js" defer></script>
 
     <script>
-        const schoolTrack = document.getElementById("school-Track");
+        const schoolTrack = document.getElementById("school-track");
 
         document.getElementById("schools-prev").addEventListener("click", () => {
             schoolTrack.scrollBy({ left: -schoolTrack.clientWidth * 0.8, behavior: "smooth" })
