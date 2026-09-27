@@ -221,6 +221,36 @@
                 order: -1;
             }
         }
+        @media (max-width: 840px) {
+            header.app-header {
+                flex-wrap: wrap;
+                gap: 12px;
+                padding: 14px 20px;
+            }
+        }
+
+        .site-nav {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .site-nav a {
+            color: var(--pine-deep);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            padding: 8px 14px;
+            border-radius: 8px;
+        }
+        .site-nav a:hover,
+        .site-nav a:focus-visible {
+            background: var(--paper-tint);
+        }
+        .site-nav a[aria-current="page"] {
+            background: var(--pine-deep);
+            color: var(--paper);
+        }
     </style>
 </head>
 <body>
@@ -232,7 +262,7 @@
         </div>
 
         <nav class="site-nav">
-            <a href="index.html">Board</a>
+            <a href="index.html" aria-current="page">Board</a>
             <a href="messages.html">Messages</a>
             <a href="profile.html">Profile</a>
             <a href="about.html">About</a>
