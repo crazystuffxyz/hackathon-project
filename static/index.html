@@ -221,6 +221,76 @@
                 order: -1;
             }
         }
+        .school-section {
+            margin-bottom: 32px;
+        }
+
+        .school-section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 14px;
+        }
+
+        .school-section-header h2 {
+            font-family: var(--font-serif);
+            font-size: 20px;
+            color: var(--pine-deep);
+            margin: 0;
+        }
+
+        .school-controls {
+            display: flex;
+            gap: 8px;
+        }
+
+        .school-controls button {
+            width: 36px;
+            height: 36px;
+            border: 1px solid var(--line);
+            border-radius: 4px;
+            background: var(--paper-card);
+            color: var(--pine-deep);
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        .school-track::-webkit-scrollbar {
+            display: none;
+        }
+
+        .school-card {
+            flex: 0 0 220px;
+            min-height: 130px;
+            padding: 20px;
+            border: 1px solid var(--line);
+            border-radius: 4px;
+            background: var(--paper-card);
+            scroll-snap-align: start;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .school-card h3 {
+            margin: 0;
+            font-family: var(--font-serif);
+            font-size: 19px;
+            color: var(--pine-deep);
+        }
+
+        .school-card p {
+            margin: 12px 0 0;
+            color: var(--muted);
+            font-size: 12px;
+        }
+
+        @media (max-width: 600px) {
+            .school-card {
+                flex-basis: 185px;
+            }
+        }
+
     </style>
 </head>
 <body>
@@ -238,6 +308,40 @@
             <a href="about.html">About</a>
         </nav>
     </header>
+
+    <section class="school-section">
+        <div class="school-section-header">
+            <h2>Explore Schools</h2>
+
+            <div class="school-controls">
+                <button type="button" id="schools-prev" aria-label="Previous schools">‹</button>
+                <button type="button" id="schools-next" aria-label="Next schools">›</button>
+            </div>
+        </div>
+
+        <div class="school-track" id="school-track">
+            <article class="school-card">
+                <h3>Loopey High School</h3>
+                <p> Fafo County, Yoinkly sploush</p>
+            </article>
+
+            <article class="school-card">
+                <h3>Oakdale High School</h3>
+                <p> River County, Glorpington</p>
+            </article>
+
+            <article class="school-card">
+                <h3>Sonono High School</h3>
+                <p> Lorp County, Sonono</p>
+            </article>
+
+            <article class="school-card">
+                <h3>Yoik High School</h3>
+                <p> Yoink County, Yoink</p>
+            </article>
+            <!-- You can add more schools here!!!-->
+        </div>
+     </section>
 
     <div class="layout-container">
         <main>
