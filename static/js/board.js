@@ -89,6 +89,33 @@ function renderReviews(posts) {
                         section.scrollIntoView({ behavior: "smooth" });
                         document.getElementById("review-cancel").hidden = false;
                     });
+            const deleteButton = document.createElement("button");
+            deleteButton.type = "button";
+            deleteButton.className = "button button-quiet";
+            deleteButton.textContent = "Delete";
+            footer.appendChild(deleteButton);
+            deleteButton.addEventListener("click", async () => {
+            if (!confirm(`Delete your review of ${post.teacher}? This cannot be undone.`)) {
+                return;
+            }
+            deleteButton.disabled = true;
+            try {
+                            const response = await fetch(`/api/posts/${post.id}`, {
+                method: "DELETE"
+            });
+            if (!response.ok) {
+                const result = await response.json();
+                throw new Error(result.error || "Could not delete review.");
+            }
+            if (editingPostId === post.id) {
+                document.getElementById("review-cancel").click();
+            }
+                    await loadReviews();
+                } catch (error) {
+                    alert(error.message);
+                    deleteButton.disabled = false;
+                }
+            });
         }
         likeButton.addEventListener("click", async () => {
         likeButton.disabled = true;
