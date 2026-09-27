@@ -253,6 +253,51 @@
             .school-hero { padding: 26px; }
             .section { padding: 20px; }
             .grid-2-col {grid-template-columns: 1fr; }
+            .showcase-tabs { flex-direction: column; }
+            .tab-btn { border-bottom: 1px solid var(--line);}
+            .tab-btn.active { border-left: 3px solid var(--pine); border-bottom: 1px solid var(--line); }
         }
     </style>
 </head>
+<body>
+    <header>
+        <a class="brand" href="/">Harvest</a>
+        <a class=""back-link" href="/">← Back to Homepage</a>
+    </header>
+
+    <main>
+        <section class="school-hero">
+            <h1>Template High School</h1>
+            <p>📍 template place</p>
+            <p>Explore school info, reviews, and discussions</p>
+        </section>
+
+        <section class="section">
+            <h2>About the School</h2>
+            <p>Template High School
+            </p>
+        </section>
+
+        <section class="section">
+            <h2>Campus and Acaedmics</h2>
+
+            <div class="showcase-tabs">
+                <button class="tab-btn active" onclick="openTab(event, 'campus-tab')">Campus and Maps</button>
+                <button class="tab-btn" onclick="openTab(event, 'campus-life-tab')">Campus Life</button>
+                <button class="tab-btn" onclick="openTab(event, 'Extracurriculars-tab')">Extracurriculars</button>
+                <button class="tab-btn" onclick="openTab(event, 'academics-tab')">Academics</button>
+            </div>
+
+            <div class="tab-content" id="campus-tab" style="display: block;">
+                <div class="image-slider">
+                    <!--
+                    <img src="https://via.placeholder.com/1000x400/244536/fffdf7?text=Oakdale+Campus+Front" class="slide active" alt="Campus View">
+                    <img src="https://via.placeholder.com/1000x400/3f654e/fffdf7?text=Oakdale+Mascot" class="slide" alt="School Mascot">
+                    <img src="https://via.placeholder.com/1000x400/eae6d9/244536?text=Football+Field" class="slide" alt="Football Field">
+                    Replace later
+                    -->
+                </div>
+            </div>
+        </section>
+    </main>
+</body>
