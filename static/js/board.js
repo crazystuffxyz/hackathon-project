@@ -108,7 +108,8 @@ function renderTeachers(posts) {
 }
 
 async function loadReviews() {
-    const response = await fetch("/api/posts?sort=newest");
+    const sort = document.getElementById("review-sort").value;
+    const response = await fetch(`/api/posts?sort=${encodeURIComponent(sort)}`);
 
     if (!response.ok) {
         throw new Error(response.status === 401
@@ -129,4 +130,16 @@ loadReviews().catch(error => {
     const feed = document.getElementById("posts-feed");
     feed.textContent = error.message;
     document.getElementById("search-empty").hidden = true;
+});
+
+const sortSelect = document.getElementById("review-sort");
+sortSelect.addEventListener("change", async () => {
+    sortSelect.disabled = true;
+    try {
+        await loadReviews();
+    } catch (error) {
+        alert(error.message);
+    } finally {
+        sortSelect.disabled = false;
+    }
 });

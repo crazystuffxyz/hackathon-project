@@ -370,6 +370,15 @@
             background: var(--paper-card);
             font: inherit;
         }
+        #review-sort {
+            margin: 8px 0 20px 8px;
+            padding: 8px 12px;
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            background: var(--paper-card);
+            color: var(--ink);
+            font: inherit;
+        }
     </style>
 </head>
 <body>
@@ -431,6 +440,12 @@
             <input id="review-search" type="search"
                 placeholder="Search by teacher, course, or keyword…">
             <p id="search-empty" hidden>No matching reviews. Try another search.</p>
+            <label for="review-sort">Sort reviews</label>
+            <select id="review-sort">
+                <option value="newest">Newest</option>
+                <option value="popular">Most liked</option>
+                <option value="rating">Highest rated</option>
+            </select>
             <div id="posts-feed">
                 <p id="reviews-loading">Loading reviews...</p>
             </div>
