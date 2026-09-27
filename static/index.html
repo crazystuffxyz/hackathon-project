@@ -1,311 +1,389 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="theme-color" content="#1b2920">
-    <meta name="description" content="Harvest is a small community board for posting things you found, grew, made, or figured out.">
-    <title>Harvest — things worth keeping</title>
-    <link rel="stylesheet" href="/css/main.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Harvest — Academic Forum & Compendium</title>
+    <style>
+        :root {
+            --pine-deep: #1b2920;
+            --pine-resin: #26382c;
+            --paper: #f6f2e8;
+            --paper-card: #fdfbf7;
+            --paper-tint: #ede6d6;
+            --ink: #19211c;
+            --ink-soft: #3f4741;
+            --muted: #6b756d;
+            --ochre: #b87c38;
+            --foxglove: #9c4c34;
+            --lichen: #5a735c;
+            --line: rgba(38, 56, 44, 0.16);
+            --font-serif: Georgia, Cambria, "Times New Roman", Times, serif;
+            --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+            --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: var(--font-sans);
+            background-color: var(--paper);
+            color: var(--ink);
+            line-height: 1.5;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        body.modal-open {
+            overflow: hidden;
+        }
+
+        header.app-header {
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            background: var(--paper);
+            border-bottom: 1px solid var(--line);
+            padding: 14px 28px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .brand-title {
+            font-family: var(--font-serif);
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--pine-deep);
+            text-decoration: none;
+            letter-spacing: -0.01em;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .layout-container {
+            max-width: 1180px;
+            margin: 0 auto;
+            padding: 32px 24px 80px;
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) 300px;
+            gap: 36px;
+        }
+
+        .feed-heading {
+            font-family: var(--font-serif);
+            font-size: 28px;
+            margin: 0 0 20px;
+            color: var(--pine-deep);
+        }
+
+        .post-card {
+            background: var(--paper-card);
+            border: 1px solid var(--line);
+            border-radius: 4px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(27, 41, 32, 0.04);
+        }
+
+        .post-card-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            font-size: 13px;
+        }
+
+        .post-meta-details {
+            color: var(--muted);
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .post-meta-details strong {
+            color: var(--ink);
+        }
+
+        .review-rating {
+            color: var(--ochre);
+            font-size: 14px;
+            letter-spacing: 2px;
+        }
+
+        .post-text {
+            margin: 0;
+            font-size: 15px;
+            color: var(--ink);
+            line-height: 1.6;
+        }
+
+        .post-actions {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 14px;
+            padding-top: 12px;
+            border-top: 1px dashed var(--line);
+        }
+
+        .button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 6px 14px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 140ms ease;
+            border: 1px solid transparent;
+        }
+
+        .button-dark {
+            background: var(--pine-deep);
+            color: var(--paper);
+            border-color: var(--pine-deep);
+        }
+
+        .button-dark:hover {
+            background: var(--pine-resin);
+        }
+
+        .button-quiet {
+            background: transparent;
+            color: var(--ink-soft);
+            border-color: var(--line);
+        }
+
+        .button-quiet:hover {
+            background: var(--paper-tint);
+            color: var(--ink);
+        }
+
+        aside.sidebar-column {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .sidebar-card {
+            background: var(--paper-card);
+            border: 1px solid var(--line);
+            border-radius: 4px;
+            padding: 18px;
+        }
+
+        .sidebar-card h3 {
+            margin: 0 0 12px;
+            font-family: var(--font-serif);
+            font-size: 16px;
+            color: var(--pine-deep);
+        }
+
+        .teacher-summary {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-bottom: 4px;
+            transition: background 140ms ease;
+        }
+
+        .teacher-summary:hover {
+            background: var(--paper-tint);
+        }
+
+        .teacher-summary-name {
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .teacher-summary-dept {
+            font-size: 11px;
+            color: var(--muted);
+            font-family: var(--font-mono);
+        }
+
+        @media (max-width: 840px) {
+            .layout-container {
+                grid-template-columns: 1fr;
+            }
+            aside.sidebar-column {
+                order: -1;
+            }
+        }
+    </style>
 </head>
-<body data-page="home">
+<body>
 
-<header class="site-header">
-    <div class="header-left">
-        <a class="wordmark" href="/">
-            <div class="seal-emblem" aria-hidden="true">
-                <svg viewBox="0 0 24 24">
-                    <path d="M12 2C8 6 4 11 4 16C4 19.3 6.7 22 10 22C11.5 22 12 21 12 21C12 21 12.5 22 14 22C17.3 22 20 19.3 20 16C20 11 16 6 12 2Z"/>
-                    <path d="M12 7V17"/>
-                    <path d="M9 11L12 14L15 11"/>
-                </svg>
-            </div>
-
-            <div class="wordmark-text">
-                <strong>harvest</strong>
-            </div>
-        </a>
-    </div>
-
-    <nav class="site-nav" aria-label="Main Navigation">
-        <a class="active" href="/">Board</a>
-        <a href="/messages.html">
-            Messages
-            <span id="message-badge" class="counter-pill hidden">0</span>
-        </a>
-        <a href="/gather.html">Checklist</a>
-        <a href="/about.html">about</a>
-    </nav>
-
-    <div class="header-actions">
-        <button
-            class="persona-switcher-btn"
-            id="open-persona-switcher"
-            title="Your account"
-        >
-            <div class="profile-avatar" id="nav-avatar">Y</div>
-
-            <div class="persona-meta">
-                <strong id="nav-display-name">You</strong>
-                <small id="nav-handle">@you</small>
-            </div>
-        </button>
-
-        <button
-            class="mobile-menu-trigger"
-            id="mobile-menu-btn"
-            aria-label="Toggle Navigation"
-        >
-            <svg viewBox="0 0 24 24">
-                <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M4 6h16M4 12h16M4 18h16"
-                />
-            </svg>
-        </button>
-    </div>
-</header>
-    <div class="mobile-drawer" id="mobile-drawer">
-        <a href="/">Board</a>
-        <a href="/messages.html">Messages <span id="mobile-message-badge" class="counter-pill hidden">0</span></a>
-        <a href="/gather.html">Checklist</a>
-        <a href="/profile.html">Your profile</a>
-    </div>
-
-    <main class="page-shell">
-        <section class="home-intro">
-            <div>
-                <h1>Reviews worth<br><em>sharing.</em></h1>
-                <p class="intro-copy">
-Post the stuff you stumble on, like a good farm stand, a plant that finally took, something you fixed or figured out. Write it down so the next person can find it too.
-                </p>
-            </div>
-
-            <div class="intro-aside">
-                <div class="season-mark">Late September</div>
-                <p>
-                    The rule around here: say where you found it and why it's worth keeping.
-                </p>
-            </div>
-        </section>
-
-        <section class="board-tools">
-            <div class="board-title">
-                <h2>Latest reviews <span id="post-count">0</span></h2>
-            </div>
-
-                        <div class="board-actions">
-                <label class="search-box">
-                    <span aria-hidden="true">⌕</span>
-                    <input
-                        id="post-search"
-                        type="search"
-                        placeholder="Search teachers, courses, or reviews..."
-                    >
-                    <kbd>/</kbd>
-                </label>
-
-                <select id="sort-posts" aria-label="Sort order">
-                    <option value="newest">Newest first</option>
-                    <option value="popular">Most liked</option>
-                    <option value="rating">Highest rating</option>
-                </select>
-
-                <select id="difficulty-filter" aria-label="Filter by difficulty">
-                    <option value="all">All difficulties</option>
-                    <option value="easy">Easy</option>
-                    <option value="medium">Medium</option>
-                    <option value="hard">Hard</option>
-                </select>
-
-                <select id="rating-filter" aria-label="Filter by rating">
-                    <option value="all">All ratings</option>
-                    <option value="5">5★ only</option>
-                    <option value="4">4★ & up</option>
-                    <option value="3">3★ & up</option>
-                </select>
-
-                <select id="take-again-filter" aria-label="Filter by would take again">
-                    <option value="all">Take again: All</option>
-                    <option value="yes">Would take again</option>
-                    <option value="no">Would not take again</option>
-                </select>
-
-                <button class="button button-dark" id="new-note">
-                    <span>+ New review</span>
-                </button>
-            </div>
-        </section>
-
-        <div class="filter-bar" id="category-filters">
-            <button class="filter-btn active" data-filter="all">All reviews</button>
+    <header class="app-header">
+        <a href="/" class="brand-title">Harvest Academic Compendium</a>
+        <div class="header-actions">
+            <span style="font-size: 12px; color: var(--muted); font-family: var(--font-mono);">Semester 2026–27</span>
         </div>
+    </header>
 
-        <div class="home-grid">
-            <div>
-                <div id="post-list" class="post-list"></div>
+    <div class="layout-container">
+        <main>
+            <h1 class="feed-heading">Dispatches & Field Evaluations</h1>
 
-                <div id="empty-state" class="aside-card hidden" style="text-align: center; padding: 60px 20px;">
-                    <h3 style="font-family: var(--font-serif); font-size: 28px; margin: 12px 0;">Nothing here yet.</h3>
-                    <img src="/images/apple.png" alt="" class="empty-sprite">
-                    <p style="color: var(--muted); max-width: 360px; margin: 0 auto 20px;">
-                        Nothing matches that search. Try another word, or clear the filters.
-                    </p>
-                    <button class="button button-quiet" id="reset-filters">Clear filters</button>
-                </div>
-            </div>
-
-            <aside class="home-aside">
-                <section class="aside-card archival-rule">
-                    <p class="eyebrow">House rule</p>
-                    <h3>Be specific and fair.</h3>
-                    <p>
-                        Share useful details about the class, workload, teaching style, and what future students should know.
-                    </p>
-                </section>
-
-                <section class="aside-card">
-                    <p class="eyebrow">Teacher summaries</p>
-                    <div id="teacher-summary-list">
-                        <div style="color: var(--muted); font-size: 13px;">
-                            No teacher reviews yet.
+            <div id="posts-feed">
+                <!-- Posts will render here and can also be pre-rendered server-side -->
+                <article class="post-card">
+                    <div class="post-card-top">
+                        <div class="post-meta-details">
+                            <span>Instructor: <strong>Dr. Evelyn Whitfield</strong></span>
+                            <span>·</span>
+                            <span>Course: <strong>Organic Chemistry I</strong></span>
+                            <span>·</span>
+                            <span>Workload: Heavy</span>
+                        </div>
+                        <span class="review-rating">★★★★★</span>
+                    </div>
+                    <div class="post-body">
+                        <p class="post-text">
+                            Rigorous lab write-ups, but office hours clarify every difficult reaction mechanism. Pacing homework regularly is vital to passing exams.
+                        </p>
+                        <div class="post-actions">
+                            <span style="font-size: 12px; color: var(--muted);">By @j_chen · 18 likes</span>
+                            <a href="/messages.html?with=j_chen&prompt=Hi%20@j_chen,%20I%20saw%20your%20review%20of%20Dr.%20Evelyn%20Whitfield." class="button button-quiet">Inquire via DM →</a>
                         </div>
                     </div>
-                </section>
+                </article>
 
-                <section class="aside-card">
-                    <p class="eyebrow">Saved</p>
-                    <div id="saved-preview-list" class="basket-preview-list">
-                        <div style="color: var(--muted); font-size: 13px;">Nothing saved yet.</div>
+                <article class="post-card">
+                    <div class="post-card-top">
+                        <div class="post-meta-details">
+                            <span>Instructor: <strong>Prof. Arthur Sterling</strong></span>
+                            <span>·</span>
+                            <span>Course: <strong>Constitutional History</strong></span>
+                            <span>·</span>
+                            <span>Workload: Average</span>
+                        </div>
+                        <span class="review-rating">★★★★☆</span>
                     </div>
-                    <a href="/profile.html" class="button button-quiet" style="width: 100%;">View all →</a>
-                </section>
-
-                <section class="aside-card">
-                    <p class="eyebrow">On the board</p>
-                    <div style="margin-top: 10px; font-family: var(--font-serif); font-size: 17px;">
-                        <strong id="stat-people">5</strong> people have posted <strong id="stat-posts">4</strong> notes.
-                    </div>
-                </section>
-            </aside>
-        </div>
-    </main>
-
-    <div class="modal-backdrop hidden" id="composer-backdrop">
-        <section class="modal" role="dialog" aria-modal="true" aria-labelledby="composer-title">
-            <button class="modal-close" id="close-composer" aria-label="Close dialog">×</button>
-
-            <h2 id="composer-title">Write a review</h2>
-            <p class="modal-subcopy">Share your experience with a teacher and course.</p>
-
-            <form id="post-form">
-                <label class="field-label" for="teacher-name">Teacher</label>
-                <input
-                    type="text"
-                    id="teacher-name"
-                    name="teacher"
-                    maxlength="80"
-                    required
-                    placeholder="The teacher's name"
-                >
-
-                <label class="field-label" for="course-name">Course</label>
-                <input
-                    type="text"
-                    id="course-name"
-                    name="course"
-                    maxlength="80"
-                    required
-                    placeholder="The course name"
-                >
-                <label class="field-label" for="post-text">Notes</label>
-                <textarea
-                    id="post-text"
-                    name="text"
-                    maxlength="1400"
-                    required
-                    placeholder="Share your experience with this teacher or course..."
-                ></textarea>
-                <div class="field-meta-row">
-                        <span id="post-characters">0 / 1400</span>
-
-                        <div style="display: flex; gap: 8px;">
-                            <select id="post-difficulty" name="difficulty" aria-label="Course difficulty">
-                                <option value="easy">Easy</option>
-                                <option value="medium" selected>Medium</option>
-                                <option value="hard">Hard</option>
-                            </select>
-
-                            <select id="post-workload" name="workload" aria-label="Course workload">
-                                <option value="light">Light workload</option>
-                                <option value="average" selected>Average workload</option>
-                                <option value="heavy">Heavy workload</option>
-                            </select>
+                    <div class="post-body">
+                        <p class="post-text">
+                            Focus your weekly reading on primary sources. Seminar discussions are spirited and rewarding if you prepare your thesis beforehand.
+                        </p>
+                        <div class="post-actions">
+                            <span style="font-size: 12px; color: var(--muted);">By @s_vance · 9 likes</span>
+                            <a href="/messages.html?with=s_vance&prompt=Hi%20@s_vance,%20I%20saw%20your%20review%20of%20Prof.%20Arthur%20Sterling." class="button button-quiet">Inquire via DM →</a>
                         </div>
                     </div>
+                </article>
 
-                    <label class="field-label" for="take-again">
-                        Would take this teacher/course again?
-                    </label>
-
-                    <select id="take-again" name="take_again">
-                        <option value="yes" selected>Yes</option>
-                        <option value="no">No</option>
-                    </select>
-                    <label class="field-label" for="rating">
-                        Overall rating
-                    </label>
-
-                    <select id="rating" name="rating" required>
-                        <option value="5">5 - Excellent</option>
-                        <option value="4">4 - Good</option>
-                        <option value="3" selected>3 - Average</option>
-                        <option value="2">2 - Below Average</option>
-                        <option value="1">1 - Poor</option>
-                    </select>
-                    
-                <label class="upload-zone" for="post-image">
-                    <input id="post-image" name="image" type="file" accept="image/*">
-                    <svg class="upload-icon" viewBox="0 0 24 24" aria-hidden="true">
-                        <path d="M4 8a2 2 0 0 1 2-2h1.6l1.2-1.6A2 2 0 0 1 10.4 3.6h3.2a2 2 0 0 1 1.6.8L16.4 6H18a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2Z"/>
-                        <circle cx="12" cy="12.5" r="3.2"/>
-                    </svg>
-                    <div>
-                        <strong style="display: block; font-size: 13px;">Add a photo</strong>
-                        <small id="image-name" style="color: var(--muted);">JPEG, PNG or WebP, up to 5MB</small>
+                <article class="post-card">
+                    <div class="post-card-top">
+                        <div class="post-meta-details">
+                            <span>Instructor: <strong>Marcus Vance</strong></span>
+                            <span>·</span>
+                            <span>Course: <strong>Applied Engineering Lab</strong></span>
+                            <span>·</span>
+                            <span>Workload: Heavy</span>
+                        </div>
+                        <span class="review-rating">★★★★★</span>
                     </div>
-                </label>
+                    <div class="post-body">
+                        <p class="post-text">
+                            Unmatched shop time. Finish your circuit design drafts early in the term to secure mill and 3D printing equipment time.
+                        </p>
+                        <div class="post-actions">
+                            <span style="font-size: 12px; color: var(--muted);">By @d_rodriguez · 14 likes</span>
+                            <a href="/messages.html?with=d_rodriguez&prompt=Hi%20@d_rodriguez,%20I%20saw%20your%20review%20of%20Marcus%20Vance." class="button button-quiet">Inquire via DM →</a>
+                        </div>
+                    </div>
+                </article>
+            </div>
+        </main>
 
-                <div id="image-preview-wrap" class="upload-preview-wrap hidden">
-                    <img id="image-preview" alt="Photo preview">
-                    <button type="button" class="remove-upload-btn" id="clear-upload">Remove</button>
+        <aside class="sidebar-column">
+            <section class="sidebar-card">
+                <h3>Faculty Summaries</h3>
+                <p style="font-size: 12px; color: var(--muted); margin: 0 0 12px;">Click any teacher below to inspect peer dossiers:</p>
+
+                <!-- Elements with class="teacher-summary" and data-teacher dynamically open dossiers -->
+                <div class="teacher-summary" data-teacher="Dr. Evelyn Whitfield">
+                    <span class="teacher-summary-name">Dr. Evelyn Whitfield</span>
+                    <span class="teacher-summary-dept">STEM</span>
                 </div>
 
-                <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 24px;">
-                    <button type="button" class="button button-quiet" id="cancel-composer">Cancel</button>
-                    <button type="submit" class="button button-dark" id="submit-post-btn">
-                        Post Review
-                    </button>
+                <div class="teacher-summary" data-teacher="Prof. Arthur Sterling">
+                    <span class="teacher-summary-name">Prof. Arthur Sterling</span>
+                    <span class="teacher-summary-dept">HUMANITIES</span>
                 </div>
-            </form>
-        </section>
+
+                <div class="teacher-summary" data-teacher="Marcus Vance">
+                    <span class="teacher-summary-name">Marcus Vance</span>
+                    <span class="teacher-summary-dept">ENGINEERING</span>
+                </div>
+            </section>
+
+            <section class="sidebar-card">
+                <h3>Semester Planner</h3>
+                <p style="font-size: 12px; color: var(--ink-soft); margin: 0 0 10px;">
+                    Press <kbd style="font-family: var(--font-mono); background: var(--paper-tint); padding: 1px 5px; border-radius: 3px;">⌘K</kbd> or click the badge at bottom-left to balance course workload hours.
+                </p>
+            </section>
+        </aside>
     </div>
 
-    <div class="modal-backdrop hidden" id="persona-backdrop">
-        <section class="modal" role="dialog" aria-modal="true" aria-labelledby="persona-title">
-            <button class="modal-close" id="close-persona" aria-label="Close dialog">×</button>
-            <h2 id="persona-title">Account</h2>
-            <p class="modal-subcopy">You're signed in here. Log out any time from this panel.</p>
-            <div id="persona-list" class="persona-grid"></div>
-        </section>
-    </div>
+    <!-- Optional audio hook for tactile clicks -->
+    <audio id="buttonSound" preload="none"></audio>
 
-    <script src="/js/app.js"></script>
-    <script src="/js/home.js"></script>
-    <script src="/js/turkey.js"></script>
-    <script src="/js/leaves.js"></script>
-    <script src="/js/sounds.js" defer></script>
+    <!-- 1. Hydrate in-page posts data so explorer.js compiles without extra network round-trips -->
+    <script>
+        window.home = {
+            posts: [
+                {
+                    teacher: "Dr. Evelyn Whitfield",
+                    course: "Organic Chemistry I",
+                    rating: 5,
+                    difficulty: "hard",
+                    workload: "heavy",
+                    take_again: "yes",
+                    likes: 18,
+                    handle: "j_chen",
+                    text: "Rigorous lab write-ups, but office hours clarify every difficult reaction mechanism. Pacing homework regularly is vital to passing exams."
+                },
+                {
+                    teacher: "Prof. Arthur Sterling",
+                    course: "Constitutional History",
+                    rating: 4,
+                    difficulty: "medium",
+                    workload: "average",
+                    take_again: "yes",
+                    likes: 9,
+                    handle: "s_vance",
+                    text: "Focus your weekly reading on primary sources. Seminar discussions are spirited and rewarding if you prepare your thesis beforehand."
+                },
+                {
+                    teacher: "Marcus Vance",
+                    course: "Applied Engineering Lab",
+                    rating: 5,
+                    difficulty: "medium",
+                    workload: "heavy",
+                    take_again: "yes",
+                    likes: 14,
+                    handle: "d_rodriguez",
+                    text: "Unmatched shop time. Finish your circuit design drafts early in the term to secure mill and 3D printing equipment time."
+                }
+            ]
+        };
+    </script>
+
+    <script src="/js/explorer.js" defer></script>
 </body>
 </html>
