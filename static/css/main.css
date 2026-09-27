@@ -1458,3 +1458,50 @@ textarea.field-input {
     width: 90px;
     image-rendering: pixelated;
 }
+
+.ste-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    padding: 16px 32px;
+    position: sticky;
+    top: 0;
+    background: var(--paper, #f8f5ed);
+    border-bottom: 1px solid #d8d2c5
+}
+
+.site-brand {
+    font-weight: 700;
+    text-decoration: none;
+    color: inherit;
+    white-space: nowrap;
+}
+
+.site-nav a {
+    text-decoration: none;
+    color: inherit;
+    font-size: 14px;
+}
+
+.site-nav a:hover {
+    text-decoration: none;
+}
+
+.semester-label {
+    font-size: 13px;
+    white-space: nowrap;
+}
+
+@media (max-width: 800px) {
+    .siter-header {
+        flex-wrap: wrap;
+        padding: 16px;
+    }
+    .site-nav {
+        order: 3;
+        width: 100%;
+        flex-wrap: wrap;
+        gap: 16px;
+    }
+}
