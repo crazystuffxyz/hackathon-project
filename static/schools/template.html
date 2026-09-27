@@ -305,6 +305,13 @@
                 </div>
             </div>
 
+            <div id="campus-life-tab" class="tab-content" style="display: none;">
+                <div class="info-card">
+                    <h3>Campus Life</h3>
+                    <p>Information about student life, activities, and services.</p>
+                </div>
+            </div>
+
             <div id="academics-tab" class="tab-content">
                 <div class="grd-2-col">
                     <div class="info-card">
@@ -381,7 +388,7 @@
 
         let currentSlideIndex = 0;
         function changeSlide(direction) {
-            const slides = document.querySelectorAll('.image-slider .slides');
+            const slides = document.querySelectorAll('.image-slider .slide');
             if (slides.length === 0) return;
 
             slides[currentSlideIndex].classList.remove("active");
