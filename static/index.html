@@ -379,6 +379,24 @@
             color: var(--ink);
             font: inherit;
         }
+        #review-form label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 600;
+        }
+        #review-form textarea {
+            resize: vertical;
+            min-height: 110px;
+        }
+        #review-form input, #review-form select, #review-form textarea {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            background: var(--paper-card);
+            color: var(--ink);
+            font: inherit;
+        }
     </style>
 </head>
 <body>
@@ -436,6 +454,64 @@
         <main>
             <h1 class="feed-heading">Teacher Reviews</h1>
             <p class="feed-intro">See what other students think before choosing your next class.</p>
+            <details class="post-card">
+                <summary>Write a review</summary>
+                <form id="review-form">
+                    <p>
+                        <label for="review-teacher">Teacher</label>
+                        <input id="review-teacher" name="teacher" maxlength="80" required>
+                    </p>
+                    <p>
+                        <label for="review-course">Course</label>
+                        <input id="review-course" name="course" maxlength="80" required>
+                    </p>
+                    <p>
+                        <label for="review-text">Your review</label>
+                        <textarea id="review-text" name="text" rows="4" maxlength="1400" required></textarea>
+                    </p>
+                    <p>
+                        <label for="review-rating">Rating</label>
+                        <select id="review-rating" name="rating" required>
+                            <option value="">Choose a rating</option>
+                            <option value="1">1 — Poor</option>
+                            <option value="2">2 — Fair</option>
+                            <option value="3">3 — Good</option>
+                            <option value="4">4 — Very good</option>
+                            <option value="5">5 — Excellent</option>
+                        </select>
+                    </p>
+                    <p>
+                        <label for="review-difficulty">Difficulty</label>
+                        <select id="review-difficulty" name="difficulty" required>
+                            <option value="">Choose difficulty</option>
+                            <option value="easy">Easy</option>
+                            <option value="medium">Medium</option>
+                            <option value="hard">Hard</option>
+                        </select>
+                    </p>
+                    <p>
+                        <label for="review-workload">Workload</label>
+                        <select id="review-workload" name="workload" required>
+                            <option value="">Choose workload</option>
+                            <option value="light">Light</option>
+                            <option value="average">Average</option>
+                            <option value="heavy">Heavy</option>
+                        </select>
+                    </p>
+                    <p>
+                        <label for="review-take-again">Would you take this teacher again?</label>
+                        <select id="review-take-again" name="take_again" required>
+                            <option value="">Choose an answer</option>
+                            <option value="yes">Yes</option>
+                            <option value="no">No</option>
+                        </select>
+                    </p>
+                    <button id="review-submit" class="button button-dark" type="submit" disabled>
+                        Post review
+                    </button>
+                    <p id="review-status" role="status"></p>
+                </form>
+            </details>
             <label for="review-search">Search reviews</label>
             <input id="review-search" type="search"
                 placeholder="Search by teacher, course, or keyword…">

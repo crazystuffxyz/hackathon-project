@@ -143,3 +143,34 @@ sortSelect.addEventListener("change", async () => {
         sortSelect.disabled = false;
     }
 });
+
+const reviewForm = document.getElementById("review-form");
+const submitButton = document.getElementById("review-submit");
+const reviewStatus = document.getElementById("review-status");
+reviewForm.addEventListener("submit", async event => {
+event.preventDefault();
+submitButton.disabled = true;
+reviewStatus.textContent = "Posting review...";
+    try {
+    const response = await fetch("/api/posts", {
+        method: "POST",
+        body: new FormData(reviewForm)
+    });
+    const result = await response.json();
+    if (!response.ok) {
+         throw new Error(result.error || "Could not post your review.");
+    }
+            reviewForm.reset();
+    reviewStatus.textContent = "Review posted!";
+    try {
+        await loadReviews();
+    } catch {
+            reviewStatus.textContent = "Review saved. Refresh to see it.";
+    }
+        } catch (error) {
+        reviewStatus.textContent = error.message;
+    } finally {
+        submitButton.disabled = false;
+    }
+});
+submitButton.disabled = false;
