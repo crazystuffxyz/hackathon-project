@@ -370,6 +370,36 @@
             background: var(--paper-card);
             font: inherit;
         }
+        #review-sort {
+            margin: 8px 0 20px 8px;
+            padding: 8px 12px;
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            background: var(--paper-card);
+            color: var(--ink);
+            font: inherit;
+        }
+        #review-form label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 600;
+        }
+        #review-form textarea {
+            resize: vertical;
+            min-height: 110px;
+        }
+        #review-form input, #review-form select, #review-form textarea {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            background: var(--paper-card);
+            color: var(--ink);
+            font: inherit;
+        }
+            [hidden] {
+            display: none !important;
+        }
     </style>
 </head>
 <body>
@@ -427,77 +457,78 @@
         <main>
             <h1 class="feed-heading">Teacher Reviews</h1>
             <p class="feed-intro">See what other students think before choosing your next class.</p>
+            <details class="post-card">
+                <summary>Write a review</summary>
+                <form id="review-form">
+                    <p>
+                        <label for="review-teacher">Teacher</label>
+                        <input id="review-teacher" name="teacher" maxlength="80" required>
+                    </p>
+                    <p>
+                        <label for="review-course">Course</label>
+                        <input id="review-course" name="course" maxlength="80" required>
+                    </p>
+                    <p>
+                        <label for="review-text">Your review</label>
+                        <textarea id="review-text" name="text" rows="4" maxlength="1400" required></textarea>
+                    </p>
+                    <p>
+                        <label for="review-rating">Rating</label>
+                        <select id="review-rating" name="rating" required>
+                            <option value="">Choose a rating</option>
+                            <option value="1">1 — Poor</option>
+                            <option value="2">2 — Fair</option>
+                            <option value="3">3 — Good</option>
+                            <option value="4">4 — Very good</option>
+                            <option value="5">5 — Excellent</option>
+                        </select>
+                    </p>
+                    <p>
+                        <label for="review-difficulty">Difficulty</label>
+                        <select id="review-difficulty" name="difficulty" required>
+                            <option value="">Choose difficulty</option>
+                            <option value="easy">Easy</option>
+                            <option value="medium">Medium</option>
+                            <option value="hard">Hard</option>
+                        </select>
+                    </p>
+                    <p>
+                        <label for="review-workload">Workload</label>
+                        <select id="review-workload" name="workload" required>
+                            <option value="">Choose workload</option>
+                            <option value="light">Light</option>
+                            <option value="average">Average</option>
+                            <option value="heavy">Heavy</option>
+                        </select>
+                    </p>
+                    <p>
+                        <label for="review-take-again">Would you take this teacher again?</label>
+                        <select id="review-take-again" name="take_again" required>
+                            <option value="">Choose an answer</option>
+                            <option value="yes">Yes</option>
+                            <option value="no">No</option>
+                        </select>
+                    </p>
+                    <button id="review-submit" class="button button-dark" type="submit" disabled>
+                        Post review
+                    </button>
+                    <button id="review-cancel" class="button button-quiet"
+                        type="button" hidden>Cancel edit</button>
+                    <p id="review-status" role="status"></p>
+                </form>
+            </details>
             <label for="review-search">Search reviews</label>
             <input id="review-search" type="search"
                 placeholder="Search by teacher, course, or keyword…">
             <p id="search-empty" hidden>No matching reviews. Try another search.</p>
+            <label for="review-sort">Sort reviews</label>
+            <select id="review-sort">
+                <option value="newest">Newest</option>
+                <option value="popular">Most liked</option>
+                <option value="rating">Highest rated</option>
+            </select>
             <div id="posts-feed">
-                <!-- Posts will render here and can also be pre-rendered server-side -->
-                <article class="post-card">
-                    <div class="post-card-top">
-                        <div class="post-meta-details">
-                            <span>Instructor: <strong>Dr. Evelyn Whitfield</strong></span>
-                            <span>·</span>
-                            <span>Course: <strong>Organic Chemistry I</strong></span>
-                            <span>·</span>
-                            <span>Workload: Heavy</span>
-                        </div>
-                        <span class="review-rating">★★★★★</span>
-                    </div>
-                    <div class="post-body">
-                        <p class="post-text">
-                            Rigorous lab write-ups, but office hours clarify every difficult reaction mechanism. Pacing homework regularly is vital to passing exams.
-                        </p>
-                        <div class="post-actions">
-                            <span style="font-size: 12px; color: var(--muted);">By @j_chen · 18 likes</span>
-                            <a href="/messages.html?with=j_chen&prompt=Hi%20@j_chen,%20I%20saw%20your%20review%20of%20Dr.%20Evelyn%20Whitfield." class="button button-quiet">Inquire via DM →</a>
-                        </div>
-                    </div>
-                </article>
-
-                <article class="post-card">
-                    <div class="post-card-top">
-                        <div class="post-meta-details">
-                            <span>Instructor: <strong>Prof. Arthur Sterling</strong></span>
-                            <span>·</span>
-                            <span>Course: <strong>Constitutional History</strong></span>
-                            <span>·</span>
-                            <span>Workload: Average</span>
-                        </div>
-                        <span class="review-rating">★★★★☆</span>
-                    </div>
-                    <div class="post-body">
-                        <p class="post-text">
-                            Focus your weekly reading on primary sources. Seminar discussions are spirited and rewarding if you prepare your thesis beforehand.
-                        </p>
-                        <div class="post-actions">
-                            <span style="font-size: 12px; color: var(--muted);">By @s_vance · 9 likes</span>
-                            <a href="/messages.html?with=s_vance&prompt=Hi%20@s_vance,%20I%20saw%20your%20review%20of%20Prof.%20Arthur%20Sterling." class="button button-quiet">Inquire via DM →</a>
-                        </div>
-                    </div>
-                </article>
-
-                <article class="post-card">
-                    <div class="post-card-top">
-                        <div class="post-meta-details">
-                            <span>Instructor: <strong>Marcus Vance</strong></span>
-                            <span>·</span>
-                            <span>Course: <strong>Applied Engineering Lab</strong></span>
-                            <span>·</span>
-                            <span>Workload: Heavy</span>
-                        </div>
-                        <span class="review-rating">★★★★★</span>
-                    </div>
-                    <div class="post-body">
-                        <p class="post-text">
-                            Unmatched shop time. Finish your circuit design drafts early in the term to secure mill and 3D printing equipment time.
-                        </p>
-                        <div class="post-actions">
-                            <span style="font-size: 12px; color: var(--muted);">By @d_rodriguez · 14 likes</span>
-                            <a href="/messages.html?with=d_rodriguez&prompt=Hi%20@d_rodriguez,%20I%20saw%20your%20review%20of%20Marcus%20Vance." class="button button-quiet">Inquire via DM →</a>
-                        </div>
-                    </div>
-                </article>
+                <p id="reviews-loading">Loading reviews...</p>
             </div>
         </main>
 
@@ -507,20 +538,7 @@
                 <p style="font-size: 12px; color: var(--muted); margin: 0 0 12px;">Click any teacher below to inspect peer dossiers:</p>
 
                 <!-- Elements with class="teacher-summary" and data-teacher dynamically open dossiers -->
-                <div class="teacher-summary" data-teacher="Dr. Evelyn Whitfield">
-                    <span class="teacher-summary-name">Dr. Evelyn Whitfield</span>
-                    <span class="teacher-summary-dept">STEM</span>
-                </div>
-
-                <div class="teacher-summary" data-teacher="Prof. Arthur Sterling">
-                    <span class="teacher-summary-name">Prof. Arthur Sterling</span>
-                    <span class="teacher-summary-dept">HUMANITIES</span>
-                </div>
-
-                <div class="teacher-summary" data-teacher="Marcus Vance">
-                    <span class="teacher-summary-name">Marcus Vance</span>
-                    <span class="teacher-summary-dept">ENGINEERING</span>
-                </div>
+                <div id="teacher-summary-list"></div>
             </section>
 
             <section class="sidebar-card">
@@ -537,45 +555,9 @@
 
     <!-- 1. Hydrate in-page posts data so explorer.js compiles without extra network round-trips -->
     <script>
-        window.home = {
-            posts: [
-                {
-                    teacher: "Dr. Evelyn Whitfield",
-                    course: "Organic Chemistry I",
-                    rating: 5,
-                    difficulty: "hard",
-                    workload: "heavy",
-                    take_again: "yes",
-                    likes: 18,
-                    handle: "j_chen",
-                    text: "Rigorous lab write-ups, but office hours clarify every difficult reaction mechanism. Pacing homework regularly is vital to passing exams."
-                },
-                {
-                    teacher: "Prof. Arthur Sterling",
-                    course: "Constitutional History",
-                    rating: 4,
-                    difficulty: "medium",
-                    workload: "average",
-                    take_again: "yes",
-                    likes: 9,
-                    handle: "s_vance",
-                    text: "Focus your weekly reading on primary sources. Seminar discussions are spirited and rewarding if you prepare your thesis beforehand."
-                },
-                {
-                    teacher: "Marcus Vance",
-                    course: "Applied Engineering Lab",
-                    rating: 5,
-                    difficulty: "medium",
-                    workload: "heavy",
-                    take_again: "yes",
-                    likes: 14,
-                    handle: "d_rodriguez",
-                    text: "Unmatched shop time. Finish your circuit design drafts early in the term to secure mill and 3D printing equipment time."
-                }
-            ]
-        };
+        window.home = { posts: [] };
     </script>
-
+    <script src="/js/board.js" defer></script>
     <script src="/js/explorer.js" defer></script>
 
     <script>
@@ -591,13 +573,14 @@
 
     </script>
     <script>
-    const reviewSearch = document.getElementById("review-search");
-    reviewSearch.addEventListener("input", () => {
-        const query = reviewSearch.value.trim().toLowerCase();
+    function filterReviews() {
+        const query = document.getElementById("review-search").value.trim().toLowerCase();
         const cards = [...document.querySelectorAll("#posts-feed .post-card")];
         cards.forEach(card => card.hidden = !card.textContent.toLowerCase().includes(query));
-        document.getElementById("search-empty").hidden = cards.some(card => !card.hidden);
-    });
+        document.getElementById("search-empty").hidden =
+            cards.length === 0 || cards.some(card => !card.hidden);
+    }
+    document.getElementById("review-search").addEventListener("input", filterReviews);
     </script>
 </body>
 </html>
