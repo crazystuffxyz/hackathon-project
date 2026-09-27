@@ -218,7 +218,7 @@
                 grid-template-columns: 1fr;
             }
             aside.sidebar-column {
-                order: -1;
+                order: 0;
             }
         }
         @media (max-width: 840px) {
@@ -251,6 +251,33 @@
             background: var(--pine-deep);
             color: var(--paper);
         }
+        .feed-heading {
+            margin-bottom: 8px;
+        }
+        .feed-intro {
+            color: var(--ink-soft);
+            font-size: 15px;
+            margin: 0 0 24px;
+        }
+        .post-meta-details > span:first-child {
+            flex-basis: 100%;
+            font-size: 14px;
+        }
+        .post-meta-details > span:first-child strong {
+            font-family: var(--font-serif);
+            font-size: 20px;
+        }
+        .post-meta-details > span:nth-child(2) {
+            display: none;
+        }
+        .post-card-top {
+            align-items: flex-start;
+            gap: 16px;
+        }
+        .review-rating {
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
     </style>
 </head>
 <body>
@@ -271,8 +298,8 @@
 
     <div class="layout-container">
         <main>
-            <h1 class="feed-heading">Dispatches & Field Evaluations</h1>
-
+            <h1 class="feed-heading">Teacher Reviews</h1>
+            <p class="feed-intro">See what other students think before choosing your next class.</p>
             <div id="posts-feed">
                 <!-- Posts will render here and can also be pre-rendered server-side -->
                 <article class="post-card">
