@@ -152,13 +152,7 @@ a {
 }
 
 .site-nav a.active::after {
-    content: "";
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 2.5px;
-    background: var(--foxglove);
+    display: none;
 }
 
 .site-nav .counter-pill {
@@ -1491,6 +1485,23 @@ textarea.field-input {
 .semester-label {
     font-size: 13px;
     white-space: nowrap;
+}
+
+.site-nav {
+    gap: 8px;
+}
+.site-nav a {
+    padding: 8px 14px;
+    border-radius: 8px;
+    font-size: 14px;
+}
+.site-nav a:hover,
+.site-nav a:focus-visible {
+    background: var(--paper-tint);
+}
+.site-nav a.active {
+    background: var(--pine-deep);
+    color: var(--paper);
 }
 
 @media (max-width: 800px) {
