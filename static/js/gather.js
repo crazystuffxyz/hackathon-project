@@ -57,10 +57,9 @@ const gather = {
                 </label>
             `;
         }).join("");
-
-        list.querySelectorAll("input[data-id]").forEach(box => {
+    list.querySelectorAll("input[data-id]").forEach(box => {
             box.addEventListener("change", () => this.toggle(box.dataset.id, box.checked));
-        });
+});
 
         this.updateProgress(gathered.length, items.length);
     },
@@ -108,7 +107,15 @@ const gather = {
 
         if (!btn || !backdrop || !form) return;
 
-        const open = () => backdrop.classList.remove("hidden");
+        const open = () => {
+            if (!app.user) {
+                app.showAuthModal();
+                return;
+            }
+
+            backdrop.classList.remove("hidden");
+        };
+        
         const shut = () => backdrop.classList.add("hidden");
 
         btn.addEventListener("click", open);
