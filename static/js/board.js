@@ -1,3 +1,6 @@
+let currentUser = null;
+let editingPostId = null;
+
 function renderReviews(posts) {
     const feed = document.getElementById("posts-feed");
     feed.innerHTML = "";
@@ -66,6 +69,27 @@ function renderReviews(posts) {
         likeButton.textContent = post.liked ? "♥ Liked" : "♡ Like";
         likeButton.setAttribute("aria-pressed", String(Boolean(post.liked)));
         footer.appendChild(likeButton);
+        if (currentUser && post.handle === currentUser.handle) {
+            const editButton = document.createElement("button");
+            editButton.type = "button";
+            editButton.className = "button button-quiet";
+            editButton.textContent = "Edit";
+            footer.appendChild(editButton);
+            editButton.addEventListener("click", () => {
+                editingPostId = post.id;
+                const form = document.getElementById("review-form");
+                for (const field of ["teacher", "course", "text", "rating",
+                                    "difficulty", "workload", "take_again"]) {
+                    form.elements.namedItem(field).value = post[field] ?? "";
+                }
+                    document.getElementById("review-submit").textContent = "Save changes";
+                        document.getElementById("review-status").textContent = "";
+                        const section = form.closest("details");
+                        section.open = true;
+                        section.scrollIntoView({ behavior: "smooth" });
+                        document.getElementById("review-cancel").hidden = false;
+                    });
+        }
         likeButton.addEventListener("click", async () => {
         likeButton.disabled = true;
         try {
@@ -108,6 +132,9 @@ function renderTeachers(posts) {
 }
 
 async function loadReviews() {
+    const session = await fetch("/api/me");
+        if (!session.ok) throw new Error("Could not check your account.");
+        currentUser = (await session.json()).user;
     const sort = document.getElementById("review-sort").value;
     const response = await fetch(`/api/posts?sort=${encodeURIComponent(sort)}`);
 
@@ -152,22 +179,26 @@ event.preventDefault();
 submitButton.disabled = true;
 reviewStatus.textContent = "Posting review...";
     try {
-    const response = await fetch("/api/posts", {
-        method: "POST",
+    const editing = editingPostId !== null;
+    const url = editing ? `/api/posts/${editingPostId}` : "/api/posts";
+    const response = await fetch(url, {
+        method: editing ? "PUT" : "POST",
         body: new FormData(reviewForm)
     });
     const result = await response.json();
     if (!response.ok) {
          throw new Error(result.error || "Could not post your review.");
     }
-            reviewForm.reset();
-    reviewStatus.textContent = "Review posted!";
-    document.getElementById("review-search").value = "";
+    editingPostId = null;
+    submitButton.textContent = "Post review";
+    document.getElementById("review-cancel").hidden = true;
+        reviewForm.reset();
+    reviewStatus.textContent = editing ? "Changes saved!" : "Review posted!";    document.getElementById("review-search").value = "";
     document.getElementById("review-sort").value = "newest";
     try {
         await loadReviews();
     } catch {
-            reviewStatus.textContent = "Review saved. Refresh to see it.";
+            reviewStatus.textContent = editing ? "Changes saved!" : "Review posted!";
     }
         } catch (error) {
         reviewStatus.textContent = error.message;
@@ -176,3 +207,11 @@ reviewStatus.textContent = "Posting review...";
     }
 });
 submitButton.disabled = false;
+
+document.getElementById("review-cancel").addEventListener("click", () => {
+    editingPostId = null;
+    reviewForm.reset();
+    submitButton.textContent = "Post review";
+    reviewStatus.textContent = "";
+    document.getElementById("review-cancel").hidden = true;
+});
