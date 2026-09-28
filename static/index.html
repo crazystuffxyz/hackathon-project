@@ -677,6 +677,26 @@
     document.getElementById("review-search").addEventListener("input", filterReviews);
 
     <!--Beginning of search javascript code-->
+    const schoolSearchInput = document.getElementById("school-search");
+    const schoolCards = document.querySelectorAll("#school-track .school-card");
+    const emptyStateMessage = document.getElementById("school-search-empty");
+
+    schoolSearchInput.addEventListener("input", () => {
+        const query = schoolSearchInput.value.trim().toLowerCase();
+        let visibleCount = 0;
+
+        schoolCards.forEach(card => {
+            const text = card.textContent.toLowerCase();
+            const matches = text.includes(query);
+
+            card.hidden = !matches;
+
+            if (matches) {
+                visibleCount++;
+            }
+            });
+            emptyStateMessage.hidden = visibleCount > 0;
+    });
     </script>
 </body>
 </html>
