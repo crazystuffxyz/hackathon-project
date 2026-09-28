@@ -446,6 +446,32 @@
             margin: 0;
             color: var(--paper-card);
         } <!--This is just to add embedded images into the website-->
+
+        #school-search {
+            width: 100%;
+            padding: 10px 14px;
+            margin-bottom: 16px;
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            background: var(--paper-card);
+            color: var(--ink);
+            font-family: inherit;
+            font-size: 14px;
+            outline: none;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        #school-search:focus {
+            border-color: var(--pine-deep);
+            box-shadow: 0 0 0 2px rgba(27, 41, 37, 0.12);
+        }
+
+        #school-search-empty {
+            color: var(--muted);
+            font-size: 14px;
+            font-style: italic;
+            margin: 0 0 16px 0;
+        }
     </style>
     <!--Finish of a bunch of CSS stuff. Super important, just add from slightly above this. Don't touch or delete the 
     higher stuff. It's gonna explode.-->
@@ -649,6 +675,8 @@
             cards.length === 0 || cards.some(card => !card.hidden);
     }
     document.getElementById("review-search").addEventListener("input", filterReviews);
+
+    <!--Beginning of search javascript code-->
     </script>
 </body>
 </html>
